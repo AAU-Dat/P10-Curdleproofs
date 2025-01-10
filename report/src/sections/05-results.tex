@@ -1,13 +1,32 @@
 \section{Results}\label{sec:results}
+
 \subsection{Connected peers}\label{subsec:connected-peers}
 
 \begin{figure*}[!ht]
-\includegraphics[width=\linewidth]{figures/conPeer2}
-\caption{The number of peers our node was connected to over the time of the experiment.
-Data points are collected every minute}
-\label{fig:peersconnected}
+    \includegraphics[width=\linewidth]{figures/conPeer2}
+    \caption{The number of peers our node was connected to over the time of the experiment.
+    Data points are collected every minute}
+    \label{fig:peersconnected}
 \end{figure*}
+
 \subsection{Deanonymization}\label{subsec:deanonymization}
+
+
+\begin{table}[]
+    \centering
+    \caption{Distribution of nodes into the four different categories}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        & \textbf{Nodes} & \textbf{Distribution} \\ \hline
+        \textbf{Deanonymized validators} & 513            & 42.93                 \\ \hline
+        \textbf{64 subnets}              & 71             & 5.94                  \\ \hline
+        \textbf{No validators}           & 0              & 0                     \\ \hline
+        \textbf{Rest}                    & 611            & 51.13                 \\ \hline
+    \end{tabular}
+    \label{tab:distribution}
+\end{table}
+
+
 Deanonymized validators = 493,551
 
 IPs collected = 1183
@@ -15,5 +34,6 @@ IPs collected = 1183
 Average connected = 148
 
 Nodes with validators = 513
+
 \subsection{Validator Distribution}\label{subsec:validator-distribution}
 wip
