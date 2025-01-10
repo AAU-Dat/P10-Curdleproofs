@@ -1,25 +1,26 @@
 
 
 \section{Introduction}\label{sec:introduction}
-The Ethereum network is a decentralized network that relies on the consensus mechanism of~\gls{pos}.
+The Ethereum network is a decentralized network and is one of the most popular blockchains.
+At the current time Ethereum is the most used blockchain which relies on the consensus mechanism of~\gls{pos}.
 Ethereum switched from~\gls{pow} to~\gls{pos} in 2020 with the release of Ethereum 2.0~\cite{EthereumProof-of-stakePoS}.
-A part of this decision was to reduce the requirements for participation of the network.
+A part of this decision was to reduce the requirements for participation in the network.
 With the increasing number of validators, the network is becoming increasingly active with the amount of messages being sent between the validators.
 With all of these messages being sent, the network is becoming increasingly vulnerable to attacks based on information gathering.
-That is why we in this paper are looking into the possibility of de-anonymizing validators in the Ethereum network by first identifying their IP addresses and then linking these IPs to active validators.
+That is why we in this paper are looking into the possibility of de-anonymizing validators in the Ethereum network by identifying and linkin IPs to active validators.
 
 
-Without having to be a validator, we have been able to gather information about the validators in the~\gls{p2p} network through attestations sent in throughout Ethereum.
-We were able to gather enough information purly from logging messages we received and peers we were connected to, to be able to de-anonymize validators.
-The information gathered from our attack could then be used to perform attacks such as a~\gls{dos} attack on other proposers when combined with the fact that the proposers of each block is known in advance.
+Without having to be a validator, we have been able to gather information about the validators in the~\gls{p2p} network through attestations sent in throughout the Ethereum network.
+We were able to gather enough information purely from logging messages we received and peers we were connected to, to be able to de-anonymize validators.
+The information gathered from our attack can then be used to perform attacks such as a~\gls{dos} attack on other proposers when combined with the fact that the proposers of each block is known in advance.
 This could potentially lead to a loss of money for the validators, as they are penalized for being inactive as well as a potential gain for the attacker in the event of victim being the proposer in the slot before the attacker.
 
-Even though this paper was inspired by the work of~\cite{de-anon paper}, we have made our own version of the implementation.
+This paper was inspired by the work of~\cite{de-anon paper} and we have made our own version of the implementation.
 This has lead os to make the following contributions:
 \begin{itemize}
     \item We have implemented a de-anonymization attack on the Ethereum network and ran it on the Holesky testnet.
-    \item
-    \item
+    \item Description of possible attack on block proposers after de-anonymizing validators
+    \item Comparison of results against~\cite{de-anon paper}
 \end{itemize}
 \
 
