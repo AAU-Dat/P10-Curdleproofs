@@ -42,12 +42,18 @@ The data that was collected was stored in a database and was only used for the p
 
 \subsection{Comparison of results}\label{subsec:res-comparison}
 
-\subsubsection{connected peers}\label{subsubsec:connected-peers}
-As we can see in Figure~\ref{fig:peersconnected}, the number of connected peers fluctuated a lot over the course of the experiment.
+\subsubsection{Connected peers}\label{subsubsec:connected-peers}
+As we can see in~\autoref{fig:peersconnected}, the number of connected peers fluctuated a lot over the course of the experiment.
 It also has a similar pattern to the one in the original paper when it comes to the sudden drops in the number of connected peers in set intervals.
 In the original paper, they also experienced sudden drops in the number of connected peers, and they are not sure why this happens.
 They suspect that it could be due to some artifacts from AWS, however we too experienced these drops.
-In uor case we are not running on AWS, but on claudia.
-So either claudia has the same artifacts as AWS, or the drops are due to some other reason.
-We suspect that the drops could be due to either garbage collection of peers that have been idel for to long, or it could be a result of how the peer score is calculated that may cause the number of connected peers to drop.
-It could also be that we meet som kind of performance limit in the system that causes the number of connected peers to drop, but this is less likely.
+In our case we are not running on AWS, but on Strato CLAUUDIA, which is a cloud computing service made available by Aalborg University.
+So either CLAAUDIA has the same artifacts as AWS, or the drops are due to some other reason.
+We suspect that the drops could be due to garbage collection of peers that have been idle for too long.
+Each node calculates a peer score for each of their peers to tell whether it should stay connected to that node or not.
+Therefore, the drop of peers could be a result of how other peers calculated our node's peer score.
+If something made our node get a bad peer score the number of connected peers to our node could drop.
+The reason that our node could get a bad peer score could relate to performance issues.
+We can see in~\autoref{fig:peersconnected} that drops happen when around 250 peers were connected.
+It could be that logging attestation from this amount peers hit a bottleneck for our node, making it slow down and hence receive a bad peer score.
+
