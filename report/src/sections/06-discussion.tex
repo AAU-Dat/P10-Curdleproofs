@@ -41,3 +41,13 @@ This is an issue that was important to consider when collecting data for the att
 The data that was collected was stored in a database and was only used for the purpose of analysing the attack.
 
 \subsection{Comparison of results}\label{subsec:res-comparison}
+
+\subsubsection{connected peers}\label{subsubsec:connected-peers}
+As we can see in Figure~\ref{fig:peersconnected}, the number of connected peers fluctuated a lot over the course of the experiment.
+It also has a similar pattern to the one in the original paper when it comes to the sudden drops in the number of connected peers in set intervals.
+In the original paper, they also experienced sudden drops in the number of connected peers, and they are not sure why this happens.
+They suspect that it could be due to some artifacts from AWS, however we too experienced these drops.
+In uor case we are not running on AWS, but on claudia.
+So either claudia has the same artifacts as AWS, or the drops are due to some other reason.
+We suspect that the drops could be due to either garbage collection of peers that have been idel for to long, or it could be a result of how the peer score is calculated that may cause the number of connected peers to drop.
+It could also be that we meet som kind of performance limit in the system that causes the number of connected peers to drop, but this is less likely.
