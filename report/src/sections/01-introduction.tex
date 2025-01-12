@@ -15,12 +15,14 @@ We were able to gather enough information purely from logging messages we receiv
 The information gathered from our attack can then be used to perform attacks such as a~\gls{dos} attack on other proposers when combined with the fact that the proposers of each block is known in advance.
 This could potentially lead to a loss of money for the validators, as they are penalized for being inactive as well as a potential gain for the attacker in the event of victim being the proposer in the slot before the attacker.
 
-This paper was inspired by the work of~\cite{de-anon paper} and we have made our own version of the implementation.
+This paper was inspired by the work of~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} and we have made our own version of the implementation.
 This has lead os to make the following contributions:
 \begin{itemize}
-    \item We have implemented a de-anonymization attack on the Ethereum network and ran it on the Holesky testnet.
-    \item Description of possible attack on block proposers after de-anonymizing validators
-    \item Comparison of results against~\cite{de-anon paper}
+    \item We have implemented a de-anonymization attack on validators designed to be running on the Ethereum network.
+    The attack was run on the Holesky testnet for research purposes.
+    \item We have described a possible~\gls{dos} on block proposers, which is made possible after execution of the de-anonymizing validator attack.
+    \item We have documented our results of the de-anonymization attack and compared those against the results from the original authors of the attack~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}
+    \item We discuss the incentives and consequences that arise after a successful execution of the~\gls{dos} attack on block proposers.
 \end{itemize}
 \
 
