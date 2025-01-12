@@ -171,9 +171,19 @@ the data is logged to a database as in~\autoref{subsubsec:peers}.
 The primary goal of the experiment is to log as much data from attestations and peers as possible.
 To do this, we modify the implementation of the Prysm consensus client~\cite{prysm}.
 Prysm is also one of the most used clients for connecting with the consensus layer~\cite{client-diversity}.
+The Prysm node is modified to subscribe to all 64 subnets in the network, which enables it to receive as many attestations as possible.
+Adding to that, and also aiming for experimental consistency with the~\gls{de-anon paper}, we allow our node to connect to up to 1,000 peers.
+It is important to notice that the node does not do anything which stands out from normal consensus node behavior.
+The only change is that we log the data as explained in~\autoref{subsec:attack-implementation}.
 
+Aiming to log as much data as possible while trying to get as many connections as possible requires a lot of computational resources.
+Our instance of the modified Prysm node was running in cooperation with a Go-Ethereum execution client.
 The client was then run on a virtual machine hosted on Strato Claaudia through Aalborg University.
+The virtual machine had 16 virtual CPUs as well as 64 GB of RAM available.
+The physical location of the virtual machine is in Denmark.
 
+While still aiming for consistency in regard to the~\gls{de-anon paper}, we collect data in the span of three days (December 13th, 13:04 UTC to December 16th, 13:12 UTC).
+Around 300 GB of data was collected into a PostgreSQL database and afterward also processed in PostgreSQL\@.
 
 
 To start receiving attestations and reaching and connecting other peers,
