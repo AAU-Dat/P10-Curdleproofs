@@ -1,52 +1,124 @@
 
 
 \section{Experimental protocol}\label{sec:experimental-protocol}
-In this section, we describe the setup of the experiment that will be conducted as well as the experiment itself.
-The section will also cover the workings of the attack that will ve performed.
+In this section we will cover the workings of the attack that will be performed.
+We also describe the setup of the experiment that will be conducted as well as the experiment itself.
 
-\subsection{Setup}\label{subsec:setup}
-The setup of the experiment is as follows: First we modified a prysm client to include logging of attestations received by the client and all the peer that the node has discovered.
-The client was then run on a virtual machine hosted on Strato Claaudia through the Aalborg University.
+\subsection{Attack description}\label{subsec:attack-description}
+The attack that we are describing is divided in two parts.
+The overall goal of the attack is
+to be able
+to withhold Ethereum validators from performing their eventual proposer duties
+as mentioned in~\cite{EthereumAttackDefense2024}.
+The idea is that the adversary would interrupt validators using a~\gls{dos} attack.
+For this, we need information regarding two things;
+when a specific validator is going to produce a block, and what the IP address of the validator is.
 
-To start receiving attestations and reaching and connecting other peers, the client was connected to the Holesky testnet.
-Since the experiment is of an adversarial nature, the client was connected to a testnet instead of the mainnet.
+\subsubsection{Getting validator IPs}
+When a node is a part of the Ethereum network,
+it will receive messages in the form of attestations from other nodes in the network.
+These attestations can be split into two different categories, backbone and non-backbone attestations.
+A backbone attestation is typically a routine message sent between peers in the same subnet.
+This means that the nodes are simply forwarding messages to each other that they did not construct themselves.
+To explain non-backbone attestations,
+we refer directly to the observation found in ~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+\\\\
+\textit{\textbf{Observation 1.} An ideal peer will only send us an attestation in a subnet they are not a backbone of
+if they are the signer of the attestation,
+    and we are in their fanout for the corresponding subnet of the attestation.}
+\\\\
 
-While the client was running, it was able to log information from the received attestations as well as on the peers it discovered.
-Among other things, the client logged peer~\glspl{enr}, the subnets that the attestations were sent to, the subnet that the peer was in and the public key associated with the attestation.
-\todo {mabye add image of tableheaders here for vizualization}
-The data that was logged was then stored in a database for further analysis.
-After this, the peers were sorted into the same four categories as mentioned in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-The categories are:
-\begin{itemize}
-    \item Deanonymized
-    \item No validators
-    \item 64 subnets
-    \item Rest
-\end{itemize}
+So optimally, all non-backbone attestations that we receive should have been constructed by the node that sent it to us.
+Therefore, in a perfect scenario,
+we would couple the validator, associated with the non-backbone attestation, to the peer that sent the message.
 
-\textbf{Deanonymized:} One or more validators have been discovered on this peer.
+Though, there are a lot of things that are uncertain when sending messages over the internet.
+It may be that we never receive a message because of network instability.
+As stated by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}, nodes can also run in non-default configurations,
+i.e.,\ subscribing to more than two subnets, increasing the number of messages one will receive from that node.
+We may also wrongly label messages as backbone or non-backbone because of lack of or delayed information regarding a node's backbone subnets.
 
-\textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
+Because of this,
+the authors of the~\gls{de-anon paper} developed heuristics to tell whether we link a given validator with a given node~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+The heuristics and their application are described in~\autoref{subsec:setup}.
 
-\textbf{64 subnets:} The peer was subscribed to all 64 subnets, so we are not able to tell backbone attestations from non-backbone attestations.
+\subsubsection{Finding proposer duties for a Proposer DoS attack}
+Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators in which the IP address of the nodes is included.
+Now that we should have linked validators with IP addresses, we need to find out which validators are going to propose upcoming blocks in the blockchain.
 
-\textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
+Having de-anonymized validators means that the~\gls{randao} proposer selection is vulnerable,
+but not limited, to a DoS attack.
+More specifically,
+it is possible to perform the Proposer DoS attack as mentioned in~\autoref{subsec:proposer-dos-attack}.
 
-When it comes to deanonymizing the validators, we used the same heuristic as in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-The heuristic includes four criteria being:
-\begin{itemize}
-    \item The proportion of non-backbone attestations for validator v exceed
-    \begin{equation}
-                                                                                 0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
-                                                                                 \label{eq:heurestic}
-    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
-    \item The peer is not subscribed to all 64 subnets.
-    \item TWe receive at least every tenth attestation we expect for the validator v from the peer.
-    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
-\end{itemize}
-\todo{is it fine to just copy the criteria from the paper word for word?}
+In~\autoref{subsec:randao}, we found that the proposers for an entire epoch are chosen at least one epoch in advance.
+Gathering the proposer duties can be easily obtained, as Ethereum provides an API endpoint for the blockchain,
+providing information on the chain.~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/\#/Validator/getProposerDuties}{here.}}.
+The adversary would only need an Ethereum node to use this API; a validator is not required.
+This is especially beneficial, as one can perform the attack without staking any money into Ethereum.
 
-\subsection{Attack implementation}\label{subsec:attack-implementation}
+The output of the call to the API returns a list of slots.
+For each component in the list is the chosen validator's public key,
+ID, and the slot in which they are chosen to propose a block.
+
+Therefore, a list of the de-anonymized validators could be iterated,
+where the goal of the adversary would be to match the proposers for the upcoming epoch.
+Included in the de-anonymization is the IP-addresses of the validator as well as their ID and public key.
+So having matched the upcoming proposers with de-anonymized validators,
+an adversary now ideally knows the IP-addresses of several upcoming proposers.
+
+This allows for the adversary to DoS the specific IP-address,
+which could leave the proposer inactive at their designated slot.
+
+\subsubsection{Reasons for doing the attack}
+
+Several reasons can explain why an adversary would be interested in performing this kind of attack.
+This counts both for adversaries running a node with validators and adversaries running a node without validators in the network.
+
+
+The first reason which only requires de-anonymization, could be to exploit the inactivity penalization,
+which is mentioned in~\autoref{subsubsec:valpunish}.
+The adversary could make validators lose money for being inactive.
+For the adversaries themselves, they don't receive any monetary rewards from this attack. 
+One could be interested in getting people kicked from being a validator for being 16 ether.
+But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack
+to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
+
+
+Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
+Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards},
+so the adversary could limit the rewards given out to proposers.
+In the worst case, this could lead to a decrease in the total amount of ether,
+as it is dynamically changing with the chain.
+
+
+Both of the aforementioned reasons only require a node in Ethereum,
+but the adversary themselves do not gain any reward from the attack.
+This could be a possibility if the adversary is in control of a validator.
+The reason for this is found in the~\gls{mev}~\cite{mev}.
+
+~\gls{mev} is a reference to the maximum value one can extract from a block production opportunity.
+It is a reward that the proposer can get besides rewards gotten from working on the blockchain,
+as mentioned in~\autoref{subsubsec:valrewards}.
+The idea of~\gls{mev} is that \textit{searchers} search the network for profitable transaction opportunities.
+These are, for instance,
+opportunities where people are willing to pay a high transaction fee to the proposer for inclusion in the block.
+These transactions are then added to the pool of transactions to be added in the chain.
+There are more implementations of these searchers, fx Flashbots and MEV-Boost.
+It has been estimated that ~90\% of all Ethereum validators use this kind of software~\cite{cryptoeprint:2023/760}.
+
+So, let us assume a scenario, where an adversary has a validator that is set to propose the block at slot $n$.
+It could then be beneficial for the adversary to perform a~\gls{dos} attack on the proposers of slot $n-1, n-2$,
+and so on.
+Beginning from slot $n-1$ and down, the more consecutive proposers that are successfully attacked,
+the more potential gain there is for the adversary.
+This is
+because the high-paying transactions
+that were to be included in the previous slots now can be included in the adversary's slot.
+Therefore, the adversary potentially gains a greater reward from including those transactions with higher fees,
+that are now available because of the attack.
+
+\subsection{DoS attack implementation}\label{subsec:attack-implementation}
 As mentioned in~\autoref{subsec:setup},
 the work in this paper revolves around modifying a fork of the Prysm consensus client.
 An important thing to keep in mind is that the core functionality of Prysm is never changed.
@@ -95,57 +167,55 @@ We can use this public key in another existing function to get the ID of the val
 After collection all the information available for an attestation,
 the data is logged to a database as in~\autoref{subsubsec:peers}.
 
-\subsubsection{Exploiting RANDAO for a Proposer DoS attack}
-Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators.
-Having de-anonymized validators means that the~\gls{randao} proposer selection is vulnerable, but not limited, to a DoS attack.
-More specifically, it is possible to perform the Proposer DoS attack as mentioned in~\autoref{subsec:proposer-dos-attack}.
+\subsection{Setup}\label{subsec:setup}
+The primary goal of the experiment is to log as much data from attestations and peers as possible.
+To do this, we modify the implementation of the Prysm consensus client~\cite{prysm}.
+Prysm is also one of the most used clients for connecting with the consensus layer.
 
-In~\autoref{subsec:randao}, we found that the proposers for an entire epoch are chosen at least one epoch in advance.
-Gathering the proposer duties can be easily obtained, as Ethereum provides an API endpoint for the blockchain, providing information on the chain.~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/\#/Validator/getProposerDuties}{here.}}.
-The adversary would only need an Ethereum node to use this API.
-A validator is not required.
-This is especially beneficial, as one can perform the attack without any financial risks.
-
-The output of the call to the API returns the chosen validator's public key, ID, and the slot in which they are chosen to propose a block.
-
-Therefore, a list of the de-anonymized validators could be iterated, where the goal of the adversary would be to match the proposers for the upcoming epoch.
-Included in the de-anonymization is the IP-addresses of the validator as well as their ID and public key.
-So having matched the upcoming proposers with de-anonymized validators, an adversary now ideally knows the IP-addresses of several upcoming proposers.
-
-This allows for the adversary to DoS the specific IP-address, which could leave the proposer inactive at their designated slot.
-
-\subsubsection{Reasons for doing the attack}
-
-Several reasons can explain why an adversary would be interested in performing this kind of attack.
-This counts both for adversaries running a node with validators and adversaries only running a node in the network
+The client was then run on a virtual machine hosted on Strato Claaudia through Aalborg University.
 
 
-The first reason which only requires de-anonymization, could be to exploit the inactivity penalization, which is mentioned in~\autoref{subsubsec:valpunish}.
-The adversary could make validators lose money for being inactive.
-For the adversaries themselves, they don't receive any monetary rewards from this attack. 
-One could be interested in getting people kicked from being a validator for being 16 ether.
-But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
 
+To start receiving attestations and reaching and connecting other peers,
+the client was connected to the Holesky testnet.
+Since the experiment is of an adversarial nature, the client was connected to a testnet instead of the mainnet.
 
-Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
-Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards}, so the adversary could limit the rewards given out to proposers.
-In the worst case, this could lead to a decrease in the total amount of ether, as it is dynamically changing with the chain.
+While the client was running,
+it was able to log information from the received attestations as well as on the peers it discovered.
+Among other things, the client logged peer~\glspl{enr}, the subnets that the attestations were sent to,
+the subnet that the peer was in and the public key associated with the attestation.
+\todo {mabye add image of tableheaders here for vizualization}
+The data that was logged was then stored in a database for further analysis.
+After this,
+the peers were sorted into the same four categories
+as mentioned in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+The categories are:
+\begin{itemize}
+    \item Deanonymized
+    \item No validators
+    \item 64 subnets
+    \item Rest
+\end{itemize}
 
+\textbf{Deanonymized:} One or more validators have been discovered on this peer.
 
-Both of the aforementioned reasons only require a node in Ethereum, but the adversary themselves do not gain any reward from the attack.
-This could be a possibility if the adversary is in control of a validator.
-The reason for this is found in the~\gls{mev}~\cite{mev}.
+\textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
 
-~\gls{mev} is a reference to the maximum value one can extract from a block production opportunity.
-It is a reward that the proposer can get besides rewards gotten from working on the blockchain, as mentioned in~\autoref{subsubsec:valrewards}.
-The idea of~\gls{mev} is that \textit{searchers} search the network for profitable transaction opportunities.
-These are, for instance, opportunities where people are willing to pay a high transaction fee to the proposer for inclusion in the block.
-These transactions are then added to the pool of transactions to be added in the chain.
-There are more implementations of these searchers, fx Flashbots and MEV-Boost.
-It has been estimated that ~90\% of all Ethereum validators use this kind of software~\cite{cryptoeprint:2023/760}.
+\textbf{64 subnets:} The peer was subscribed to all 64 subnets,
+so we are not able to tell backbone attestations from non-backbone attestations.
 
-So, let us assume a scenario, where an adversary has a validator that is set to propose the block at slot $n$.
-It could then be beneficial for the adversary to perform a~\gls{dos} attack on the proposers of slot $n-1, n-2$, and so on.
-Beginning from slot $n-1$ and down, the more consecutive proposers that are successfully attacked, the more potential gain there is for the adversary.
-This is because the high-paying transactions that were to be included in the previous slots now can be included in the adversary's slot.
-Therefore, the adversary potentially gains a greater reward from including those transactions with higher fees, that are now available because of the attack.
+\textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
+
+When it comes to deanonymizing the validators,
+we used the same heuristic as in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+The heuristic includes four criteria being:
+\begin{itemize}
+    \item The proportion of non-backbone attestations for validator v exceed
+    \begin{equation}
+        0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
+        \label{eq:heurestic}
+    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
+    \item The peer is not subscribed to all 64 subnets.
+    \item TWe receive at least every tenth attestation we expect for the validator v from the peer.
+    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
+\end{itemize}
