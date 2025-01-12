@@ -42,13 +42,12 @@ These are then to be included in the block of the designated slot.
 The Ethereum network is split up into smaller networks called subnets.
 Being subscribed to a subnet is also be referred to as being backbone of a subnet.
 These subnets are used to help with the scalability of the network.
+The peers a node can reach within the same subnet are called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 
 The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
 Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
 Choosing which nodes are a part of this subset is done based on the peers performances.
 Nodes send all messages they receive within a subnet to these best-performing peers.
-The peers a node can reach within the same subnet is called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-
 
 
 %\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
@@ -255,7 +254,7 @@ to see the corresponding IP addresses and public keys of all the nodes that have
 
 \subsection{Inspirational Paper}\label{subsec:inspirational-papers}
 
-In the paper~\gls{de-anon paper} the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+In the paper~\gls{de-anon paper} the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to all subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
 It is also the main inspiration for our attack.
 
@@ -263,16 +262,17 @@ The paper takes advantage of the attestations, including information such as the
 For their setup, they use a custom version of a Prysm node called RAINBOW that subscribes to all subnets, and they use to it log peers and breaking peer inputs down into "colors" of the validators.
 This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes they interact with.
 
-To help speed up the discovery of the peers, they also used a crawler to more quickly find the peers using the discovery protocol.
+To enable a broader discovery of the peers, they also used a network crawler to more quickly find the peers in the Ethereum network.
+Though this crawler and the RAINBOW node are two separate entities.
 
 In their execution of their experiment, they set up four nodes spread out across four different geographical locations, two in europe, one in asia, and one in the United States.
 They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
-These peers were also divided into 4 categories based on their heuristic.
+These peers were also divided into four categories based on a heuristic developed by the authors.
 
-Those being, deanonymized, where they located validators on the machine; no validators, where they were not able to apply their heuristics and found no validators; 64 subnets, where they could not deanonymize the validators as the peer was subscribed to all subnets; and rest, where they could not locate any validators after applying the heuristics.
+Those being, deanonymized, where they were able to locate validators on the machine; no validators, where they were not able to apply their heuristics and found no validators; 64 subnets, where they could not deanonymize the validators as the peer was subscribed to all subnets; and rest, where they could not locate any validators after applying the heuristics.
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
-In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
+In this subsection, we will be describing the attack that we will be using as a basis for our experiment in~\autoref{sec:experimental-protocol}.
 The attack is a~\gls{dos} attack that aims at hitting the proposers selected for creating blocks in the chain.
 Ethereum themselves have mentioned it as a potential attack, and with the current implementation of the consensus algorithm, it seems that this attack is possible to perform~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
 
