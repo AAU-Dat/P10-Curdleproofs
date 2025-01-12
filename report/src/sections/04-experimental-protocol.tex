@@ -173,6 +173,7 @@ To do this, we modify the implementation of the Prysm consensus client~\cite{pry
 Prysm is also one of the most used clients for connecting with the consensus layer~\cite{client-diversity}.
 The Prysm node is modified to subscribe to all 64 subnets in the network, which enables it to receive as many attestations as possible.
 Adding to that, and also aiming for experimental consistency with the~\gls{de-anon paper}, we allow our node to connect to up to 1,000 peers.
+
 It is important to notice that the node does not do anything which stands out from normal consensus node behavior.
 The only change is that we log the data as explained in~\autoref{subsec:attack-implementation}.
 
