@@ -42,8 +42,11 @@ Because of this,
 the authors of the~\gls{de-anon paper} developed heuristics to tell whether we link a given validator with a given node~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 The heuristics and their application are described in~\autoref{subsec:setup}.
 
+Assuming that we will be able to de-anonymize validators, we can take advantage of the fact that an Ethereum node always needs to include its~\gls{ENR} when sending messages over the network. 
+As explained in~\autoref{subsec:enr}, the node IP is always included in the~\gls{enr}, which this attack takes advantage of.
+
 \subsubsection{Finding proposer duties for a Proposer DoS attack}
-Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators in which the IP address of the nodes is included.
+Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators in which the IP addresses of the nodes are included because of the~\glspl{enr}.
 Now that we should have linked validators with IP addresses, we need to find out which validators are going to propose upcoming blocks in the blockchain.
 
 Having de-anonymized validators means that the~\gls{randao} proposer selection is vulnerable,
