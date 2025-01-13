@@ -14,23 +14,35 @@ Over the course of the experiment, the number of connected peers fluctuated a lo
 Then it would heavily drop and rise again.
 This pattern would repeat, but after the first drop it would then drop consistently every 7 hours instead.
 
-
 \subsection{Deanonymization}\label{subsec:deanonymization}
 
 
 \begin{table}[]
     \centering
     \caption{Distribution of nodes into the four different categories}
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{lll}
         \hline
         & \textbf{Nodes} & \textbf{Distribution} \\ \hline
-        \textbf{Deanonymized validators} & 513            & 42.93                 \\ \hline
-        \textbf{64 subnets}              & 71             & 5.94                  \\ \hline
-        \textbf{No validators}           & 0              & 0                     \\ \hline
-        \textbf{Rest}                    & 611            & 51.13                 \\ \hline
+        \textbf{Deanonymized validators} & 513            & 42.93\%                 \\
+        \textbf{64 subnets}              & 71             & 5.94\%                  \\
+        \textbf{No validators}           & 0              & 0\%                     \\
+        \textbf{Rest}                    & 611            & 51.13\%                 \\ \hline
     \end{tabular}
     \label{tab:distribution}
 \end{table}
+
+
+\begin{table}[]
+    \centering
+    \caption{Number of validators located by our modified Prysm node. The first column indicates the total number of validators. The second column indicates validators with more than one IP-address mapped to it.}
+    \begin{tabular}{lll}
+        \hline
+        & \textbf{Validators} & \textbf{Non-Unique Validators} \\ \hline
+        \textbf{Overall} & 493,551             & 158,436                        \\ \hline
+    \end{tabular}
+    \label{tab:unique vals}
+\end{table}
+
 
 
 Deanonymized validators = 493,551
