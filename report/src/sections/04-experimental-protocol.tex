@@ -8,7 +8,7 @@ We also describe the setup of the experiment that will be conducted as well as t
 The attack that we are describing is divided in two parts.
 The overall goal of the attack is
 to be able
-to withhold Ethereum validators from performing their eventual proposer duties
+to withhold validators from performing their eventual proposer duties
 as mentioned in~\cite{EthereumAttackDefense2024}.
 The idea is that the adversary would interrupt validators using a~\gls{dos} attack.
 For this, we need information regarding two things;
@@ -34,12 +34,12 @@ we would couple the validator, associated with the non-backbone attestation, to 
 
 Though, there are a lot of things that are uncertain when sending messages over the internet.
 It may be that we never receive a message because of network instability.
-As stated by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}, nodes can also run in non-default configurations,
+As stated by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}, nodes can also run non-default configurations,
 i.e.,\ subscribing to more than two subnets, increasing the number of messages one will receive from that node.
 We may also wrongly label messages as backbone or non-backbone because of lack of or delayed information regarding a node's backbone subnets.
 
 Because of this,
-the authors of the~\gls{de-anon paper} developed heuristics to tell whether we link a given validator with a given node~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+the authors of the~\gls{de-anon paper} developed heuristics to tell if a given validator could be linked with a given node~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 The heuristics and their application are described in~\autoref{subsec:setup}.
 
 Assuming that we will be able to de-anonymize validators, we can take advantage of the fact that an Ethereum node always needs to include its~\gls{enr} when sending messages over the network.
@@ -177,7 +177,7 @@ Prysm is also one of the most used clients for connecting with the consensus lay
 The Prysm node is modified to subscribe to all 64 subnets in the network, which enables it to receive as many attestations as possible.
 Adding to that, and also aiming for experimental consistency with the~\gls{de-anon paper}, we allow our node to connect to up to 1,000 peers.
 
-It is important to notice that the node does not do anything which stands out from normal consensus node behavior.
+Apart from that, our node performs tasks as any other node in Ethereum would.
 The only change is that we log the data as explained in~\autoref{subsec:attack-implementation}.
 
 Aiming to log as much data as possible while trying to get as many connections as possible requires a lot of computational resources.
