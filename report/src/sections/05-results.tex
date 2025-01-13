@@ -2,7 +2,8 @@
 
 \subsection{Connected peers}\label{subsec:connected-peers}
 \begin{figure*}[!ht]
-    \includegraphics[width=\linewidth]{figures/conPeer2}
+    \centering
+    \includegraphics[scale = 0.5]{figures/conPeer2}
     \caption{The number of peers our node was connected to over the time of the experiment.
     Data points are collected every minute and the average amount of peers connected is 148.}
     \label{fig:peersconnected}
@@ -14,32 +15,36 @@ Over the course of the experiment, the number of connected peers fluctuated a lo
 Then it would heavily drop and rise again.
 This pattern would repeat, but after the first drop it would then drop consistently every 7 hours instead.
 
-
 \subsection{Deanonymization}\label{subsec:deanonymization}
 
 
 \begin{table}[]
     \centering
     \caption{Distribution of nodes into the four different categories}
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{lll}
         \hline
         & \textbf{Nodes} & \textbf{Distribution} \\ \hline
-        \textbf{Deanonymized validators} & 513            & 42.93                 \\ \hline
-        \textbf{64 subnets}              & 71             & 5.94                  \\ \hline
-        \textbf{No validators}           & 0              & 0                     \\ \hline
-        \textbf{Rest}                    & 611            & 51.13                 \\ \hline
+        \textbf{Deanonymized validators} & 513            & 42.93\%                 \\
+        \textbf{64 subnets}              & 71             & 5.94\%                  \\
+        \textbf{No validators}           & 0              & 0\%                     \\
+        \textbf{Rest}                    & 611            & 51.13\%                 \\ \hline
     \end{tabular}
     \label{tab:distribution}
 \end{table}
 
 
-Deanonymized validators = 493,551
+\begin{table}[]
+    \centering
+    \caption{Number of validators located by our modified Prysm node. The first column indicates the total number of validators. The second column indicates validators with more than one IP-address mapped to it.}
+    \begin{tabular}{lll}
+        \hline
+        & \textbf{Validators} & \textbf{Non-Unique Validators} \\ \hline
+        \textbf{Overall} & 493,551             & 158,436                        \\ \hline
+    \end{tabular}
+    \label{tab:unique vals}
+\end{table}
 
 IPs collected = 1183
-
-Average connected = 148
-
-Nodes with validators = 513
 
 \subsection{Validator Distribution}\label{subsec:validator-distribution}
 From all the peers we were connected to, we collected the number of validators on each peer.
@@ -50,7 +55,8 @@ We see that the most common amount of validators on a peer is 1 with about 7\% o
 We also saw that having 110 and 400 were the most common amounts of validators on a peer once we get above 20 validators on a peer.
 We found a total of 24 peers that had 10,000 or more validators on them.
 \begin{figure*}[!ht]
-    \includegraphics[width=\linewidth]{figures/distval}
+    \centering
+    \includegraphics[scale = 0.5]{figures/distval}
     \caption{The cdf showing the distribution of validators on each peer}
     \label{fig:validatorsonpeers}
 \end{figure*}
