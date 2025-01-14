@@ -4,6 +4,70 @@
 In this section we will cover the workings of the attack that will be performed.
 We also describe the setup of the experiment that will be conducted as well as the experiment itself.
 
+\subsection{Motivation}\label{subsec:proposer-dos-attack}
+\subsubsection{Proposer DoS Attack}
+In this subsection, we will be describing the attack that we will be using as a basis for our experiment in~\autoref{sec:experimental-protocol}.
+The attack is a~\gls{dos} attack that aims at hitting the proposers selected for creating blocks in the chain.
+Ethereum themselves have mentioned it as a potential attack, and with the current implementation of the consensus algorithm, it seems that this attack is possible to perform~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
+
+It has been our interest to research the feasibility of this attack and the ones mentioned in~\autoref{sec:attacks-on-ethereum}.
+This has proven to be a difficult task, given that most of our researched attacks happen in the consensus- or execution layer.
+Therefore, as a result of the blockchain algorithm, we are not able to clarify the feasibility of the attacks that we have found.
+For this reason, we have chosen the \textit{Proposer~\gls{dos} attack} as it seems exciting, has not been mitigated yet, and a potential solutions seems to include a~\gls{zkp}.
+
+The attack possible is because the consensus mechanism uses a publicly known function for choosing the upcoming block proposers.
+The adversary is therefore able to compute this in slight advance of the blockchain, s.t.\ each proposer is now known.
+After this, the adversary can map the proposer's IP addresses and overload their connection.
+A successful attack would leave a proposer unable to propose their block in time.
+
+\subsubsection{Adversarial incentives for the attack}
+
+Several reasons can explain why an adversary would be interested in performing this kind of attack.
+This counts both for adversaries running a node with validators and adversaries running a node without validators in the network.
+
+
+The first reason which only requires de-anonymization, could be to exploit the inactivity penalization,
+which is mentioned in~\autoref{subsubsec:valpunish}.
+The adversary could make validators lose money for being inactive.
+For the adversaries themselves, they don't receive any monetary rewards from this attack.
+One could be interested in getting people kicked from being a validator for being 16 ether.
+But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack
+to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
+
+
+Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
+Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards},
+so the adversary could limit the rewards given out to proposers.
+In the worst case, this could lead to a decrease in the total amount of ether,
+as it is dynamically changing with the chain.
+
+
+Both of the aforementioned reasons only require a node in Ethereum,
+but the adversary themselves do not gain any reward from the attack.
+This could be a possibility if the adversary is in control of a validator.
+The reason for this is found in the~\gls{mev}~\cite{mev}.
+
+~\gls{mev} is a reference to the maximum value one can extract from a block production opportunity.
+It is a reward that the proposer can get besides rewards gotten from working on the blockchain,
+as mentioned in~\autoref{subsubsec:valrewards}.
+The idea of~\gls{mev} is that \textit{searchers} search the network for profitable transaction opportunities.
+These are, for instance,
+opportunities where people are willing to pay a high transaction fee to the proposer for inclusion in the block.
+These transactions are then added to the pool of transactions to be added in the chain.
+There are more implementations of these searchers, fx Flashbots and MEV-Boost.
+It has been estimated that ~90\% of all Ethereum validators use this kind of software~\cite{cryptoeprint:2023/760}.
+
+So, let us assume a scenario, where an adversary has a validator that is set to propose the block at slot $n$.
+It could then be beneficial for the adversary to perform a~\gls{dos} attack on the proposers of slot $n-1, n-2$,
+and so on.
+Beginning from slot $n-1$ and down, the more consecutive proposers that are successfully attacked,
+the more potential gain there is for the adversary.
+This is
+because the high-paying transactions
+that were to be included in the previous slots now can be included in the adversary's slot.
+Therefore, the adversary potentially gains a greater reward from including those transactions with higher fees,
+that are now available because of the attack.
+
 \subsection{Attack description}\label{subsec:attack-description}
 The attack that we are describing is divided in two parts.
 The overall goal of the attack is
@@ -72,54 +136,6 @@ an adversary now ideally knows the IP-addresses of several upcoming proposers.
 
 This allows for the adversary to DoS the specific IP-address,
 which could leave the proposer inactive at their designated slot.
-
-\subsubsection{Reasons for doing the attack}
-
-Several reasons can explain why an adversary would be interested in performing this kind of attack.
-This counts both for adversaries running a node with validators and adversaries running a node without validators in the network.
-
-
-The first reason which only requires de-anonymization, could be to exploit the inactivity penalization,
-which is mentioned in~\autoref{subsubsec:valpunish}.
-The adversary could make validators lose money for being inactive.
-For the adversaries themselves, they don't receive any monetary rewards from this attack. 
-One could be interested in getting people kicked from being a validator for being 16 ether.
-But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack
-to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
-
-
-Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
-Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards},
-so the adversary could limit the rewards given out to proposers.
-In the worst case, this could lead to a decrease in the total amount of ether,
-as it is dynamically changing with the chain.
-
-
-Both of the aforementioned reasons only require a node in Ethereum,
-but the adversary themselves do not gain any reward from the attack.
-This could be a possibility if the adversary is in control of a validator.
-The reason for this is found in the~\gls{mev}~\cite{mev}.
-
-~\gls{mev} is a reference to the maximum value one can extract from a block production opportunity.
-It is a reward that the proposer can get besides rewards gotten from working on the blockchain,
-as mentioned in~\autoref{subsubsec:valrewards}.
-The idea of~\gls{mev} is that \textit{searchers} search the network for profitable transaction opportunities.
-These are, for instance,
-opportunities where people are willing to pay a high transaction fee to the proposer for inclusion in the block.
-These transactions are then added to the pool of transactions to be added in the chain.
-There are more implementations of these searchers, fx Flashbots and MEV-Boost.
-It has been estimated that ~90\% of all Ethereum validators use this kind of software~\cite{cryptoeprint:2023/760}.
-
-So, let us assume a scenario, where an adversary has a validator that is set to propose the block at slot $n$.
-It could then be beneficial for the adversary to perform a~\gls{dos} attack on the proposers of slot $n-1, n-2$,
-and so on.
-Beginning from slot $n-1$ and down, the more consecutive proposers that are successfully attacked,
-the more potential gain there is for the adversary.
-This is
-because the high-paying transactions
-that were to be included in the previous slots now can be included in the adversary's slot.
-Therefore, the adversary potentially gains a greater reward from including those transactions with higher fees,
-that are now available because of the attack.
 
 \subsection{DoS attack implementation}\label{subsec:attack-implementation}
 As mentioned in~\autoref{subsec:setup},
@@ -201,35 +217,4 @@ the subnet that the peer was in and the public key associated with the attestati
 \todo {mabye add image of tableheaders here for vizualization}
 The data that was logged was then stored in a database for further analysis.
 After this,
-the peers were sorted into the same four categories
-as mentioned in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-The categories are:
-\begin{itemize}
-    \item Deanonymized
-    \item No validators
-    \item 64 subnets
-    \item Rest
-\end{itemize}
-
-\textbf{Deanonymized:} One or more validators have been discovered on this peer.
-
-\textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
-
-\textbf{64 subnets:} The peer was subscribed to all 64 subnets,
-so we are not able to tell backbone attestations from non-backbone attestations.
-
-\textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
-
-When it comes to deanonymizing the validators,
-we used the same heuristic as in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-The heuristic includes four criteria being:
-\begin{itemize}
-    \item The proportion of non-backbone attestations for validator v exceed
-    \begin{equation}
-        0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
-        \label{eq:heurestic}
-    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
-    \item The peer is not subscribed to all 64 subnets.
-    \item TWe receive at least every tenth attestation we expect for the validator v from the peer.
-    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
-\end{itemize}
+the peers were sorted into the same four categories mentioned in~\autoref{subsec:inspirational-papers}, originally developed in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
