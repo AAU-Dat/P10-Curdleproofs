@@ -269,4 +269,22 @@ In their execution of their experiment, they set up four nodes spread out across
 They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
 These peers were also divided into four categories based on a heuristic developed by the authors.
 
-Those being, deanonymized, where they were able to locate validators on the machine; no validators, where they were not able to apply their heuristics and found no validators; 64 subnets, where they could not deanonymize the validators as the peer was subscribed to all subnets; and rest, where they could not locate any validators after applying the heuristics.
+The categories are:
+\begin{itemize}
+    \item \textbf{Deanonymized:} One or more validators have been discovered on this peer.
+    \item \textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
+    \item \textbf{64 subnets:} The peer was subscribed to all 64 subnets, so we are not able to tell backbone attestations from non-backbone attestations.
+    \item \textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
+\end{itemize}
+
+The heuristics developed for deanonymizing validators include four criteria being:
+\begin{enumerate}
+    \item The proportion of non-backbone attestations for validator v exceed
+    \begin{equation}
+        0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
+        \label{eq:heurestic}
+    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
+    \item The peer is not subscribed to all 64 subnets.
+    \item The node receives at least every tenth attestation expected for validator v on peer p.
+    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
+\end{enumerate}
