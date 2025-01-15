@@ -57,6 +57,16 @@ The reason that our node could get a bad peer score could relate to performance 
 We can see in~\autoref{fig:peersconnected} that drops happen when around 250 peers were connected.
 It could be that logging attestation from this amount peers hit a bottleneck for our node, making it slow down and hence receive a bad peer score.
 
+\subsubsection{De-anonymization}\label{subsubsec:de-anonymization}
+When it comes to the destination of nodes into the four different categories, we see that it differs in some of the areas.
+In the~\gls{de-anon paper} two of the four nodes show the same de-anonymization rate as we found in our experiment.
+These are the same two nodes that also share the same peer connection amount as have.
+The SO node show especially similar results to our node also having a close rest rate to ours.
+When it comes to the no validators category, we see that the~\gls{de-anon paper} has a higher rate of nodes that have no validators on their SO and FR nodes, but similar one on VA and ZH.
+The 64 subnets category is the one that differs the most between the two experiments.
+The~\gls{de-anon paper} has a rate of nodes, that are subscribed to all 64 subnets, near 9 times smaller.
+
+
 
 \subsubsection{Validator distribution}\label{subsubsec:validator-distribution}
 While comparing the results from the original paper to our results, we see that the distribution of validators on peers is a lot different.
