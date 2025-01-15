@@ -1,6 +1,6 @@
 
 
-\section{Experimental protocol}\label{sec:experimental-protocol}
+\section{Experimental Protocol}\label{sec:experimental-protocol}
 In this section we will cover the workings of the attack that will be performed.
 We also describe the setup of the experiment that will be conducted as well as the experiment itself.
 
@@ -20,7 +20,7 @@ The adversary is therefore able to compute this in slight advance of the blockch
 After this, the adversary can map the proposer's IP addresses and overload their connection.
 A successful attack would leave a proposer unable to propose their block in time.
 
-\subsubsection{Adversarial incentives for the attack}
+\subsubsection{Adversarial Incentives for the Attack}
 
 Several reasons can explain why an adversary would be interested in performing this kind of attack.
 This counts both for adversaries running a node with validators and adversaries running a node without validators in the network.
@@ -68,7 +68,7 @@ that were to be included in the previous slots now can be included in the advers
 Therefore, the adversary potentially gains a greater reward from including those transactions with higher fees,
 that are now available because of the attack.
 
-\subsection{Attack description}\label{subsec:attack-description}
+\subsection{Attack Description}\label{subsec:attack-description}
 The attack that we are describing is divided in two parts.
 The overall goal of the attack is
 to be able
@@ -78,7 +78,7 @@ The idea is that the adversary would interrupt validators using a~\gls{dos} atta
 For this, we need information regarding two things;
 when a specific validator is going to produce a block, and what the IP address of the validator is.
 
-\subsubsection{Getting validator IPs}
+\subsubsection{Getting Validator IPs}
 When a node is a part of the Ethereum network,
 it will receive messages in the form of attestations from other nodes in the network.
 These attestations can be split into two different categories, backbone and non-backbone attestations.
@@ -109,7 +109,7 @@ The heuristics and their application are described in~\autoref{subsec:setup}.
 Assuming that we will be able to de-anonymize validators, we can take advantage of the fact that an Ethereum node always needs to include its~\gls{enr} when sending messages over the network.
 As explained in~\autoref{subsec:enr}, the node IP is always included in the~\gls{enr}, which this attack takes advantage of.
 
-\subsubsection{Finding proposer duties for a Proposer DoS attack}
+\subsubsection{Finding Proposer Duties for a Proposer DoS attack}
 Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators in which the IP addresses of the nodes are included because of the~\glspl{enr}.
 Now that we should have linked validators with IP addresses, we need to find out which validators are going to propose upcoming blocks in the blockchain.
 
@@ -120,7 +120,7 @@ it is possible to perform the Proposer DoS attack as mentioned in~\autoref{subse
 
 In~\autoref{subsec:randao}, we found that the proposers for an entire epoch are chosen at least one epoch in advance.
 Gathering the proposer duties can be easily obtained, as Ethereum provides an API endpoint for the blockchain,
-providing information on the chain.~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/\#/Validator/getProposerDuties}{here.}}.
+providing information on the chain~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/\#/Validator/getProposerDuties}{here.}}.
 The adversary would only need an Ethereum node to use this API; a validator is not required.
 This is especially beneficial, as one can perform the attack without staking any money into Ethereum.
 
@@ -137,7 +137,7 @@ an adversary now ideally knows the IP-addresses of several upcoming proposers.
 This allows for the adversary to DoS the specific IP-address,
 which could leave the proposer inactive at their designated slot.
 
-\subsection{DoS attack implementation}\label{subsec:attack-implementation}
+\subsection{De-anonymization Attack Implementation}\label{subsec:attack-implementation}
 As mentioned in~\autoref{subsec:setup},
 the work in this paper revolves around modifying a fork of the Prysm consensus client.
 An important thing to keep in mind is that the core functionality of Prysm is never changed.
@@ -159,14 +159,15 @@ The class that handles~\gls{p2p} connections has got this as well, with several 
 
 Because of said object, information about all earlier or connected peers is available.
 Set to run every minute, the modified code requests all peers and iterates through them,
-logging the information mentioned in~\autoref{subsec:setup}.
+logging information.
+\todo{where have we described this?}
 
 
 Also in each iteration,
-the collected information is sent to an \texttt{sqlite3} database such the data can be processed later.
+the collected information is sent to an \texttt{SQL} database such the data can be processed later.
 
 \subsubsection{Attestations}\label{subsubsec:attestations}
-Everything logged in for the peers is also logged for the attestations,
+Everything logged for the peers is also logged for the attestations,
 as there is always an underlying node sending each attestation.
 
 The class handling the attestations also has a \texttt{Service} interface implementation.
@@ -177,11 +178,13 @@ Referencing this pointer allows the class to access functions as the ones availa
 Instead of being logged for once every minute, as in~\autoref{subsubsec:peers},
 we log information about an attestation whenever we receive one.
 
-With the proposer DoS attack in mind, we are interested in receiving the public key of the validator,
+With the proposer DoS attack in mind, we are interested in receiving the public key, ID of the validator,
 who is the creator of the attestation.
-Getting this requires little effort,
-as there already exists a function which uses the attestation's data to get public keys.
-We can use this public key in another existing function to get the ID of the validator.
+Also, we want the IP address of the peer that sent the attestation to the node.
+
+Getting the public key requires little effort,
+as there exists a function, called \texttt{extractPublicKey}, which uses the attestation's data to get public key and ID of the validator.
+Knowing the IP address is also straight-forward, as the peer \texttt{Service} object includes a function called \texttt{address}, returning the address of the peer sending the attestation.
 
 After collection all the information available for an attestation,
 the data is logged to a database as in~\autoref{subsubsec:peers}.
