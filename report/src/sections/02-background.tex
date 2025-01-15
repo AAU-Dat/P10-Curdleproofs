@@ -46,7 +46,8 @@ Nodes send all messages they receive within a subnet to these best-performing pe
 \subsection{Attestations}\label{subsec:attestations}
 Each epoch, a validator is expected to broadcast what is called an attestation~\cite{attestations}.
 The overall purpose of this message is to make sure that validators agree on the canonical chain.
-All attestations are sent to a single given subnet.
+An attestation is sent by its author to only a single subnet.
+Afterwards, it will naturally be broadcasted to other parts of the network by peers in that subnet
 
 A single validator is assigned by the protocol to a single slot each epoch, where they must publish their attestation.
 In this attestation, the validator among other things votes for what it sees as the \textit{source} and \textit{target}.
