@@ -11,45 +11,55 @@ Ethereum is a blockchain platform that allows developers to create decentralized
 Previously operating with a~\gls{pow} consensus algorithm, Ethereum transitioned to a~\gls{pos} consensus algorithm in 2022~\cite{EthereumProof-of-stakePoS}.
 This transition was done to reduce the energy consumption of the network and to increase the scalability of the network.
 The transition was done in a series of upgrades called the Ethereum 2.0 upgrade.
+
 ~\gls{pos} is a consensus algorithm used to ensure that everyone agrees on the same state of a blockchain.
 This includes guidance on whom gets to produce blocks and confirm transactions.
 In Ethereum, it works by choosing block proposers from a set of validators based on the amount of cryptocurrency they have staked in the blockchain.
 All other validators are then given the role of confirming this block, adding it to the canonical chain.
-The proposers then get rewarded for creating a valid block, and the validators get rewarded for confirming the block.
+
+The proposers get rewarded for creating a valid block, and the validators get rewarded for confirming the block.
 Block proposing happens within epochs of 32 blocks, and for each block a validator is selected as a proposer by the protocol.
 The proposer is chosen through a random process weighted by the amount of ether the validator has staked.
 To simulate this random selection, Etheruem uses the publicly available \gls{randao} algorithm.
 
-A block needs to be proposed by the designated proposer for the slot and confirmed by other validators within the 12 second time limit of the slot.
+A block needs to be proposed by the designated proposer for the slot and confirmed by other validators within the 12-second time limit of the slot.
 If a fork happens, the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algorithm which chooses the fork with the greatest weight of attestations in its history.
+
+\subsection{Subnets}\label{subsec:subnets}
+The Ethereum network is split up into smaller networks called subnets.
+The nodes in the network are split into a total of 64 subnets and an additional subnet for attestation aggregates with each node subscribing to two subnets by default.
+Being subscribed to a subnet is also referred to as being backbone of a subnet.
+
+These subnets are used to help with the scalability of the network by distributing the load of messages.
+Most messages are sent between nodes in the same subnet.
+This lessens the load of a node, as it will receive $\frac{2}{64}$ of all messages in the blockchain instead of all messages.
+
+
+Nodes are not able to be a peer with all nodes in a subnet.
+Hence, the peers a node can reach within the same subnet are called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+
+Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
+Choosing which nodes are a part of this subset is done based on a peer score determined by a peer's performance.
+Nodes send all messages they receive within a subnet to these best-performing peers.
 
 \subsection{Attestations}\label{subsec:attestations}
 Each epoch, a validator is expected to broadcast what is called an attestation~\cite{attestations}.
 The overall purpose of this message is to make sure that validators agree on the canonical chain.
+An attestation is sent by its author to only a single subnet.
+Afterwards, it will naturally be broadcasted to other parts of the network by peers in that subnet
 
-A single validator is assigned to a single slot each epoch, where they must publish their attestation.
+A single validator is assigned by the blockchain protocol to a single slot each epoch, where they must publish their attestation.
 In this attestation, the validator among other things votes for what it sees as the \textit{source} and \textit{target}.
 
 The source is what the validator sees as being the most recent justified block.
 
 The target is what the validator sees as being the first block in the current epoch.
 
-A committee is then all validators who are set to attest in the same slot.
-All votes broadcast in each subnet of the committee are collected by 16 assigned aggregators per subnet.
-These collect the votes that are similar to their own into an aggregation and broadcast this to the network.
+All validators who are assigned to attest in the same slot are said to be in the same committee.
+All attestations broadcast in each subnet are then collected by 16 assigned aggregators per subnet.
+These collect the votes that are equivalent to their own into an aggregation and broadcast this to the network.
 These are then to be included in the block of the designated slot.
-
-\subsection{Subnets}\label{subsec:subnets}
-The Ethereum network is split up into smaller networks called subnets.
-Being subscribed to a subnet is also be referred to as being backbone of a subnet.
-These subnets are used to help with the scalability of the network.
-The peers a node can reach within the same subnet are called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
-
-The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
-Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
-Choosing which nodes are a part of this subset is done based on the peers performances.
-Nodes send all messages they receive within a subnet to these best-performing peers.
 
 
 %\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
@@ -68,20 +78,19 @@ Nodes send all messages they receive within a subnet to these best-performing pe
 %It does, however, come with a higher computational cost and is not as widely used and documented as~\gls{zk-snark}.
 
 \subsection{Validators}\label{subsec:validator}
-Our attack is primarily focused on the validators of Ethereum.
-A validator is an entity running on a validator client,
-which, among other things, consists of a balance and a key-pair for identifying it~\cite{Staking}.
+A validator is an entity running on a client,
+which, among other things, consists of an ether balance and a key-pair for identifying it~\cite{Staking}.
 
-For a validator client to run, it needs to be run in cooperation with a consensus node client.
-A consensus node client is then able to run an unbounded number of validators.
+For a validator client to work, it needs to be run in cooperation with a consensus node client.
+A consensus node client is able to run an unbounded number of validators.
 Having several validators running in cooperation with a single consensus node means that they all share identity with that node.
 This includes data such as IP addresses and the ID of the node.
 
-At each slot, the~\gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
+At each slot, the~\gls{randao} algorithm is used to select a validator responsible for processing transactions,
 including them in a block,
-and then adding this block to the blockchain.
+and then proposing this block to the blockchain.
 This procedure is also illustrated by~\autoref{fig:proposerChoice}.
-How to determine who is going to be a block proposer is explained in~\autoref{subsec:randao}.
+Determining who is going to be a block proposer is explained in~\autoref{subsec:randao}.
 Along with this, the validator is also responsible for attesting blocks proposed by other validators,
 ensuring the liveness of the chain.
 
@@ -132,34 +141,34 @@ Two random nodes are shown, each having several validators.
 Some of these validators are chosen to propose a block in a designated slot.}
 \label{fig:proposerChoice}
 \end{figure}
-To be able to have a single validator, one must deposit 32 ETH,
+To be able to run a single validator, one must stake 32 ETH,
 which is ~\$99,776\footnote{As of 2024-11-18 seen on \href{https://beaconcha.in/}{beaconcha.in}}.
 Having this much money at stake should be enough to ensure that a validator acts honestly.
 Doing so will also earn the validator a reward.
-However, acting dishonest will get your ether burned or slashed.
-The rewards and punishments are described in the following section.
+However, acting dishonest will result in the burning or slashing of ether.
+The rewards and punishments are described in the following sections.
 \subsubsection{Validator rewards}\label{subsubsec:valrewards}
 Validators are rewarded for several different actions~\cite{PoSRewAndPen}.
 Each of these actions is rewarded with different weights,
-but they all depend on the total amount of staked ether by validators and the validator's own staked amount.
-Though the calculated reward will not get larger above 32 ETH\@.
+but they all depend on the total amount of staked ether by all validators and the validator's own staked amount.
+However, when a validator has a balance of 32 ETH\@ they receive optimal rewards.
 
-A base reward, which is used on the reward weights, is calculated for a single validator as follows where \texttt{BR} is \textit{base reward} \texttt{EB} is \textit{effective balance}, \texttt{BRF} is \textit{base reward factor} set to 64,
+A base reward, to be used on the reward weights, is calculated for a single validator as follows, where \texttt{BR} is \textit{base reward}, \texttt{EB} is \textit{effective balance}, \texttt{BRF} is \textit{base reward factor} set to 64,
 \texttt{BRPE} is \textit{base rewards per epoch} set to 4,
-and \texttt{AB} is \textit{active balance}, which is the total staked ether by validators:
+and \texttt{AB} is \textit{active balance}, which is the total staked ether by all validators:
 \begin{equation}
     BR = EB\cdot(\frac{BRF}{BRPE\cdot \sqrt{\sum{AB}}})
     \label{eq:basereward}
 \end{equation}
 
 
-The reward for a validator is then calculated as follows:
+The reward a validator receives is then calculated as follows:
 \begin{equation}
     \frac{\sum{weights}}{64}\cdot BR
     \label{eq:valrewards}
 \end{equation}
 What is included in the sum of weights varies depending on what the completed task was.
-The values of the different weights are the following:
+The weights of the different tasks are the following:
 \begin{enumerate}
     \item Timely source vote: 14
     \item Timely target vote: 26
@@ -167,7 +176,7 @@ The values of the different weights are the following:
     \item Sync reward: 2
     \item Proposer weight: 8
 \end{enumerate}
-Though it does not have the largest weight, the most profitable reward is the proposer weight reward.
+The most profitable reward is the proposer reward.
 This reward is given to the validator, whenever they are chosen as a proposer and correctly propose a block to the blockchain.
 In this case, instead of being rewarded this only once,
 the proposer is getting a reward for each valid attestation included in the block proposed.
@@ -175,56 +184,52 @@ the proposer is getting a reward for each valid attestation included in the bloc
     BR\cdot\frac{8}{64}\cdot \#attestations\label
     {eq:propreward}
 \end{equation}
-Because the maximum number of attestations is 128,
-then in a typical and optimal situation,
-the proposer will get $BR\cdot\frac{8}{64}\cdot128$ in reward
-when proposing a block~\cite{PoSRewAndPen,consensus-spec-phase-0}.
-Because of that validators does not want to miss being the proposer.
-especially since the chance if getting to propose a block is relatively low.
- The reason is first of all that the average amount of staked ether for a validator is over 32 ETH\@.
-As the validator's probability of being proposer does not get higher when over 32 staked ether, there is an almost equal chance of being proposer.
-which means almost equal chance of being proposer, and
-With Ethereum having over 1 million validators~\footnote{As of 2024-11-18 seen on~\href{https://beaconcha.in/}{beaconcha.in}}.
+The maximum number of attestations in a block is 128, therefore the proposer can receive a reward up to $BR\cdot\frac{8}{64}\cdot128$ ETH when proposing a block~\cite{PoSRewAndPen,consensus-spec-phase-0}.
+Because of that, validators do not want to miss being the proposer.
+Also, the chance of getting to propose a block is relatively low.
+
+The average amount of staked ether for a validator is over 32 ETH\@.
+Furthermore, the validator's probability of being a proposer reaches optimality at 32 staked ether.
+Therefore, there is an almost equal chance of being a proposer among the over 1 million validators in Ethereum~\footnote{As of 2024-11-18 seen on~\href{https://beaconcha.in/}{beaconcha.in}}.
 
 \subsubsection{Validator punishments}\label{subsubsec:valpunish}
-A validator can also be punished for doing things that do not contribute to the chain performing as it should.
-Ethereum has two kinds of penalties, burning and slashing, where a validator loses some of their staked ether\@.
-Should a validator lose their ether and end up below 16 staked ether, they will be removed~\cite{consensus-spec-phase-0}.
+A validator can also be punished for doing things that negatively affects the chain.
+Ethereum has two kinds of penalties, burning and slashing, where a validator loses some of their staked ether.
+Should a validator get penalized and end up below 16 staked ether, they will be removed as a validator~\cite{consensus-spec-phase-0}.
 
 
-Burning happens per epoch when a validator is offline.
+Burning happens every epoch that a validator is offline.
 If ether gets burned, it is gone forever.
-To calculate how much ether is retained after burning per offline epoch, ~$n$, the following formula is used:
+To calculate how much ether is retained after burning per offline epoch, ~$n$, the following formula is used, with \texttt{IPQ} being the \textit{inactivity penalty quotient} set to $2^{26}$~\cite{consensus-spec-phase-0}:
 \begin{equation}
     \left(1-\frac{1}{IPQ}\right)^\frac{n^2}{2}
     \label{eq:burn}
 \end{equation}
-with \texttt{IPQ} being the \textit{inactivity penalty quotient} set to $2^{26}$~\cite{consensus-spec-phase-0}.
 
 
 This means that a validator being offline in a single epoch still retains $0,99999999255\%$ of their staked ether\@.
-A validator would therefore need
+A validator with 32 staked ether would therefore need
 to be offline for a lot of epochs before eventually being removed for having under 16 staked ether\@.
 
 
-Slashing happens when only when a validator acts maliciously against the blockchain,
+Slashing happens when a validator acts maliciously against the blockchain,
 and cannot be invoked only by being offline.
 Slashing happens from at least one of three causes~\cite{PoSRewAndPen}:
 \begin{enumerate}
     \item Proposing two different blocks at the same slot
-    \item Attesting a block that surrounds another
-    \item Double voting - Attesting to candidates for the same block
+    \item Attesting a block that surrounds another block, hereby changing history
+    \item Double voting - Attesting to two candidates for the same block
 \end{enumerate}
 If this is detected, ~$\frac{1}{32}$ of the validator's staked ether is immediately burned,
 and a 36-day removal period of the validator begins, where the staked ether is gradually burned.
 Halfway through this, on day 18, an additional penalty is applied.
 The magnitude of this penalty scales with the total staked ether of the slashed validators in the 36-day period before the slashing event.
-At worst, a validator can end up having all their ether burned, if enough other validators are also slashed.
+At worst, a validator can end up having all their ether burned, if many other validators were also slashed in that period.
 
 \subsection{RANDAO}\label{subsec:randao}
 As mentioned in~\autoref{subsec:validator}, the validators are chosen to propose a block by a random-number-generator called \gls{randao}\footnote{\href{https://github.com/randao/randao}{RANDAO - GitHub}}.
 The random selection is decided by the \gls{randao} algorithm, which is used every slot.
-Each chosen proposer will get the \gls{randao} value computed at the previous slot and \texttt{XOR} it with the hash of their private key and epoch number.
+Each chosen proposer will get the \gls{randao} value, computed at the previous slot, and \texttt{XOR} it with the hash of their private key and epoch number.
 
 
 This creates what is called the \gls{randao} reveal.
@@ -234,11 +239,11 @@ At the end of each epoch, the latest reveal constitutes to the seed, which is us
 
 
 Being chosen as a block proposer comes with some duties, such as creating the block.
-This means that they need to know in advance if they are going to be the proposer of a block.
+Therefore, they need to know in advance if they are going to be the proposer of a block, in order to perform their duties in time.
 
 The proposer selection among the validators is done two epochs in advance~\cite{random-selection}.
 More specifically, the selection for epoch $n+2$ happens at the end of epoch $n$~\cite{upgrading-ethereum-randomness}.
-This means that a validator knows at least one epoch, at most two epochs, in advance if they are proposing a block.
+This means that a validator knows at least one epoch in advance, at most two epochs, if they are proposing a block.
 
 
 \subsection{ENR}\label{subsec:enr}
@@ -246,47 +251,48 @@ A~\gls{enr} is a record that contains information about a node in the network~\c
 Ethereum uses~\glspl{enr} as a way
 to package the information that is being sent from node to node during the discovery protocol,
 where nodes discover each other.
-The package contains information like the node's IP address, port, and public key.
+The package contains information like the peer's IP address, port, and public key.
 Because of the nature of the discovery protocol, if one were to also have a node in Ethereum,
-one would be able to see the~\gls{enr} of all discovered nodes.
-And since the~\gls{enr} contains the IP address and the public key of the node,
-you would be able
-to see the corresponding IP addresses and public keys of all the nodes that have been discovered by the node.
+one would be able to see the~\gls{enr} of all discovered peers.
+And since the~\gls{enr} contains the IP address and the public key of the peer,
+the node is able
+to see the corresponding IP addresses and public keys of all the peers that have been discovered.
 
 
 \subsection{Inspirational Paper}\label{subsec:inspirational-papers}
 
-In the paper~\gls{de-anon paper} the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to all subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+In the paper~\gls{de-anon paper} the authors show that it is possible to de-anonymize validators on the Ethereum network by observing attestations and subscribing to all subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
 It is also the main inspiration for our attack.
 
 The paper takes advantage of the attestations, including information such as the IP of the sender node, and subnet setup to get information about the validators.
-For their setup, they use a custom version of a Prysm node called RAINBOW that subscribes to all subnets, and they use to it log peers and breaking peer inputs down into "colors" of the validators.
-This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes they interact with.
+For their setup, they use a custom version of a Prysm node called RAINBOW that subscribes to all subnets
+They use to it log peers and break peer inputs down into "colors" of the validators.
+This information consists of all received attestations, their origin and origin subnet, all advertised static subscriptions of peers, and connection status for all peers they interact with.
 
 To enable a broader discovery of the peers, they also used a network crawler to more quickly find the peers in the Ethereum network.
 Though this crawler and the RAINBOW node are two separate entities.
 
-In their execution of their experiment, they set up four nodes spread out across four different geographical locations, two in europe, one in asia, and one in the United States.
-They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
+In the execution of their experiment, they set up four nodes spread out across four different geographical locations, two in Europe, one in Asia, and one in the United States.
+They let the nodes run for three days and managed to de-anonymize 235,719 validators and reached out to 11,219 peers.
 These peers were also divided into four categories based on a heuristic developed by the authors.
 
 The categories are:
 \begin{itemize}
-    \item \textbf{Deanonymized:} One or more validators have been discovered on this peer.
-    \item \textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
-    \item \textbf{64 subnets:} The peer was subscribed to all 64 subnets, so we are not able to tell backbone attestations from non-backbone attestations.
-    \item \textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
+    \item \textbf{De-anonymized:} One or more validators have been discovered on this peer.
+    \item \textbf{No validators:} No validators have been discovered on this peer, as not a single non-backbone attestation was received.
+    \item \textbf{64 subnets:} The peer was subscribed to all 64 subnets, so it is not possible to tell backbone attestations from non-backbone attestations.
+    \item \textbf{Rest:} Peers that did receive non-backbone attestations, but no validators were identified on the peer.
 \end{itemize}
 
-The heuristics developed for deanonymizing validators include four criteria being:
+The heuristic developed for de-anonymizing validators include four criteria being:
 \begin{enumerate}
     \item The proportion of non-backbone attestations for validator v exceed
     \begin{equation}
         0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
         \label{eq:heurestic}
-    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
+    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed to over the connection’s duration.
     \item The peer is not subscribed to all 64 subnets.
     \item The node receives at least every tenth attestation expected for validator v on peer p.
-    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
+    \item The number of attestations received for validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
 \end{enumerate}
