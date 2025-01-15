@@ -11,14 +11,16 @@ Ethereum is a blockchain platform that allows developers to create decentralized
 Previously operating with a~\gls{pow} consensus algorithm, Ethereum transitioned to a~\gls{pos} consensus algorithm in 2022~\cite{EthereumProof-of-stakePoS}.
 This transition was done to reduce the energy consumption of the network and to increase the scalability of the network.
 The transition was done in a series of upgrades called the Ethereum 2.0 upgrade.
-~\gls{pos} is a consensus algorithm that is used to secure blockchain net by helping to create new blocks and confirm transactions.
-It works by creating validators based on the amount of cryptocurrency they have staked.
-Then it selects some of these validators as proposers to be the ones to create new blocks, which then are confirmed by the rest of the validators.
-The proposers then get rewarded for creating a valid block and the validators get rewarded for confirming the block.
-Block proposing happens within epochs of 32 blocks and for each block a validator is selected as a proposer by the protocol.
-The way the proposer is chosen is through a random process that is weighted by the amount of cryptocurrency the validator has staked, and by using the publicly available \gls{randao} algorithm to simulate the random selection.
+~\gls{pos} is a consensus algorithm used to ensure that everyone agrees on the same state of a blockchain.
+This includes guidance on whom gets to produce blocks and confirm transactions.
+In Ethereum, it works by choosing block proposers from a set of validators based on the amount of cryptocurrency they have staked in the blockchain.
+All other validators are then given the role of confirming this block, adding it to the canonical chain.
+The proposers then get rewarded for creating a valid block, and the validators get rewarded for confirming the block.
+Block proposing happens within epochs of 32 blocks, and for each block a validator is selected as a proposer by the protocol.
+The proposer is chosen through a random process weighted by the amount of ether the validator has staked.
+To simulate this random selection, Etheruem uses the publicly available \gls{randao} algorithm.
 
-A block needs to be proposed by the designated proposer for the slot and confirmed by other validators within a time limit of the slot, which is 12 seconds.
+A block needs to be proposed by the designated proposer for the slot and confirmed by other validators within the 12 second time limit of the slot.
 If a fork happens, the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algorithm which chooses the fork with the greatest weight of attestations in its history.
 
