@@ -15,7 +15,16 @@ Over the course of the experiment, the number of connected peers fluctuated a lo
 Then it would heavily drop and rise again.
 This pattern would repeat, but after the first drop it would then drop consistently every 7 hours instead.
 
-\subsection{Deanonymization}\label{subsec:deanonymization}
+\subsection{De-anonymization}\label{subsec:deanonymization}
+Durring the attack we discovered a total of 1,195 unique peers.
+The results of the de-anonymization attack are shown in~\autoref{tab:distribution}.
+The table showcases the distribution of nodes into the four different categories based on the heuristic described in~\autoref{subsec:inspirational-papers}.
+Here we see that 42.93\% the nodes we have encountered have had at least one validator that have been de-anonymized, meaning that the conditions form~\autoref{subsec:inspirational-papers} are fulfilled.
+we also see that 5.94\% of the nodes we discovered are subscribed to all 64 subnets.
+We did not find any validators on 35.31\% of the nodes we discovered.
+This means that we did not receive a single non-backbone attestation from any validator on these nodes.
+And lastly we have 15.82\% of the nodes that we discovered that did not fit into any of the other categories.
+This could be due to the fact that the node could be hosting a validator, but we could not with enough confidence say that to be the case based on our heuristic.
 
 
 \begin{table}[]
@@ -32,6 +41,12 @@ This pattern would repeat, but after the first drop it would then drop consisten
     \caption{Distribution of nodes into the four different categories}
     \label{tab:distribution}
 \end{table}
+
+
+After the attack, we managed to de-anonymize a total of 493,551 validators.
+This corresponds to 28\% of the total number of validators in the Holesky network.
+158,436 of these validators were non-unique, meaning that they had more than one IP-address mapped to them over the durrations of the attack.
+The results are shown in~\autoref{tab:unique vals}.
 
 
 \begin{table}[]
