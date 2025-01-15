@@ -10,7 +10,7 @@
 \end{figure*}
 Throughout the experiment, we kept track of the number of peers our node was connected to.
 The number of connected peers is shown in~\autoref{fig:peersconnected}.
-Our node was connected to at most 300 peers at once, and the average was 148.
+Our node was connected to at most 299 peers at once, and the average was 148 peers.
 Over the course of the experiment, the number of connected peers fluctuated a lot but would continually rise for the first 12 hours.
 Then it would heavily drop and rise again.
 This pattern would repeat, but after the first drop it would then drop consistently every 7 hours instead.
@@ -20,27 +20,29 @@ This pattern would repeat, but after the first drop it would then drop consisten
 
 \begin{table}[]
     \centering
-    \caption{Distribution of nodes into the four different categories}
     \begin{tabular}{lll}
         \hline
         & \textbf{Nodes} & \textbf{Distribution} \\ \hline
         \textbf{Deanonymized validators} & 513            & 42.93\%                 \\
         \textbf{64 subnets}              & 71             & 5.94\%                  \\
-        \textbf{No validators}           & 0              & 0\%                     \\
-        \textbf{Rest}                    & 611            & 51.13\%                 \\ \hline
+        \textbf{No validators}           & 422              & 35.31\%               \\
+        \textbf{Rest}                    & 189            & 15.82\%                 \\ \hline
+        \\
     \end{tabular}
+    \caption{Distribution of nodes into the four different categories}
     \label{tab:distribution}
 \end{table}
 
 
 \begin{table}[]
     \centering
-    \caption{Number of validators located by our modified Prysm node. The first column indicates the total number of validators. The second column indicates validators with more than one IP-address mapped to it.}
     \begin{tabular}{lll}
         \hline
         & \textbf{Validators} & \textbf{Non-Unique Validators} \\ \hline
         \textbf{Overall} & 493,551             & 158,436                        \\ \hline
+        \\
     \end{tabular}
+    \caption{Number of validators located by our modified Prysm node. The first column indicates the total number of validators. The second column indicates validators with more than one IP-address mapped to it.}
     \label{tab:unique vals}
 \end{table}
 
@@ -56,7 +58,7 @@ We also saw that having 110 and 400 were the most common amounts of validators o
 We found a total of 24 peers that had 10,000 or more validators on them.
 \begin{figure*}[!ht]
     \centering
-    \includegraphics[scale = 0.5]{figures/distval}
+    \includegraphics[scale = 0.45]{figures/distval}
     \caption{The cdf showing the distribution of validators on each peer}
     \label{fig:validatorsonpeers}
 \end{figure*}
