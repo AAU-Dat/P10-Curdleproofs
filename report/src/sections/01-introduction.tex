@@ -9,39 +9,40 @@ With the increasing number of validators, the network is becoming more and more 
 
 
 With all of these messages being sent, the network is becoming increasingly vulnerable to attacks based on information gathering.
-Making collecting information about things like IPs of validators possible and creating a potential threat to the network.
+This makes collection of information such as IPs of validators possible and creates a potential threat to the network.
 This vulnerability is what lead to the paper by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} (~\gls{de-anon paper}) where they present a de-anonymization attack on validators in the Ethereum network.
-That is why we in this paper have recreated the de-anonymization of validators in the Ethereum network from the~\gls{de-anon paper} by identifying and linking IPs to active validators.
+In this paper, we have recreated the de-anonymization of validators in the Ethereum network from the~\gls{de-anon paper}, identifying and linking IPs to active validators.
 
 
-Even without having a validator, we are able to gather information about the validators in the~\gls{p2p} network through attestations sent in throughout the Ethereum network.
-We were able to gather enough information purely from logging the messages we received and the peers we were connected to, to be able to de-anonymize validators.
+Even without having a validator, the attack enables gathering of information about the validators in the~\gls{p2p} network through attestations sent throughout the Ethereum network.
+Enough information is gathered purely from logging the messages received and the connected peers, to be able to de-anonymize validators.
 The information gathered from our attack can then be used to perform attacks such as a~\gls{dos} attack on other proposers when combined with the fact that the proposers of each block is known in advance.
-This could potentially lead to a loss of money for the validators, as they are penalized for being inactive as well as a potential gain for the attacker in the event of victim being the proposer in the slot before the attacker.
+This could potentially lead to a loss of money for the validators, as they are penalized for being inactive, as well as a potential gain for the attacker in the event of a victim being the proposer in the slot before the attacker.
 
-In this paper we have implemented the attack and documented the results of the de-anonymization attack and compared them against
+In this paper we have implemented the de-anonymization attack, documented the results, and compared them against
 the results from the~\gls{de-anon paper}.
 We discuss the incentives and consequences that arise after a successful execution of the de-anonymization attack on block proposers.
-And we describe a possible~\gls{dos} on block proposers, which is made possible after the de-anonymizing validator attack.
+Following this, we describe a possible~\gls{dos} on block proposers, which is made possible after the de-anonymizing validator attack.
 
 
 This paper was inspired by the work of the~\gls{de-anon paper} and we have made our own version of the implementation.
 This has lead us to make the following contributions:
 \begin{itemize}
-    \item We have implemented a de-anonymization attack on validators designed to be running on the Ethereum network.
-    The attack was run on the Holesky testnet Ethical purposes.
+    \item We have constructed an implemention of the de-anonymization attack on validators designed to be running on the Ethereum network.
+    The attack was run on the Holesky testnet for ethical reasons.
     \item Through running the attack we have discovered some similarities with the~\gls{de-anon paper} especially the de-anonymization rate of validators but also differences due to running on different networks.
+    \item A thorough description of how to implement a~\gls{dos} attack on block proposers has been developed 
 \end{itemize}
 
-\subsection{related work}\label{subsec:related-work}
+\subsection{Related Work}\label{subsec:related-work}
 The blockchain technology has a history of many attacks, some of which are specific to the Ethereum network.
-Before choosing the de-anonymization attack, we considered other attacks that could be performed on the Ethereum network.
-Many of these attacks are further described in~\autoref{sec:attacks-on-ethereum} but the most closely related attacks can be seen here.
+Before choosing the de-anonymization attack in the context of the block proposer~\gls{dos} attack, we considered other attacks that could be performed on the Ethereum network.
+Many of these attacks are further described in~\autoref{sec:attacks-on-ethereum} but the most closely related attacks are mentioned here.
 
 
 \subsubsection{DoS Attack}\label{subsubsec:dos-attack}
-Some of the instances of~\gls{dos} attacks that are seen on ethereum ranges from attacks on the proposers to attacks that seek to slow down the network itself.
-A known attack aims to slow down the network by using underpriced opcodes to create a block that is hard to process~\cite{10.1145/3391195,9815256}.
+Instances of~\gls{dos} attacks that are seen on Ethereum ranges from attacks on the proposers to attacks that seek to slow down the network itself.
+One of these attacks aims to slow down the network by using underpriced opcodes to create a block that is hard to process in time~\cite{10.1145/3391195,9815256}.
 Another way to slow down the network is to create empty accounts that are hard to process~\cite{empty-account-mitigation,empty-account-eip-mitigation}.
 This attack, however, is outdated and has been mitigated by making it near impossible to create empty accounts in the network.
 
