@@ -64,7 +64,20 @@ These are the same two nodes that also share the same peer connection amount as 
 The SO node show especially similar results to our node also having a close rest rate to ours.
 When it comes to the no validators category, we see that the~\gls{de-anon paper} has a higher rate of nodes that have no validators on their SO and FR nodes, but similar one on VA and ZH.
 The 64 subnets category is the one that differs the most between the two experiments.
-The~\gls{de-anon paper} has a rate of nodes, that are subscribed to all 64 subnets, near 9 times smaller.
+The~\gls{de-anon paper} has a rate of nodes, that are subscribed to all 64 subnets, near 9 times smaller than the one we find.
+
+
+There could be a few reasons for these difference between the results.
+The main one being the type of network that the attack was run on.
+Since we ran the attack on the Holesky testnet, the behavior of the nodes are different from what it would be if they had been on the mainnet.
+We think at this is why we se an increase in the amount of nodes that deviating from the default two subnets and are subscribed to all 64 subnets.
+We also think that this could be the reason for the higher rate of nodes in the rest category.
+Since more nodes would be turned on and off and switch IPs more often.
+
+
+This is also why think that the amount of non-unique validators is higher.
+Because even though we found more validators than the~\gls{de-anon paper} and de-anonymized a larger portion of the network, we found a higher rate of non-unique validators comparatively.
+We attribute this to the large amount of validators that inhabit some of the nodes that we connected to.
 
 
 

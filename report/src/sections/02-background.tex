@@ -28,11 +28,11 @@ This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algor
 
 \subsection{Subnets}\label{subsec:subnets}
 The Ethereum network is split up into smaller networks called subnets.
-The nodes in the network are split into a total of 64 subnets and an additional subnet for attestation aggregates with each node subscribing to at least two subnets.
+The nodes in the network are split into a total of 64 subnets and an additional subnet for attestation aggregates with each node subscribing to two subnets by default.
 Being subscribed to a subnet is also referred to as being backbone of a subnet.
 
 These subnets are used to help with the scalability of the network by distributing the load of messages.
-Most often, messages are sent between nodes in the same subnet.
+Most messages are sent between nodes in the same subnet.
 This lessens the load of a node, as it will receive $\frac{2}{64}$ of all messages in the blockchain instead of all messages.
 
 
@@ -46,9 +46,10 @@ Nodes send all messages they receive within a subnet to these best-performing pe
 \subsection{Attestations}\label{subsec:attestations}
 Each epoch, a validator is expected to broadcast what is called an attestation~\cite{attestations}.
 The overall purpose of this message is to make sure that validators agree on the canonical chain.
-All attestations are sent to a single given subnet.
+An attestation is sent by its author to only a single subnet.
+Afterwards, it will naturally be broadcasted to other parts of the network by peers in that subnet
 
-A single validator is assigned by the protocol to a single slot each epoch, where they must publish their attestation.
+A single validator is assigned by the blockchain protocol to a single slot each epoch, where they must publish their attestation.
 In this attestation, the validator among other things votes for what it sees as the \textit{source} and \textit{target}.
 
 The source is what the validator sees as being the most recent justified block.
