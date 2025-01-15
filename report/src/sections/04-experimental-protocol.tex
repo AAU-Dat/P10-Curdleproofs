@@ -195,7 +195,7 @@ Also, we want the IP address of the peer that sent the attestation to the node.
 
 Getting the public key requires little effort,
 as there exists a function, called \texttt{extractPublicKey}, which uses the attestation's data to get public key and ID of the validator.
-Knowing the IP address is also straight-forward, as the peer \texttt{Service} object includes a function called \texttt{address}, returning the address of the peer sending the attestation.
+Getting the IP address is also straight-forward, as the peer \texttt{Service} object includes a function called \texttt{address}, returning the address of the peer sending the attestation.
 
 In addition to this, we also log the following information available from processing the attestation:
 \begin{itemize}
