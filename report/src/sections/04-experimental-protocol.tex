@@ -74,7 +74,8 @@ The idea is that the adversary would interrupt validators using a~\gls{dos} atta
 The attack is divided in two parts.
 First we need to know validator IP addresses, found by de-anonymizing the validators.
 This part of the attack will be explored below.
-The second part of the attack is to perform the~\gls{dos} attack on the de-anonymized validators.
+The second part of the attack is to find out when a specific validator is going to produce a block.
+Utilizing the de-anonymized validators, the adversary should then be able to perform a~\gls{dos} attack on the upcoming block proposers.
 
 \subsubsection{Getting validator IPs}
 When a node is a part of the Ethereum network,
