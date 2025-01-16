@@ -181,20 +181,18 @@ the collected information is sent to an \texttt{SQL} database such the data can 
 Everything logged for the peers is also logged for the attestations,
 as there is always an underlying node sending each attestation.
 
-The class handling the attestations also has a \texttt{Service} interface implementation.
+The class handling the attestations, called \texttt{validate\_beacon\_attestation}, also has a \texttt{Service} interface implementation.
 This implementation primarily includes functions specific for the attestations, and not peers.
 Therefore, each \texttt{Service} object has a pointer to a configuration of the running chain.
 Referencing this pointer allows the class to access functions as the ones available in the~\gls{p2p} class.
 
-Instead of being logged once every minute, as in~\autoref{subsubsec:peers},
-we log information about an attestation whenever we receive one.
+We log information about an attestation whenever we receive one.
 
 With the proposer DoS attack in mind, we are interested in receiving the public key and ID of the validator,
 who is the creator of the attestation.
 Also, we want the IP address of the peer that sent the attestation to the node.
 
-Getting the public key requires little effort,
-as there exists a function, called \texttt{extractPublicKey}, which uses the attestation's data to get public key and ID of the validator.
+Getting the public key makes use of an existing function called \texttt{extractPublicKey}, which uses the attestation's data to get public key and ID of the validator.
 Getting the IP address is also straight-forward, as the peer \texttt{Service} object includes a function called \texttt{address}, returning the address of the peer sending the attestation.
 
 In addition to this, we also log the following information available from processing the attestation:
@@ -206,7 +204,7 @@ In addition to this, we also log the following information available from proces
 \end{itemize}
 
 After collecting all the information available for an attestation,
-the data is logged to a database as in~\autoref{subsubsec:peers}.
+the data is logged to an \texttt{SQL} database.
 
 \subsection{Setup}\label{subsec:setup}
 For the attack, we modify the implementation of the Prysm consensus client~\cite{prysm}.
