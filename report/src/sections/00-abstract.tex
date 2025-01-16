@@ -1,11 +1,15 @@
-%! Author = Runge
-%! Date = 29-12-2023
 
 \begin{abstract}
-    This is a placeholder abstract test.
-    The whole template is used in semester projects at \gls{aau}.
+    Keeping the blockchain secure is a top priority of Ethereum, and it will continue to be because of the large amount of money invested into the network.
+    One of the most central aspects of the network is the validators that are responsible for producing the blocks therein.
+    Though, the security and privacy come at risk as Heimbach et al. explore a vulnerability, enabling de-anonymizing validators, and linking IP addresses to them.
+    This paper reproduces the de-anonymization on the Ethereum Holesky testnet, verifying the continued existence of the vulnerability.
+    The reproduction shows similar results, de-anonymizing close to the same portion of validators found through the experiment.
+    Differences from de-anonymization on a testnet contrary to the mainnet are discussed, showing, among other things, that nodes generally run more validators on the testnet.
+    Arising consequences of the validator de-anonymization are also explored, describing a potential Denial-of-Service attack on block proposers.
+    The Denial-of-Service attack allows for an adversary to halt de-anonymized block proposers, resulting in them missing their proposal opportunity and getting penalized for it.
 \end{abstract}
 
-%\begin{IEEEkeywords}
-%    Tutorial
-%\end{IEEEkeywords}
+\begin{IEEEkeywords}
+    Ethereum, Blockchain, Distributed Systems, Privacy Attack
+\end{IEEEkeywords}
