@@ -1,7 +1,7 @@
 
 
 \section{Discussion}\label{sec:discussion}
-The following section will discuss the results from the experiment.
+The following section will discuss the results of the experiment.
 One of the purposes of the paper is
 to reproduce the attack mentioned in~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 Therefore, this section compares these results against each other, exploring similarities and differences.
@@ -12,79 +12,72 @@ we also explore ethical considerations regarding our work.
 
 
 \subsection{Ethical considerations}\label{subsec:ethical-considerations}
-As the paper tackles an attack on the Ethereum network,
-it is important to consider the ethical implications of the work.
+As the paper tackles an attack on the Ethereum network, it is important to consider the ethical implications of the work.
 
-These implications are mainly related to the potential harm that could be caused by the attack.
-Because of the potential harm, we have decided to not disclose the exact implementation and details of the attack,
-and limited the information to what is necessary to understand the attack and its implications.
-This is to prevent any malicious actors from easily replicating the attack and causing harm to the mainnet.
-This is also why the GitHub repository containing the code for the attack is private.
+These implications are mainly related to the potential harm that the attack could cause.
+Because the attack has not been mitigated yet and can cause monetary loss, we have chosen to keep the GitHub repository containing the attack code private.
 
-These considerations are also the reason why we only ran the attack on a testnet and not on the mainnet.
-Running the attack on the testnet has some benefits in the form
-of not having to worry about the loss of any real ether.
-There is also a greater number of active validators to reach compared to the mainnet.
+These considerations are also why we only ran the attack on a testnet, not the mainnet.
+Running the attack on the testnet has benefits in the form
+of not having to worry about losing any real ether.
+There are also more active validators to reach than the mainnet.
 
 Though, it also has some drawbacks.
-The main drawback is that the testnet does not have the same restrictions for entering a validator as in the mainnet,
-which could affect the results of the attack.
-Since one does not have to put any money in to the system to become a validator,
-the density of irregular validators will be higher.
+The main drawback is that the testnet does not have the same restrictions for entering a validator as the mainnet, which could affect the attack's results.
+Since one does not have to put any money into the testnet system to have a validator, the density of irregular validators will be higher.
 This could affect the results of the attack compared to the original paper, which was run on the mainnet.
 
-Even though the attack is run on a testnet where the money in the system is not a problem.
-The attack could still have some negative consequences.
+Even though the attack is run on a testnet where the money in the system is not a problem, the attack could still have some negative consequences.
 Since the attack seeks to deanonymize validators by gaining access to the IPs of nodes in the system, it could lead to a loss of privacy.
-This is an issue that was important to consider when collecting data for the attack.
+This issue was important to consider when collecting data for the attack.
 
-The data that was collected was stored in a database and was only used for the purpose of analysing the attack.
+The data collected was stored in a database and was only used to analyze the attack.
 
 \subsection{Comparison of results}\label{subsec:res-comparison}
 
 \subsubsection{Connected peers}\label{subsubsec:connected-peers}
-As we can see in~\autoref{fig:peersconnected}, the number of connected peers fluctuated a lot over the course of the experiment.
-It also has a similar pattern to the one in the original paper when it comes to the sudden drops in the number of connected peers in set intervals.
+As we can see in~\autoref{fig:peersconnected}, the number of connected peers fluctuated widely throughout the experiment.
+It also follows a similar pattern to the one in the original paper regarding sudden drops in the number of connected peers at set intervals.
 In the original paper, they also experienced sudden drops in the number of connected peers, and they are not sure why this happens.
-They suspect that it could be due to some artifacts from AWS, however we too experienced these drops.
-In our case we are not running on AWS, but on Strato CLAUUDIA, which is a cloud computing service made available by Aalborg University.
-So either CLAAUDIA has the same artifacts as AWS, or the drops are due to some other reason.
-We suspect that the drops could be due to garbage collection of peers that have been idle for too long.
-Each node calculates a peer score for each of their peers to tell whether it should stay connected to that node or not.
-Therefore, the drop of peers could be a result of how other peers calculated our node's peer score.
-If something made our node get a bad peer score the number of connected peers to our node could drop.
+They suspect that it could be due to some artifacts from AWS.
+However, we also experienced these drops.
+In our case, we are not running on AWS but on Strato CLAAUDIA, a cloud computing service made available by Aalborg University.
+So either CLAAUDIA has the same artifacts as AWS, or the drops are due to another reason.
+We suspect the drops could be due to some garbage collection of peers who have been idle for too long.
+Each node calculates a peer score for each of its peers to tell whether it should stay connected to that node.
+Therefore, the drop in peers could be due to how other peers calculated our node's peer score.
+If something caused our node to get a bad peer score, the number of connected peers to our node could drop.
 The reason that our node could get a bad peer score could relate to performance issues.
-We can see in~\autoref{fig:peersconnected} that drops happen when around 250 peers were connected.
-It could be that logging attestation from this amount peers hit a bottleneck for our node, making it slow down and hence receive a bad peer score.
+In~\autoref {fig:peersconnected}, we see that drops happened when around 250 peers were connected.
+It could be that logging attestations from this many peers hit a bottleneck for our node, slowing it down and hence receiving a bad peer score.
 
 \subsubsection{De-anonymization}\label{subsubsec:de-anonymization}
-When it comes to the destination of nodes into the four different categories, we see that it differs in some of the areas.
-In the~\gls{de-anon paper} two of the four nodes show the same de-anonymization rate as we found in our experiment.
-These are the same two nodes that also share the same peer connection amount as have.
-The SO node show especially similar results to our node also having a close rest rate to ours.
-When it comes to the no validators category, we see that the~\gls{de-anon paper} has a higher rate of nodes that have no validators on their SO and FR nodes, but similar one on VA and ZH.
+The distribution of peers into the four different categories differs in some areas.
+In the~\gls{de-anon paper}, two of the four nodes show the same de-anonymization rate as we found in our experiment.
+These are the same two nodes that also share the same peer connection amount as we have.
+The SO node shows the closest rest rate to our node, the highest of the four nodes.
+Regarding the no validators category, we see that the~\gls{de-anon paper} has a higher rate of nodes with no validators on their SO and FR nodes, but similar on VA and ZH.
 The 64 subnets category is the one that differs the most between the two experiments.
-The~\gls{de-anon paper} has a rate of nodes, that are subscribed to all 64 subnets, near 9 times smaller than the one we find.
+The~\gls{de-anon paper} has a rate of nodes subscribed to all 64 subnets, nearly 9 times smaller than the one we find.
 
 
-There could be a few reasons for these difference between the results.
-The main one being the type of network that the attack was run on.
-Since we ran the attack on the Holesky testnet, the behavior of the nodes are different from what it would be if they had been on the mainnet.
-We think at this is why we se an increase in the amount of nodes that deviating from the default two subnets and are subscribed to all 64 subnets.
-We also think that this could be the reason for the higher rate of nodes in the rest category.
-Since more nodes would be turned on and off and switch IPs more often.
+There could be a few reasons for these differences between the results.
+The main one is the type of network the attack ran on.
+Since we ran the attack on the Holesky testnet, the behavior of the nodes is different from what it would be if they had been on the mainnet.
+This is why we see an increase in the number of nodes deviating from the default two subnets and being subscribed to all 64 subnets.
+The non-default behavior could explain the higher rate of nodes in the rest category since more nodes would be turned on and off and switch IPs more often.
 
 
-This is also why think that the amount of non-unique validators is higher.
-Because even though we found more validators than the~\gls{de-anon paper} and de-anonymized a larger portion of the network, we found a higher rate of non-unique validators comparatively.
-We attribute this to the large amount of validators that inhabit some of the nodes that we connected to.
+This could also be why the amount of non-unique validators is higher.
+Because even though we found more validators than the~\gls{de-anon paper} and de-anonymized a greater portion of the network, we found a higher rate of non-unique validators comparatively.
+We attribute this to the large number of validators that inhabited some of the nodes we connected to.
 
 
 
 \subsubsection{Validator distribution}\label{subsubsec:validator-distribution}
-While comparing the results from the original paper to our results, we see that the distribution of validators on peers is a lot different.
-In the original paper, the amount of validators on each peer tops out at a little over 1000 validators per peer.
-Our finding however, shows that the amount of validators on each peer could reach up to 87028 validators per peer.
-One of the explanations for this could be that the testnet has a higher density of validators compared to the mainnet since it is easier to become a validator on the testnet due to money not being a problem.
-In the original paper they also state that 27\% of the peers they connected to had only one validator.
+When we compare the results from the original paper to our results, we see that the distribution of validators on peers is very different.
+In the~\gls{de-anan paper}, the amount of validators on each peer tops out at a little over 1,000 validators per peer.
+Our finding, however, shows that the number of validators on each peer could reach up to 87,028 validators per peer.
+One explanation could be that the testnet has a higher density of validators than the mainnet because it is easier to become a validator on the testnet as no money is staked.
+In the~\gls{de-anan paper}, they also state that 27\% of the peers they connected to had only one validator.
 Opposite to this, we found that only 7\% of the peers we connected to had just one validator.
