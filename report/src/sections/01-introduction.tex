@@ -36,15 +36,16 @@ It has led us to make the following contributions:
     \item A thorough description of how to implement a~\gls{dos} attack on block proposers has been developed.
 \end{itemize}
 
-\subsection{Related Work}\label{subsec:related-work}
-The blockchain technology has a history of many attacks, some of which are specific to the Ethereum network.
+\subsection*{Related Work}\label{subsec:related-work}
+Blockchain technology has a history of many attacks, some specific to the Ethereum network.
 Before choosing the de-anonymization attack in the context of the block proposer~\gls{dos} attack, we considered other attacks that could be performed on the Ethereum network.
-Many of these attacks are further described in~\autoref{sec:attacks-on-ethereum} but the most closely related attacks are mentioned here.
+\autoref{sec:attacks-on-ethereum} describes many of these attacks further, but the most closely related attacks are mentioned here.
 
 
-\subsubsection{DoS Attack}\label{subsubsec:dos-attack}
-Instances of~\gls{dos} attacks that are seen on Ethereum ranges from attacks on the proposers to attacks that seek to slow down the network itself.
+\subsubsection*{DoS Attack}\label{subsubsec:dos-attack}
+Instances of~\gls{dos} attacks seen on Ethereum range from attacks on the proposers to attacks that seek to slow down the network itself.
 One of these attacks aims to slow down the network by using underpriced opcodes to create a block that is hard to process in time~\cite{10.1145/3391195,9815256}.
+However, this has been mitigated in an Ethereum improvement proposal~\cite{Opcode-mitigation}.
 Another way to slow down the network is to create empty accounts that are hard to process~\cite{empty-account-mitigation,empty-account-eip-mitigation}.
-This attack, however, is outdated and has been mitigated by making it near impossible to create empty accounts in the network.
+This attack, however, is outdated and has been mitigated by making it nearly impossible to create empty accounts in the network.
 
