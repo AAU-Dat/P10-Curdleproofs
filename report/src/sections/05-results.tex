@@ -19,10 +19,10 @@ This pattern would repeat, but after the first drop, it drops consistently every
 During the attack, we discovered a total of 1,195 unique peers.
 The results of the de-anonymization attack are shown in~\autoref{tab:distribution}.
 The table showcases the distribution of peers into four categories based on the heuristic described in~\autoref{subsec:inspirational-papers}.
-Here, we see that 38.661\% of the peers we have encountered have had at least one validator that has been de-anonymized, meaning that the conditions from~\autoref{subsec:inspirational-papers} are fulfilled.
-We also see that 5.941\% of the peers we discovered are subscribed to all 64 subnets.
-We did not find validators on 35.314\% of the peers we discovered, meaning that we did not receive a single non-backbone attestation from any validator on these peers.
-Lastly, we discovered that 20.084\% of peers did not fit into the other categories.
+Here, we see that 46.86\% of the peers we have encountered have had at least one validator that has been de-anonymized, meaning that the conditions from~\autoref{subsec:inspirational-papers} are fulfilled.
+We also see that 5.94\% of the peers we discovered are subscribed to all 64 subnets.
+We did not find validators on 35.31\% of the peers we discovered, meaning that we did not receive a single non-backbone attestation from any validator on these peers.
+Lastly, we discovered that 11.88\% of peers did not fit into the other categories.
 Failing to categorize a peer could be because the peer could be hosting a validator, but we could not, with enough confidence, say that to be the case based on our heuristic.
 
 
@@ -32,18 +32,18 @@ Failing to categorize a peer could be because the peer could be hosting a valida
     \begin{tabular}{lll}
         \hline
         & \textbf{Nodes} & \textbf{Distribution} \\ \hline
-        \textbf{Deanonymized validators} & 462            & 38.661\%                 \\
-        \textbf{64 subnets}              & 71             & 5.941\%                  \\
-        \textbf{No validators}           & 422              & 35.314\%               \\
-        \textbf{Rest}                    & 240            & 20.084\%                 \\ \hline
+        \textbf{Deanonymized validators} & 560            & 46.86\%                 \\
+        \textbf{64 subnets}              & 71             & 5.94\%                  \\
+        \textbf{No validators}           & 422              & 35.31\%               \\
+        \textbf{Rest}                    & 142            & 11.88\%                 \\ \hline
         \\
     \end{tabular}
     \label{tab:distribution}
 \end{table}
 
 
-After the attack, we managed to de-anonymize a total of 492,959 validators corresponding to 28\% of the total number of validators in the Holesky network\footnote{As of 2024-01-08 seen on \href{https://holesky.beaconcha.in/}{holesky.beaconcha.in}}.
-158,134 of these validators were non-unique, meaning that they had more than one IP address mapped to them over the duration of the attack.
+After the attack, we managed to de-anonymize a total of 606,253 validators corresponding to 34.34\% of the total number of validators in the Holesky network\footnote{As of 2024-01-08 seen on \href{https://holesky.beaconcha.in/}{holesky.beaconcha.in}}.
+177,274 of these validators were non-unique, meaning that they had more than one IP address mapped to them over the duration of the attack.
 The results are shown in~\autoref{tab:unique vals}.
 
 In total, we logged 1,183 unique IP addresses.
@@ -55,7 +55,7 @@ In total, we logged 1,183 unique IP addresses.
     \begin{tabular}{lll}
         \hline
         & \textbf{Validators} & \textbf{Non-Unique Validators} \\ \hline
-        \textbf{Overall} & 492,959             & 158,134                        \\ \hline
+        \textbf{Overall} & 606,253             & 177,274                        \\ \hline
         \\
     \end{tabular}
     \label{tab:unique vals}
@@ -64,14 +64,14 @@ In total, we logged 1,183 unique IP addresses.
 \subsection{Validator Distribution}\label{subsec:validator-distribution}
 \begin{figure*}[!ht]
     \centering
-    \includegraphics[scale = 0.45]{figures/distval}
+    \includegraphics[scale = 0.45]{figures/distvalrerun}
     \caption{The cdf showing the distribution of validators on each peer}
     \label{fig:validatorsonpeers}
 \end{figure*}
 From all the peers we were connected to, we tallied the number of validators on each peer.
 The cumulative distribution of validators on each peer is shown in~\autoref{fig:validatorsonpeers}.
 Here, we can see that 57\% of the peers we connected to have at least one validator.
-The amount of validators on each peer ranges from 0 to 87,028, with the average being 1,003 validators per peer.
+The amount of validators on each peer ranges from 0 to 87,028, with the average being 1,219 validators per peer.
 We see that the most common number of validators on a peer is 1, with about 7\% of the found peers having only one validator.
 We also saw that 110 and 400 were the most common numbers of validators on a peer once we got above 20 validators on a peer.
-We found a total of 24 peers that had 10,000 or more validators on them.
+We found a total of 29 peers that had 10,000 or more validators on them.

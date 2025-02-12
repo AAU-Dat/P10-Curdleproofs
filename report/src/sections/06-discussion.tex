@@ -39,7 +39,7 @@ The data collected was stored in a database and was only used to analyze the att
 As we can see in~\autoref{fig:peersconnected}, the number of connected peers fluctuated widely throughout the experiment.
 It also follows a similar pattern to the one in the original paper regarding sudden drops in the number of connected peers at set intervals.
 In the original paper, they also experienced sudden drops in the number of connected peers, and they are not sure why this happens.
-They suspect that it could be due to some artifacts from AWS.
+They suspect that it could be due to some artifacts from AWS\@.
 However, we also experienced these drops.
 In our case, we are not running on AWS but on Strato CLAAUDIA, a cloud computing service made available by Aalborg University.
 So either CLAAUDIA has the same artifacts as AWS, or the drops are due to another reason.
@@ -77,7 +77,7 @@ We attribute this to the large number of validators that inhabited some of the n
 \subsubsection{Validator distribution}\label{subsubsec:validator-distribution}
 When we compare the results from the~\gls{de-anon paper} to our results, we see that the distribution of validators on peers is very different.
 In the~\gls{de-anon paper}, the amount of validators on each peer tops out at a little over 1,000 validators per peer.
-Our finding, however, shows that the number of validators on each peer could reach up to 87,028 validators per peer.
+Our finding, however, shows that the number of validators on each peer could reach up to 70,523 validators per peer.
 One explanation could be that the testnet has a higher density of validators than the mainnet because it is easier to become a validator on the testnet as no money is staked.
 In the~\gls{de-anon paper}, they also state that 27\% of the peers they connected to had only one validator.
 Opposite to this, we found that only 7\% of the peers we connected to had just one validator.
