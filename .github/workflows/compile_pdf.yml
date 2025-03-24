@@ -75,7 +75,7 @@ jobs:
         run: |
           git config --global user.name "Maltesius"
           git config --global user.email "andersmalta@gmail.com"
-          git remote set-url origin https://AAU-Dat:${{ secrets.GITHUB_TOKEN }}@github.com/AAU-Dat/P9-ZKP.git
-          git add /home/runner/work/P9-ZKP/P9-ZKP/
+          git remote set-url origin https://AAU-Dat:${{ secrets.GITHUB_TOKEN }}@github.com/AAU-Dat/P10-Curdleproofs.git
+          git add /home/runner/work/P10-Curdleproofs/P10-Curdleproofs/
           git commit -m "Added by GitHub Action"
           git push
