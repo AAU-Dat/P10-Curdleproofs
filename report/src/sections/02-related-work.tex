@@ -9,7 +9,8 @@ Whisk is a zero-knowledge proof system that allows for the verification of the c
 It is based on the concept of inner product arguments and uses elliptic curve cryptography to achieve its goals.
 Whisk is designed to be efficient and scalable, making it suitable for use in Ethereum and other blockchain systems.
 Whisk is one of the suggested solutions to attacks on the Ethereum network targeting block proposers.
-With the help of the zero-knowledge proofs Whisk help make the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
+With the help of the zero-knowledge proofs Whisk helps making the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
+This would create a system also known as a Secret single Leader Election (SSLE) system.
 
 
 \subsection{Shuffling algorithm}\label{sec:related-work-Shuffling-algorithm}
@@ -22,3 +23,13 @@ In each slot a subset of the proposers are shuffled, and the rest are left uncha
 
 Though experiments Larsen et al. also surgests that their may be room to lower the size of the subsets chosen in eahc lot without losing the security of the shuffle.
 Thereby increasing the speed of the shuffle and reducing the size of the proof being add to the blockchain.
+
+\subsection{Bulletproof}\label{sec:related-work-bulletproofs}
+A big part of the curdleproof protocol is the use of bulletproof~\cite{bunz2018bulletproofs}.
+Bulletproof is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
+Bulletproof is in itself not a zero-knowledge proof system, but the help of Fiat Shamir (source) it can be used to create a zero-knowledge proof.
+Bulletproof also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproof.
+One of these is Bulletproof+~\cite{chung2022bulletproofs+} which is a new version of bulletproof that uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
+Bulletproof+ is also different because it is zero-knowledge proof by itself unlike the original bulletproof.
+A third version of the bulletproof is Bulletproof++~\cite{eagen2024bulletproofs++} which is a even newer version of bulletproof that uses a new type of argument called the norm argument to achieve a better performance.
+Unlike the two other proofs Bulletproof++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the curdleproof protocol due to the binary nature of the bulletproof++.
