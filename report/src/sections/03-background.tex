@@ -13,6 +13,11 @@
 
 
 \subsection{Springproofs}\label{sec:background-springproofs}
+Springproofs~\cite{zhang2024springproofs} is an inner product argument that aims to allow a more flexible and efficient way of creating zero-knowledge proofs by avoiding the need for papping when working with inputs that are not of the size of power of 2.
 
+Currently, the way to work with inner product arguments is to either only work with input sets that have the size of a power of 2, or to pad the input to the size of the next power of 2.
+This leads to either forcing the prover to work with regied sizes of input sets, or to pad the input with zeros slowing down the process and forcing the prover to work with larger sets than necessary.
+
+Springproofs is a new type of inner product argument that allows for the use of arbitrary sized input sets without the need for padding.
 
 
