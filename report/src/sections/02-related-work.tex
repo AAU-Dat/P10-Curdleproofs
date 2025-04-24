@@ -28,7 +28,7 @@ Thereby increasing the speed of the shuffle and reducing the size of the proof b
 \subsection{Bulletproofs}\label{sec:related-work-bulletproofs}
 A big part of the curdleproofs protocol is the use of bulletproofs~\cite{bunz2018bulletproofs}.
 Bulletproofs is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
-Bulletproofs is in itself not a zero-knowledge proof system, but the help of Fiat Shamir (source) it can be used to create a zero-knowledge proof.
+Bulletproofs is in itself not a zero-knowledge proof system, but the help of Fiat Shamir~\cite{bunz2018bulletproofs} it can be used to create a zero-knowledge proof.
 Bulletproofs also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproofs.
 One of these is Bulletproofs+~\cite{chung2022bulletproofs+} which is a new version of bulletproof that uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
 Bulletproofs+ is also different because it is zero-knowledge proof by itself unlike the original bulletproofs.
