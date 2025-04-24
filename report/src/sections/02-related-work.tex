@@ -14,22 +14,23 @@ This would create a system also known as a Secret single Leader Election (SSLE) 
 
 
 \subsection{Shuffling algorithm}\label{sec:related-work-Shuffling-algorithm}
-The shuffling algorithm has gone though many iterations and improvements in order ti increase speed and reduce the size the proof.
-This is because the proposer has a limited amount of time to propose a block in each slot, and the addition of the proof to the protocol adds increase the size of the block.
-This is the reason why the current implementation of curdleproof has chosen the shuffling algorithm~\cite{cryptoeprint:2022/560} proposed by Larsen et al.
+The shuffling algorithm used in curdleproofs has gone though many iterations and improvements in order to increase speed and reduce the size the proof.
+This is because the proposer has a limited amount of time to propose a block in each slot, and the addition of the proof to the protocol increases the size of the block the proposers have to create.
+This is the reason why the current implementation of curdleproofs has chosen the shuffling algorithm~\cite{cryptoeprint:2022/560} proposed by Larsen et al.
 
-The way the shuffle works is by selecting 2 days' worth of proposers, and then shuffling the over one day's worth of slots to create a new list of proposers for the following day.
+The way the shuffle works is by selecting 2 days' worth of proposers, and then shuffling the proposers over one day's worth of slots to create a new list of proposers for the following day.
 In each slot a subset of the proposers are shuffled, and the rest are left unchanged.
 
-Though experiments Larsen et al. also surgests that their may be room to lower the size of the subsets chosen in eahc lot without losing the security of the shuffle.
-Thereby increasing the speed of the shuffle and reducing the size of the proof being add to the blockchain.
+Though experiments Larsen et al. has shown that after enough shuffles becomes secrue even in adversarial environments.
+They also surgests that their may be room to lower the size of the subsets chosen in eahc lot without losing the security of the shuffle.
+Thereby increasing the speed of the shuffle and reducing the size of the proof being added to the blockchain.
 
-\subsection{Bulletproof}\label{sec:related-work-bulletproofs}
-A big part of the curdleproof protocol is the use of bulletproof~\cite{bunz2018bulletproofs}.
-Bulletproof is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
-Bulletproof is in itself not a zero-knowledge proof system, but the help of Fiat Shamir (source) it can be used to create a zero-knowledge proof.
-Bulletproof also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproof.
-One of these is Bulletproof+~\cite{chung2022bulletproofs+} which is a new version of bulletproof that uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
-Bulletproof+ is also different because it is zero-knowledge proof by itself unlike the original bulletproof.
-A third version of the bulletproof is Bulletproof++~\cite{eagen2024bulletproofs++} which is a even newer version of bulletproof that uses a new type of argument called the norm argument to achieve a better performance.
-Unlike the two other proofs Bulletproof++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the curdleproof protocol due to the binary nature of the bulletproof++.
+\subsection{Bulletproofs}\label{sec:related-work-bulletproofs}
+A big part of the curdleproofs protocol is the use of bulletproofs~\cite{bunz2018bulletproofs}.
+Bulletproofs is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
+Bulletproofs is in itself not a zero-knowledge proof system, but the help of Fiat Shamir (source) it can be used to create a zero-knowledge proof.
+Bulletproofs also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproofs.
+One of these is Bulletproofs+~\cite{chung2022bulletproofs+} which is a new version of bulletproof that uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
+Bulletproofs+ is also different because it is zero-knowledge proof by itself unlike the original bulletproofs.
+A third version of the bulletproofs is Bulletproofs++~\cite{eagen2024bulletproofs++} which is a even newer version of bulletproofs that uses a new type of argument called the norm argument to achieve a better performance.
+Unlike the two other proofs Bulletproofs++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the curdleproofs protocol due to the binary nature of the bulletproofs++.
