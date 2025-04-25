@@ -4,13 +4,15 @@
 
 
 \subsection{Whisk}\label{sec:related-work-whisk}
-Ethereum currently has an improvement proposal suggesting the implementation of called Whisk~\cite{Whisk2024}.
-Whisk is a zero-knowledge proof system that allows for the verification of the correctness of a shuffle without revealing the input or output.
-It is based on the concept of inner product arguments and uses elliptic curve cryptography to achieve its goals.
+Ethereum currently has an improvement proposal suggesting the implementation of a protocol called Whisk~\cite{Whisk2024}.
+Whisk is a zero-knowledge Single secret leader election (SSLE) system that Through a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} allows for the verification of the correctness of a shuffle without revealing the input or output.
+It is based on the concept of inner product arguments and does not require a honest setup.
+It uses elliptic curve cryptography based on the LS12-381 curve to achieve its goals.
+
 Whisk is designed to be efficient and scalable, making it suitable for use in Ethereum and other blockchain systems.
 Whisk is one of the suggested solutions to attacks on the Ethereum network targeting block proposers.
-With the help of the zero-knowledge proofs Whisk helps making the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
-This would create a system also known as a Secret single Leader Election (SSLE) system.
+With the help of the zero-knowledge proofs, Whisk helps making the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
+
 
 
 \subsection{Shuffling algorithm}\label{sec:related-work-Shuffling-algorithm}
