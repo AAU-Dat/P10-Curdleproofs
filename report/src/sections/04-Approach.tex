@@ -1,0 +1,36 @@
+\section{approach}\label{sec:approach}
+
+
+\subsection{Shuffle security}\label{sec:approach-shuffle-security}
+The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
+The shuffle itself however is not too complex.
+A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
+
+\begin{figure}[ht]\label{fig:shuffle}
+
+    \begin{framed}
+        \[
+            \Pi(c_1, \ldots, c_n)
+        \]
+        \rule{\linewidth}{0.4pt}
+
+        \noindent
+        \textbf{for} $t \in [T]$ \textbf{:}
+        \begin{itemize}
+            \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
+            \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
+            \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
+        \end{itemize}
+    \end{framed}
+    \caption{Distributed shuffling protocol.}
+\end{figure}
+
+Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
+
+\subsection{Springproofs}\label{sec:approach-springproofs}
+
+
+
+\subsection{implementation}\label{sec:approach-implementation}
+
+
