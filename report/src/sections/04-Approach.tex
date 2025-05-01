@@ -26,6 +26,25 @@ A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
 \end{figure}
 
 Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
+In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly and shuffled and added back to the list of ciphertexts.
+it is then encrypts the ciphertexts again and publishes them.
+This process is repeated for $T$ slots and the shuffle is complete.
+during the $T$ shuffles some of the shufflers may be adversarial.
+This means that whenever the shuffling process is taking place a part of the shuffles may be adversarial which can be seen as not being shuffled.
+therefore the amount of honest shuffles that happen durring the shuffle process is $T_H = T - a$.
+where $a$ is the amount of adversarial shufflers.
+
+The Shuffle is secure if none of these two events occur.
+The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
+since the subsets of ciphertexts are chosen randomly in each shuffle, if is enough adversarial shufflers in a row to end the process, then a shot backtrack is possible.
+
+The second event that can occur is that since every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
+Then if a shuffle contains a lot of ciphertext with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
+
+It is theoretically possible to find a shuffle size and a number of shuffles need given an amount of adversarial shufflers to gearantee that the shuffle is secure.
+For any $0 < \delta < 1/3$, if $T \geq 20 \frac{n}{k} \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
+
+
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
 
