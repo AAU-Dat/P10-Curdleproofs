@@ -1,4 +1,21 @@
 
-
 \section{Experimental Protocol}\label{sec:experimental-protocol}
-This is the experiment.
+
+
+
+\subsection{Size of curdleproofs}\label{sec:experimental-protocol-size}
+In this experiment we measured the time to run both the original curdleproofs and our version with the addition of springproofs.
+Curdleproofs was run with the shuffle sizes of 64 and 128 as it has to run with a power of 2.
+
+Since our version has the addition of springproofs, we were able to run it without having to consider the shuffle size being a power of 2.
+Therefore, our version was run with the shuffle sizes from 64 to 128 while measuring the time it takes to run.
+
+
+
+\subsection{Shuffle security}\label{sec:experimental-protocol-shuffle-security}
+In this experiment we ran the shuffle protocol with varying shuffle sizes and varying number of adversarial shufflers.
+Since the purpose of this experiment is to find the lowest possible shuffle size that is still secure, it was run with a shuffle size between 64 and 128.
+Because curdleproofs is ment to be used in an Ethereum setting all the experiments was done with 8192 shuffles, since that is the amount of slots it will be shuffled over in Ethereum.
+
+Every experiment was run 100 times and the average time was taken.
+
