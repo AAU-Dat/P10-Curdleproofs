@@ -51,6 +51,103 @@ It is however possible to find lower secure values for $T$ and $k$ but this has 
 
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
+In chapter 6 of~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
+\begin{figure}[ht]\label{fig:schemefunc}
+\begin{framed}
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc}]
+    input: $n\gets \ell$, where $n>0$
+
+    $\{n\}\gets n$
+    $N\gets 2^{\lceil\log n\rceil-1}$
+    $i_h \gets \lfloor (2N-n)/2\rfloor+1$
+    $i_t=\lfloor n/2\rfloor$
+    if $n\neq N$:
+        $\{T\}\gets(i_h:i_t)\cup(N+1:n)$
+    else if $n=N$:
+        $\{T\}\gets(1:n)$
+    $\{S\}\gets\{n\}-\{T\}$
+    \end{lstlisting}
+\end{framed}
+\caption{Scheme function \textbf{\textit{f}} used in CAAUrdleproofs}
+\end{figure}
+
+\begin{figure}[ht]\label{fig:ipa-prover}
+\begin{framed}
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
+$\textbf{Step 1:}$
+$\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
+ where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
+$B_C\gets \textbf{r}_C\times \textbf{G}$
+$B_D\gets \textbf{r}_D\times \textbf{G}'$
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_C)$
+$\textbf{c}\gets \textbf{r}_C+\alpha \textbf{c}$
+$\textbf{d}\gets \textbf{r}_D+\alpha \textbf{d}$
+$H\gets\beta H$
+$\textbf{Step 2:}$
+$m\gets n$
+while $1\leq j\leq\lceil \log m\rceil:$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $n\gets \frac{|T|}{2}$
+    $\textbf{c}=\textbf{c}_T$, $\textbf{cS}=\textbf{c}_S$
+    $\textbf{d}=\textbf{d}_T$, $\textbf{dS}=\textbf{d}_S$
+    $\textbf{G}=\textbf{G}_T$, $\textbf{GS}=\textbf{G}_S$
+    $\textbf{G}'=\textbf{G}'_T$, $\textbf{GS}'=\textbf{G}'_T$
+    $L_{C,j}\gets\textbf{c}_{[:n]}\times\textbf{G}_{[n:]}+(\textbf{c}_{[:n]}\times\textbf{d}_{[n:]})H$
+    $L_{D,j}\gets\textbf{d}_{[n:]}\times\textbf{G}'_{[:n]}$
+    $R_{C,j}\gets\textbf{c}_{[n:]}\times\textbf{G}_{[:n]}+(\textbf{c}_{[n:]}\times\textbf{d}_{[:n]})H$
+    $R_{D,j}\gets\textbf{d}_{[:n]}\times\textbf{G}'_{[n:]}$
+    $\pi_j\gets(L_{C,j},L_{D,j},R_{C,j},R_{D,j})$
+    $\gamma_j\gets Hash(\pi_j)$
+    $\textbf{c}\gets\textbf{cS}\|\textbf{c}_{[:n]}+\gamma_j^{-1}\textbf{c}_{[n:]}$
+    $\textbf{d}\gets\textbf{dS}\|\textbf{d}_{[:n]}+\gamma_j\textbf{d}_{[n:]}$
+    $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$
+    $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
+    $n\gets len(c)$
+$\textbf{Step 3:}$
+$c\gets c_1$
+$d\gets d_1$
+
+return $(B_C,B_D,\mathbf{\pi},c,d)$
+\end{lstlisting}
+\end{framed}
+\caption{Prover computation for CAAU-IPA in CAAUrdleproofs}
+\end{figure}
+
+\begin{figure}[ht]\label{fig:ipa-verifier}
+\begin{framed}
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier}]
+$\textbf{Step 1:}$
+$(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
+$(C,D,z)\gets$parse$(\phi_{dl_{inner}})$
+$(B_C,B_D,\mathbf{\pi},c,d)\gets$parse$(\pi_{dl_{inner}})$
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$
+$H\gets \beta H$
+$C\gets B_C+\alpha C+(\alpha^2z)H$
+$D\gets B_D+\alpha D$
+
+$\textbf{Step 2:}$
+$m\gets \lceil\log n\rceil$
+for $1\leq j\leq m$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $n\gets \frac{|T|}{2}$
+    $\textbf{G}=\textbf{G}_T$, $\textbf{GS}=\textbf{G}_S$
+    $\textbf{G}'=\textbf{G}'_T$, $\textbf{GS}'=\textbf{G}'_T$
+    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$
+    $\gamma_j\gets$Hash$(\pi_j)$
+    $C\gets\gamma_j L_{C,j}+C+\gamma_j^{-1}R_{C,j}$
+    $D\gets\gamma_j L_{D,j}+D+\gamma_j^{-1}R_{D,j}$
+    $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$
+    $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
+    $n\gets\text{len}(\textbf{G})$
+
+$\textbf{Step 3:}$
+Check $C=c\times G_1+cdH$
+Check $D=d\times G'_1$
+$\text{return 1 if both checks pass, else return 0}$
+\end{lstlisting}
+\end{framed}
+\caption{Verifier computation for CAAU-IPA in CAAUrdleproofs}
+\end{figure}
 
 
 
