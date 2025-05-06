@@ -51,11 +51,28 @@ It is however possible to find lower secure values for $T$ and $k$ but this has 
 
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
-In chapter 6 of~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
+In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
+They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
+As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
+The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
+The reason is that the underlying proofs, such as the inner product argument, needs to fold recursively down to 1, by halving the size in every round.
+
+The Springproofs protocol~\cite{zhang2024springproofs}, as mentioned in~\autoref{sec:background-springproofs}, can be used very effectively in this scenario.
+It provides support for IPAs to use vectors of arbitrary length.
+Using the findings of Springproofs means Curdleproofs could decrease its proof size, as $\ell$ is no longer locked on a power of 2.
+
+One of the most notable findings in Springproofs is the usage of their so-called scheme function.
+This function is used to ensure that the inner product argument eventually will fold down to a vector of size 1.
+The core concept of the function is to split the vector before each recursive round of the protocol.
+Then, the fold is only done on one of the two sets.
+
+Springproofs present different scheme functions and prove some of them to be optimal.
+One of these functions is an optimized version of their \textit{pre-compression method}, which splits the vectors in the following way:
+
 \begin{figure}[ht]\label{fig:schemefunc}
 \begin{framed}
     \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc}]
-    input: $n\gets \ell$, where $n>0$
+    input: $n$, where $n>0$
 
     $\{n\}\gets n$
     $N\gets 2^{\lceil\log n\rceil-1}$
@@ -151,6 +168,6 @@ $\text{return 1 if both checks pass, else return 0}$
 
 
 
-\subsection{implementation}\label{sec:approach-implementation}
+\subsection{implementation}\label{subsec:approach-implementation}
 
 
