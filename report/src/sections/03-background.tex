@@ -5,12 +5,32 @@
 \subsection{Notation}\label{sec:background-notation}
 
 
+\subsection{Whisk}\label{sec:related-work-whisk}
+
+\subsubsection{Ethereum}\label{sec:background-ethereum}
+Ethereum is a decentralized blockchain platform that enables developers to build and deploy smart contracts and decentralized applications.
+It is the second-largest blockchain platform by market capitalization and has a large and active developer community.
+Ethereum uses a proof-of-stake consensus mechanism, which allows users to validate transactions and create new blocks by staking their Ether (ETH) tokens.
+The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
+In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
+
+\subsubsection{Proposer doss attacks}\label{sec:background-proposer-doss-attacks}
+An attack on the Ethereum network that was discovered by heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack.
+
+
+%Ethereum currently has an improvement proposal suggesting the implementation of a protocol called Whisk~\cite{Whisk2024}.
+%Whisk is a zero-knowledge Single secret leader election (SSLE) system that Through a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} allows for the verification of the correctness of a shuffle without revealing the input or output.
+%It is based on the concept of inner product arguments and does not require a honest setup.
+%It uses elliptic curve cryptography based on the BLS12-381 curve to achieve its goals.
+%
+%Whisk is designed to be efficient and scalable, making it suitable for use in Ethereum and other blockchain systems.
+%Whisk is one of the suggested solutions to attacks on the Ethereum network targeting block proposers.
+%With the help of the zero-knowledge proofs, Whisk helps make the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
 
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
 Curdleproofs is a zero-knowledge proof system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
 within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
-
 
 
 
