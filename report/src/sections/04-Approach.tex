@@ -1,54 +1,9 @@
 \section{approach}\label{sec:approach}
 
-
-\subsection{Shuffle security}\label{sec:approach-shuffle-security}
-The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
-The shuffle itself however is not too complex.
-A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
-
-\begin{figure}[ht]\label{fig:shuffle}
-
-    \begin{framed}
-        \[
-            \Pi(c_1, \ldots, c_n)
-        \]
-        \rule{\linewidth}{0.4pt}
-
-        \noindent
-        \textbf{for} $t \in [T]$ \textbf{:}
-        \begin{itemize}
-            \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
-            \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
-            \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
-        \end{itemize}
-    \end{framed}
-    \caption{Distributed shuffling protocol.}
-\end{figure}
-
-Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
-In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly and shuffled and added back to the list of ciphertexts.
-it is then encrypts the ciphertexts again and publishes them.
-This process is repeated for $T$ slots and the shuffle is complete.
-during the $T$ shuffles some of the shufflers may be adversarial.
-This means that whenever the shuffling process is taking place a part of the shuffles may be adversarial which can be seen as not being shuffled.
-therefore the amount of honest shuffles that happen durring the shuffle process is $T_H = T - \alpha$.
-where $\alpha$ is the amount of adversarial shufflers.
-
-The Shuffle is secure if none of these two events occur.
-The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
-since the subsets of ciphertexts are chosen randomly in each shuffle, if is enough adversarial shufflers in a row to end the process, then a shot backtrack is possible.
-
-The second event that can occur is that since every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
-Then if a shuffle contains a lot of ciphertext with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
-
-It is theoretically possible to find a shuffle size and a number of shuffles given an amount of adversarial shufflers to guarantee that the shuffle is secure.
-For any $0 < \delta < 1/3$, if $T \geq 20 n / k \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
-If $T$ and $k$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,k)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
-
-This formula is the lowest theoretically proven bound for $T$ and $k$.
-It is however possible to find lower secure values for $T$ and $k$ but this has to be done experimentally.
-
-
+As explained in~\autoref{sec:background}, Curdleproofs makes use of three different proofs.
+This work focuses on improving the underlying Inner Product Argument.
+Especially the running time and proof size of the protocol are of interest.
+The following is our approach on, how we modified the Inner Product Argument.
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
 In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
@@ -59,14 +14,30 @@ The reason is that the underlying proofs, such as the inner product argument, ne
 
 The Springproofs protocol~\cite{zhang2024springproofs}, as mentioned in~\autoref{sec:background-springproofs}, can be used very effectively in this scenario.
 It provides support for IPAs to use vectors of arbitrary length.
-Using the findings of Springproofs means Curdleproofs could decrease its proof size, as $\ell$ is no longer locked on a power of 2.
+Using the findings of Springproofs means Curdleproofs could be used on shuffle sizes other than powers of two.
+As such, they could lower the shuffle size from the current 128 to a size significantly lower, given it is still secure.
+Seeing the proof size of Curdleproofs being dependent on $\ell$ means that this modification would greatly help in lowering it.
 
 One of the most notable findings in Springproofs is the usage of their so-called scheme function.
 This function is used to ensure that the inner product argument eventually will fold down to a vector of size 1.
-The core concept of the function is to split vector sizes before each recursive round of the protocol.
-Then, the fold is only done on one of the two sets.
+In a general Inner product Argument, also Curdleproofs, if the size of the vectors were not a power of two, the argument would not recursive down to size 1, as they work by halving the vectors every recursive round.
 
-Springproofs present different scheme functions and prove some of them optimally.
+
+The core concept of the Springproofs scheme function is to split vector sizes before each recursive round of the protocol.
+Then, the fold for that round is only done on one of the two sets, before the other set is appended again at the end of the protocol.
+This can be visually seen in~\autoref{fig:fold}
+
+\begin{figure*}[t]
+    \centering
+    \subfloat[\centering Padding Method]{{\includegraphics[width=0.43\textwidth]{figures/padding} }}%
+    \qquad
+    \subfloat[\centering Pre-Compression Method]{{\includegraphics[width=0.45\textwidth]{figures/fold} }}%
+    \caption{Folding visualization as seen in the Springproofs paper}%
+    \label{fig:fold}%
+\end{figure*}
+
+
+Springproofs present different scheme functions and prove some of them to be optimal.
 One of these functions is an optimized version of their \textit{pre-compression method}, which splits the vectors in the following way:
 
 \begin{figure}[ht]\label{fig:schemefunc}
@@ -166,8 +137,53 @@ $\text{return 1 if both checks pass, else return 0}$
 \caption{Verifier computation for CAAU-IPA in CAAUrdleproofs}
 \end{figure}
 
+\subsection{Shuffle security}\label{sec:approach-shuffle-security}
+The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
+The shuffle itself however is not too complex.
+A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
+
+\begin{figure}[ht]\label{fig:shuffle}
+\begin{framed}
+    \[
+        \Pi(c_1, \ldots, c_n)
+    \]
+    \rule{\linewidth}{0.4pt}
+
+    \noindent
+    \textbf{For} $t \in [T]$ \textbf{:}
+    \begin{itemize}
+        \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
+        \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
+        \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
+    \end{itemize}
+\end{framed}
+\caption{Distributed shuffling protocol.}
+\end{figure}
+
+Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
+In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly and shuffled and added back to the list of ciphertexts.
+It is then encrypts the ciphertexts again and publishes them.
+This process is repeated for $T$ slots and the shuffle is complete.
+During the $T$ shuffles some of the shufflers may be adversarial.
+This means that whenever the shuffling process is taking place a part of the shuffles may be adversarial which can be seen as not being shuffled.
+Therefore the amount of honest shuffles that happen during the shuffle process is $T_H = T - \alpha$.
+Where $\alpha$ is the amount of adversarial shufflers.
+
+The Shuffle is secure if none of these two events occur.
+The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
+Since the subsets of ciphertexts are chosen randomly in each shuffle, if is enough adversarial shufflers in a row to end the process, then a shot backtrack is possible.
+
+The second event that can occur is that since every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
+Then if a shuffle contains a lot of ciphertext with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
+
+It is theoretically possible to find a shuffle size and a number of shuffles given an amount of adversarial shufflers to guarantee that the shuffle is secure.
+For any $0 < \delta < 1/3$, if $T \geq 20 n / k \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
+If $T$ and $k$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,k)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
+
+This formula is the lowest theoretically proven bound for $T$ and $k$.
+It is however possible to find lower secure values for $T$ and $k$ but this has to be done experimentally.
 
 
-\subsection{implementation}\label{subsec:approach-implementation}
+\subsection{Implementation}\label{subsec:approach-implementation}
 
 
