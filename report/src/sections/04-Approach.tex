@@ -20,11 +20,11 @@ Seeing the proof size of Curdleproofs being dependent on $\ell$ means that this 
 
 One of the most notable findings in Springproofs is the usage of their so-called scheme function.
 This function is used to ensure that the inner product argument eventually will fold down to a vector of size 1.
-In a general Inner product Argument, also Curdleproofs, if the size of the vectors were not a power of two, the argument would not recursive down to size 1, as they work by halving the vectors every recursive round.
+In a general Inner Product Argument, also Curdleproofs, if the size of the vectors were not a power of two, the argument would not recursive down to size 1, as they work by halving the vectors every recursive round.
 
 
-The core concept of the Springproofs scheme function is to split vector sizes before each recursive round of the protocol.
-Then, the fold for that round is only done on one of the two sets, before the other set is appended again at the end of the protocol.
+The core concept of the Springproofs scheme function is to split the vectors before each recursive round of the protocol.
+Then, the fold for that round is only done on one of the two sets, before the other set is appended again at the end of the recursive round.
 This can be visually seen in~\autoref{fig:fold}
 
 \begin{figure*}[t]
@@ -35,7 +35,6 @@ This can be visually seen in~\autoref{fig:fold}
     \caption{Folding visualization as seen in the Springproofs paper}%
     \label{fig:fold}%
 \end{figure*}
-
 
 Springproofs present different scheme functions and prove some of them to be optimal.
 One of these functions is an optimized version of their \textit{pre-compression method}, which splits the vectors in the following way:
