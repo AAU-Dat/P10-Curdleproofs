@@ -14,8 +14,13 @@ Ethereum uses a proof-of-stake consensus mechanism, which allows users to valida
 The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
 In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
 
-\subsubsection{Proposer doss attacks}\label{sec:background-proposer-doss-attacks}
-An attack on the Ethereum network that was discovered by heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack.
+\subsubsection{Proposer doss attack}\label{sec:background-proposer-doss-attacks}
+An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack.
+In our preliminary work~\cite{ouroldpaper} we have shown that the attack still possible to perform on the Ethereum network and using that attack a proposer DoS can be preformed.
+The proposer DoS attack is a type of attack that targets the block proposers making them unable to propose blocks.
+An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards from proposing a block and increase their rewards~\cite{EthereumSSLE2024}.
+
+\subsubsection{Mitigation}\label{sec:background-mitigation}
 
 
 %Ethereum currently has an improvement proposal suggesting the implementation of a protocol called Whisk~\cite{Whisk2024}.
