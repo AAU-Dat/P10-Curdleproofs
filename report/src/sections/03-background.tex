@@ -19,18 +19,26 @@ An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{h
 In our preliminary work~\cite{ouroldpaper} we have shown that the attack still possible to perform on the Ethereum network and using that attack a proposer DoS can be preformed.
 The proposer DoS attack is a type of attack that targets the block proposers making them unable to propose blocks.
 An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards from proposing a block and increase their rewards~\cite{EthereumSSLE2024}.
+As a response to the proposer DoS attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
 
-\subsubsection{Mitigation}\label{sec:background-mitigation}
+\subsubsection{The Whisk protocol}\label{sec:background-mitigation}
+Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output.
+Whisk works by selecting a list of proposers 16384 and shuffling them over 8192 slots (1 day).
+Then 8192 proposers are selected from the shuffled list to propose blocks for the next 8192 slots while a new list is being shuffled.
+This way a new list of proposers is created every day.
+After each shuffle Whisk uses a zero-knowledge proof to prove that the shuffle is correct.
+This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer DoS attack because of the identity of the upcoming proposers being hidden now.
 
+\subsubsection{Curdleproofs}\label{sec:background-curdleproofs}
+Curdleproofs is a zero-knowledge proof system that allows a prover to prove the authenticity of a shuffle without revealing how it was shuffled.
+It does this by using 3 different zero-knowledge proofs with one of them relying on two more zero-knowledge proofs.
+the first proof is a sameperm proof.
+The sameperm proof is used to prove the permutation used is the permutation calculated.
+Sameperm also runs a subroutine to help with the proof called a grand product argument.
+The grand product argument also uses a subroutine called an inner product argument to prove the grand product argument.
+The second proof is a samemultiscalar argument that proves that there is a commitment to the permutation that the prover created.
+The third proof is a samescalar argument that proves that given a public input there exists a scalar such that the commitment is equal to the public input times the scalar.
 
-%Ethereum currently has an improvement proposal suggesting the implementation of a protocol called Whisk~\cite{Whisk2024}.
-%Whisk is a zero-knowledge Single secret leader election (SSLE) system that Through a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} allows for the verification of the correctness of a shuffle without revealing the input or output.
-%It is based on the concept of inner product arguments and does not require a honest setup.
-%It uses elliptic curve cryptography based on the BLS12-381 curve to achieve its goals.
-%
-%Whisk is designed to be efficient and scalable, making it suitable for use in Ethereum and other blockchain systems.
-%Whisk is one of the suggested solutions to attacks on the Ethereum network targeting block proposers.
-%With the help of the zero-knowledge proofs, Whisk helps make the previous public proposer list and order into a system where only the proposer can see if it is their turn to propose a block, and they can proof that to be the case.
 
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
