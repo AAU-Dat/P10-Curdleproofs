@@ -13,7 +13,7 @@ The current proposal of curdleproofs only works on shuffles, where the size is a
 The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
 
 The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in this scenario.
-The theory of Springproofs provides support for IPAs to use vectors of arbitrary length.
+The theory of Springproofs provides support for~\glspl{ipa} to use vectors of arbitrary length.
 Using the findings of Springproofs means Curdleproofs could be used on shuffle sizes other than powers of two.
 As such, they could lower the shuffle size from the current 128 to a size significantly lower, given it is still secure.
 Seeing the proof size of Curdleproofs being dependent on $\ell$ means that this modification would greatly help in lowering it.
