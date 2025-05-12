@@ -3,23 +3,100 @@
 
 
 \subsection{Notation}\label{sec:background-notation}
+The notation used throughout this paper can be seen in~\autoref{tab:notation}.
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Symbol} & \textbf{Description} \\
+        \hline
+        $\mathbb{G}$ & Cyclic, additive, group of prime order $p$ \\
+        \hline
+        $\mathbb{Z}_p$ & Ring of integers modulo $p$ \\
+        \hline
+        $\mathbb{G}^n,\;\mathbb{Z}_p^n$ & Vector spaces of dimension $n$ over $\mathbb{G}$ and $\mathbb{Z}_p$ \\
+        \hline
+        $\mathbb{Z}_p^*$ & Multiplicative group $\mathbb{Z}_p\setminus\{0\}$ \\
+        \hline
+        $H\in\mathbb{G}$ & Generator of $\mathbb{G}$ \\
+        \hline
+        $\mathbf{\gamma}\in\mathbb{Z}_p^{\lceil\log n\rceil}$ & Uniformly distributed challenges \\
+        \hline
+        $\mathbf{a}\in\mathbb{F}^n$ & Vector $\mathbf{a}=(a_1,\dots,a_n)\in\mathbb{F}^n$ \\
+        \hline
+        $\mathbf{A}\in\mathbb{F}^{n\times m}$ & Matrix with $n$ rows and $m$ columns \\
+        \hline
+        $\mathbf{b}=c\cdot \mathbf{a}\in\mathbb{Z}_p^n$
+        & The vector where $b_i = c\,a_i$, with scalar $c\in\mathbb{Z}_p$ and $\mathbf{a}\in\mathbb{Z}_p^n$ \\
+        \hline
+        $\mathbf{a}\times \mathbf{b}=\sum_{i=1}^n a_i\cdot b_i$
+        & Inner product of $\mathbf{a},\mathbf{b}\in\mathbb{F}^n$ \\
+        \hline
+        $\mathbf{G}=(g_1,\dots,g_n)\in\mathbb{G}^n,\mathbf{G'}=(g'_1,\dots,g'_n)\in\mathbb{G}^n$
+        & Vectors of generators (for Pedersen commitments) \\
+        \hline
+        $A=a\times G=\sum_{i=1}^n a_i\cdot G_i$
+        & Binding (but not hiding) commitment to $a\in\mathbb{Z}_p^n\in $ \\
+        \hline
+        $\mathbf{r}_A\in\mathbb{Z}^n$ & Blinding factors, e.g.\ $A=\mathbf{a}\times\mathbf{G} + \mathbf{r}_A \times \mathbf{G}$ is a Pedersen commitment to $\mathbf{a}$ \\
+        \hline
+        $\mathbf{a}\parallel \mathbf{b}\in\mathbb{Z}_p^{n+m}$
+        & Concatenation: if $\mathbf{a}\in\mathbb{Z}_p^n$, $\mathbf{b}\in\mathbb{Z}_p^m$, then $\mathbf{a}\parallel \mathbf{b}\in\mathbb{Z}_p^{n+m}$ \\
+        \hline
+        $\mathbf{a}_{[:k]}=(a_1,\dots,a_k)\in\mathbb{F}^k, \; \mathbf{a}_{[k:]}=(a_{k+1},\dots,a_n)\in\mathbb{F}^{n-k}$
+        & Slices of vectors (Python notation) \\
+        \hline
+        \{\textit{Public Input}, \textit{Witness}\}: Relation
+        & Relation using the specified public input and witness \\
+        \hline
+    \end{tabular}
+    \caption{Notation used throughout the paper.}
+    \label{tab:notation}
+\end{table*}
 
+\subsection{Security Assumptions}\label{subsec:security-assumptions}
+Since this work is based on the existing Curdleproofs protocol~\cite{Curdleproofs}, it inherits the same security assumptions.
+Our work therefore runs as a public coin protocol in any cryptographic group where~\gls{ddh} is hard~\cite{10.1007/BFb0054851}.
+
+\subsection{Whisk}\label{sec:related-work-whisk}
+
+\subsubsection{Ethereum}\label{sec:background-ethereum}
+Ethereum is a decentralized blockchain platform that enables developers to build and deploy smart contracts and decentralized applications.
+It is the second-largest blockchain platform by market capitalization and has a large and active developer community.
+Ethereum uses a proof-of-stake consensus mechanism, which allows users to validate transactions and create new blocks by staking their Ether (ETH) tokens.
+The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
+In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
+
+\subsubsection{Proposer DoS attack}\label{sec:background-proposer-DoS-attacks}
+An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack on validators.
+In our preliminary work~\cite{ouroldpaper}, we have shown that the attack still possible to perform on the Ethereum network, and using the attack, a proposer DoS can be preformed.
+The proposer DoS attack is a type of attack that targets the block proposers making them unable to propose blocks.
+An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their oen rewards~\cite{EthereumSSLE2024}.
+As a response to the proposer DoS attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
+
+\subsubsection{The Whisk protocol}\label{sec:background-mitigation}
+Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}
+Whisk works by selecting a list of proposers 16384 and shuffling them over 8192 slots (1 day).
+Then 8192 proposers are selected from the shuffled list to propose blocks for the next 8192 slots while a new list is being shuffled.
+This way a new list of proposers is created every day.
+After each shuffle Whisk uses a zero-knowledge proof to prove that the shuffle is correct.
+This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer DoS attack because of the identity of the upcoming proposers being hidden now.
+
+\subsubsection{Curdleproofs}\label{sec:background-curdleproofs}
+Curdleproofs is a zero-knowledge proof system that allows a prover to prove the authenticity of a shuffle without revealing how it was shuffled.
+It does this by using 3 different zero-knowledge proofs with one of them relying on two more zero-knowledge proofs.
+the first proof is a sameperm proof.
+The sameperm proof is used to prove a commitment to a specific, but not publicly known, permutation.
+Sameperm also runs a subroutine to help with the proof, called a grand product argument.
+The grand product argument is an intermediate step used to construct an inner product argument, which proves the grand product argument.
+The second proof is a "same multiscalar" argument.
+This proves that permuted set of ciphertexts was made by using the permutation that the prover previously committed to.
+The third proof is a samescalar argument which proves that, given a public input, there exists a scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
 
 
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
 Curdleproofs is a zero-knowledge proof system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
 within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
-
-
-
-
-\subsection{Springproofs}\label{sec:background-springproofs}
-Springproofs~\cite{zhang2024springproofs} is an inner product argument that aims to allow a more flexible and efficient way of creating zero-knowledge proofs by avoiding the need for papping when working with inputs that are not of the size of power of 2.
-
-Currently, the way to work with inner product arguments is to either only work with input sets that have the size of a power of 2, or to pad the input to the size of the next power of 2.
-This leads to either forcing the prover to work with regied sizes of input sets, or to pad the input with zeros slowing down the process and forcing the prover to work with larger sets than necessary.
-
-Springproofs is a new type of inner product argument that allows for the use of arbitrary sized input sets without the need for padding.
 
 
