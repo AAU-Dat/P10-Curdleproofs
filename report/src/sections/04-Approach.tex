@@ -168,6 +168,17 @@ $\text{return 1 if both checks pass, else return 0}$
 
 
 
-\subsection{implementation}\label{subsec:approach-implementation}
-
+\subsection{Implementation}\label{subsec:approach-implementation}
+Implementing the above explained protocol introduced some optimizations required to have the code run as fast as possible. 
+These are explained in the following. 
+Both our implementation of CAAUrdleproofs and the experiment involving the security of the shuffle are publicly available on GitHub~\footnote{\href{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}}.
+The implementation of CAAUrdleproofs is a fork of and builds directly on the already existing Curdleproofs code.
+\subsubsection{CAAUdleproofs}
+The protocol in Curdleproofs~\cite{Curdleproofs} introduces a lot of multiscalar multiplications.
+As such, CAAUrdleproofs also introduces these multiplications.
+This allows for checks of calculations of the form:
+\begin{align}
+    C\stackrel{?}{=}\mathbf{x}\times(\mathbf{g}\|\mathbf{h}\|G_T\|G_U\|H\|\mathbf{R}\|\mathbf{S}\|\mathbf{T}\|\mathbf{U})
+\end{align}
+\subsubsection{Shuffle Security}
 
