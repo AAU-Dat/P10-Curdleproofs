@@ -74,7 +74,7 @@ For generality and readability, we show the split of vectors happening every rou
 First of all, we have the prover computation, where the proof is constructed.
 The construction can be seen in~\autoref{fig:ipa-prover}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \begin{framed}
     \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
 $\textbf{Step 1:}$
@@ -149,7 +149,7 @@ The now constructed proof is then supposed to be added to the block in the chain
 Having the proof on the blockchain allows for each validator to asynchronously verify whether it is a valid proof.
 Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{fig:ipa-verifier}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \begin{framed}
 \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier}]
 $\textbf{Step 1:}$
@@ -280,6 +280,64 @@ The multiplication of challenges are not as easily trackable in the CAAUrdleproo
 Here, it is necessary to simulate a run though the recursive protocol.
 Though, this should not have a big impact on performance, as it is run over vectors of small integers, and never actually has to do any multiplications.
 It is simply used as a measuring tool.
+
+\begin{figure}[ht]
+    \begin{framed}
+        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized}]
+$\textbf{Step 1:}$
+$(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
+$(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
+$(B_C,B_D,\mathbf{\pi},c,d)\gets$parse$(\pi_{dl_{inner}})$
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$
+
+$\textbf{Step 2:}$
+$m\gets \lceil\log n\rceil$
+for $1\leq j\leq m$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $n\gets \frac{|T|}{2}$
+    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$
+    $\gamma_j\gets$Hash$(\pi_j)$
+    $n\gets n+\text{len}(S)$
+
+$\textbf{Step 3:}$
+$\mathbf{\gamma}\gets(\gamma_m,...,\gamma_1)$
+for $1\leq j\leq n$:
+    $\textit{Compute s: see below for difference}$
+AccumulateCheck$(\mathbf{\gamma}\times\mathbf{L}_C+(B_C+\alpha C+(\alpha^2z)H)$
+    $+\mathbf{\gamma}^{-1}\times\mathbf{R}_C\stackrel{?}{=}(c\mathbf{s}\| cd\beta)\times(\mathbf{G}\| H))$
+AccumulateCheck$(\mathbf{\gamma}\times\mathbf{L}_D+(B_D+\alpha D)$
+    $+\mathbf{\gamma}^{-1}\times\mathbf{R}_D\stackrel{?}{=}d(\mathbf{s'}\circ\mathbf{u})\times\mathbf{G})$
+$\text{return 1}$
+
+$\textbf{s-step Curdleproofs:}$
+    $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}\text{, }b_{i,j}\in\{0,1\}\text{ s.t. }i=\sum_{j=1}^mb_{i,j}2^j$
+    $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
+$\textbf{s-step CAAUrdleproofs:}$
+    $ActivePos\gets[(i,i)\text{, }i=1,\dots,n]$
+    for $1\leq j\leq m:$
+        $h\gets\frac{2^{\lceil\log n\rceil}}{2}$
+        $f\gets n-h$
+        $nf\gets h-f$
+        $fs\gets \frac{nf}{2}$
+        for $(i,k)$ in $ActivePos$:
+            if $k\geq half:$
+                $b_{i,j}\gets1$
+                $newPos=k-h-fs$
+            else:
+                $b_{i,j}\gets0$
+                $newPos=k$
+            $nextActivePos.push((i,newPos))$
+        $ActivePos\gets nextActivePos$
+        $n\gets h$
+    $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}$
+    $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
+        \end{lstlisting}
+    \end{framed}
+    \caption{Optimized verifier computation for CAAU-IPA in CAAUrdleproofs}
+    \label{fig:ipa-verifier-optimized}
+\end{figure}
+
+The protocol used in the implementation can be seen in~\autoref{fig:ipa-verifier-optimized}.
 
 
 \subsubsection{Shuffle Security}
