@@ -3,7 +3,60 @@
 
 
 \subsection{Notation}\label{sec:background-notation}
+The notation used throughout this paper can be seen in~\autoref{tab:notation}.
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Symbol} & \textbf{Description} \\
+        \hline
+        $\mathbb{G}$ & Cyclic, additive, group of prime order $p$ \\
+        \hline
+        $\mathbb{Z}_p$ & Ring of integers modulo $p$ \\
+        \hline
+        $\mathbb{G}^n,\;\mathbb{Z}_p^n$ & Vector spaces of dimension $n$ over $\mathbb{G}$ and $\mathbb{Z}_p$ \\
+        \hline
+        $\mathbb{Z}_p^*$ & Multiplicative group $\mathbb{Z}_p\setminus\{0\}$ \\
+        \hline
+        $H\in\mathbb{G}$ & Generator of $\mathbb{G}$ \\
+        \hline
+        $\mathbf{\gamma}\in\mathbb{Z}_p^{\lceil\log n\rceil}$ & Uniformly distributed challenges \\
+        \hline
+        $\mathbf{a}\in\mathbb{F}^n$ & Vector $\mathbf{a}=(a_1,\dots,a_n)\in\mathbb{F}^n$ \\
+        \hline
+        $\mathbf{A}\in\mathbb{F}^{n\times m}$ & Matrix with $n$ rows and $m$ columns \\
+        \hline
+        $\mathbf{b}=c\cdot \mathbf{a}\in\mathbb{Z}_p^n$
+        & The vector where $b_i = c\,a_i$, with scalar $c\in\mathbb{Z}_p$ and $\mathbf{a}\in\mathbb{Z}_p^n$ \\
+        \hline
+        $\mathbf{a}\times \mathbf{b}=\sum_{i=1}^n a_i\cdot b_i$
+        & Inner product of $\mathbf{a},\mathbf{b}\in\mathbb{F}^n$ \\
+        \hline
+        $\mathbf{G}=(g_1,\dots,g_n)\in\mathbb{G}^n,\mathbf{G'}=(g'_1,\dots,g'_n)\in\mathbb{G}^n$
+        & Vectors of generators (for Pedersen commitments) \\
+        \hline
+        $A=a\times G=\sum_{i=1}^n a_i\cdot G_i$
+        & Binding (but not hiding) commitment to $a\in\mathbb{Z}_p^n\in $ \\
+        \hline
+        $\mathbf{r}_A\in\mathbb{Z}^n$ & Blinding factors, e.g.\ $A=\mathbf{a}\times\mathbf{G} + \mathbf{r}_A \times \mathbf{G}$ is a Pedersen commitment to $\mathbf{a}$ \\
+        \hline
+        $\mathbf{a}\parallel \mathbf{b}\in\mathbb{Z}_p^{n+m}$
+        & Concatenation: if $\mathbf{a}\in\mathbb{Z}_p^n$, $\mathbf{b}\in\mathbb{Z}_p^m$, then $\mathbf{a}\parallel \mathbf{b}\in\mathbb{Z}_p^{n+m}$ \\
+        \hline
+        $\mathbf{a}_{[:k]}=(a_1,\dots,a_k)\in\mathbb{F}^k, \; \mathbf{a}_{[k:]}=(a_{k+1},\dots,a_n)\in\mathbb{F}^{n-k}$
+        & Slices of vectors (Python notation) \\
+        \hline
+        \{\textit{Public Input}, \textit{Witness}\}: Relation
+        & Relation using the specified public input and witness \\
+        \hline
+    \end{tabular}
+    \caption{Notation used throughout the paper.}
+    \label{tab:notation}
+\end{table*}
 
+\subsection{Security Assumptions}\label{subsec:security-assumptions}
+Since this work is based on the existing Curdleproofs protocol~\cite{Curdleproofs}, it inherits the same security assumptions.
+Our work therefore runs as a public coin protocol in any cryptographic group where~\gls{ddh} is hard~\cite{10.1007/BFb0054851}.
 
 \subsection{Whisk}\label{sec:related-work-whisk}
 
@@ -45,15 +98,5 @@ The third proof is a samescalar argument which proves that, given a public input
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
 Curdleproofs is a zero-knowledge proof system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
 within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
-
-
-
-\subsection{Springproofs}\label{sec:background-springproofs}
-Springproofs~\cite{zhang2024springproofs} is an inner product argument that aims to allow a more flexible and efficient way of creating zero-knowledge proofs by avoiding the need for papping when working with inputs that are not of the size of power of 2.
-
-Currently, the way to work with inner product arguments is to either only work with input sets that have the size of a power of 2, or to pad the input to the size of the next power of 2.
-This leads to either forcing the prover to work with regied sizes of input sets, or to pad the input with zeros slowing down the process and forcing the prover to work with larger sets than necessary.
-
-Springproofs is a new type of inner product argument that allows for the use of arbitrary sized input sets without the need for padding.
 
 

@@ -1,75 +1,36 @@
 \section{approach}\label{sec:approach}
 
-
-\subsection{Shuffle security}\label{sec:approach-shuffle-security}
-The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
-The shuffle itself however is not too complex.
-A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
-
-\begin{figure}[ht]\label{fig:shuffle}
-
-    \begin{framed}
-        \[
-            \Pi(c_1, \ldots, c_n)
-        \]
-        \rule{\linewidth}{0.4pt}
-
-        \noindent
-        \textbf{for} $t \in [T]$ \textbf{:}
-        \begin{itemize}
-            \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
-            \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
-            \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
-        \end{itemize}
-    \end{framed}
-    \caption{Distributed shuffling protocol.}
-\end{figure}
-
-Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
-In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly and shuffled and added back to the list of ciphertexts.
-it is then encrypts the ciphertexts again and publishes them.
-This process is repeated for $T$ slots and the shuffle is complete.
-during the $T$ shuffles some of the shufflers may be adversarial.
-This means that whenever the shuffling process is taking place a part of the shuffles may be adversarial which can be seen as not being shuffled.
-therefore the amount of honest shuffles that happen durring the shuffle process is $T_H = T - \alpha$.
-where $\alpha$ is the amount of adversarial shufflers.
-
-The Shuffle is secure if none of these two events occur.
-The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
-since the subsets of ciphertexts are chosen randomly in each shuffle, if is enough adversarial shufflers in a row to end the process, then a shot backtrack is possible.
-
-The second event that can occur is that since every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
-Then if a shuffle contains a lot of ciphertext with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
-
-It is theoretically possible to find a shuffle size and a number of shuffles given an amount of adversarial shufflers to guarantee that the shuffle is secure.
-For any $0 < \delta < 1/3$, if $T \geq 20 n / k \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
-If $T$ and $k$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,k)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
-
-This formula is the lowest theoretically proven bound for $T$ and $k$.
-It is however possible to find lower secure values for $T$ and $k$ but this has to be done experimentally.
-
-
+As explained in~\autoref{sec:background}, Curdleproofs makes use of three different proofs.
+This work focuses on improving the underlying~\gls{ipa}.
+Especially the running time and proof size of the protocol are of interest.
+The following is our approach to, how we modified the~\gls{ipa}.
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
 In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
 They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
 As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
 The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
-The reason is that the underlying proofs, such as the inner product argument, needs to fold recursively down to 1, by halving the size in every round.
+The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
 
-The Springproofs protocol~\cite{zhang2024springproofs}, as mentioned in~\autoref{sec:background-springproofs}, can be used very effectively in this scenario.
-It provides support for IPAs to use vectors of arbitrary length.
-Using the findings of Springproofs means Curdleproofs could decrease its proof size, as $\ell$ is no longer locked on a power of 2.
+The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in this scenario.
+The theory of Springproofs provides support for~\glspl{ipa} to use vectors of arbitrary length.
+Using the findings of Springproofs means Curdleproofs could be used on shuffle sizes other than powers of two.
+As such, they could lower the shuffle size from the current 128 to a size significantly lower, given it is still secure.
+Seeing the proof size of Curdleproofs being dependent on $\ell$ means that this modification would greatly help in lowering it.
 
 One of the most notable findings in Springproofs is the usage of their so-called scheme function.
-This function is used to ensure that the inner product argument eventually will fold down to a vector of size 1.
-The core concept of the function is to split the vector before each recursive round of the protocol.
-Then, the fold is only done on one of the two sets.
+This function is used to ensure that the~\gls{ipa} eventually will fold down to a vector of size 1.
+In a general~\gls{ipa}, Curdleproofs included, if the size of the vectors were not a power of two, the argument would not recursive down to size 1, as they work by halving the vectors every recursive round.
+
+
+The core concept of the Springproofs scheme function is to split the vectors into sets, $T,S$ before each recursive round of the protocol.
+Then, the fold for that round is only done on one of the two sets, $T$, before the other set, $S$, is appended again at the end of the recursive round.
 
 Springproofs present different scheme functions and prove some of them to be optimal.
-One of these functions is an optimized version of their \textit{pre-compression method}, which splits the vectors in the following way:
+One of these optimal functions is an optimized version of their \textit{pre-compression method}, which splits the vectors as seen in~\autoref{fig:schemefunc}.
+The computation is for finding the set, $T$.
 
-\begin{figure}[ht]\label{fig:schemefunc}
+\begin{figure}[ht]
 \begin{framed}
     \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc}]
     input: $n$, where $n>0$
@@ -86,11 +47,36 @@ One of these functions is an optimized version of their \textit{pre-compression 
     \end{lstlisting}
 \end{framed}
 \caption{Scheme function \textbf{\textit{f}} used in CAAUrdleproofs}
+\label{fig:schemefunc}
 \end{figure}
 
-\begin{figure}[ht]\label{fig:ipa-prover}
+This can also visually be seen in~\autoref{fig:fold}(b), which is figure 1 of the Springproofs paper~\cite{zhang2024springproofs}.
+In \autoref{fig:fold}(a) is a scheme function which simply pads the vector to the next power of two before running an~\gls{ipa}.
+If one wanted to run current~\glspl{ipa}s on vector that are not a power of two, this would generally be the easiest way to achieve that.
+Though, this defeats the attempt of lowering the proof size, as it would now correspond to running an~\gls{ipa} on the size of the next power of two.
+
+\begin{figure*}[t]
+    \centering
+    \subfloat[\centering Padding Method]{{\includegraphics[width=0.43\textwidth]{figures/padding} }}%
+    \qquad
+    \subfloat[\centering Optimal Pre-Compression Method]{{\includegraphics[width=0.45\textwidth]{figures/fold} }}%
+    \caption{Folding visualization as seen in the Springproofs paper}%
+    \label{fig:fold}%
+\end{figure*}
+
+It is notable to mention that using the folding as shown in~\autoref{fig:fold}(b) results in the second recursive round being a size corresponding to a power of two.
+This means that the rest of the protocol will run as a general~\gls{ipa}, without the actual need for splitting the vectors, which can also be seen in~\autoref{fig:schemefunc}.
+
+With the idea from Springproofs in mind, we have made a modification to the~\gls{ipa} of Curdleproofs
+We call this modified protocol, CAAUrdleproof.
+For generality and readability, we show the split of vectors happening every round.
+
+First of all, we have the prover computation, where the proof is constructed.
+The construction can be seen in~\autoref{fig:ipa-prover}.
+
+\begin{figure}[ht]
 \begin{framed}
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
 $\textbf{Step 1:}$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
  where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
@@ -125,12 +111,45 @@ $c\gets c_1$
 $d\gets d_1$
 
 return $(B_C,B_D,\mathbf{\pi},c,d)$
-\end{lstlisting}
+    \end{lstlisting}
 \end{framed}
 \caption{Prover computation for CAAU-IPA in CAAUrdleproofs}
+\label{fig:ipa-prover}
 \end{figure}
 
-\begin{figure}[ht]\label{fig:ipa-verifier}
+First, we have step 1, which is the setup phase.
+It is done exactly the same way as in Curdleproofs.
+To ensure zero-knowledge, two blinding vectors for each commitment are constructed.
+These are also given the properties, $(\mathbf{r}_C\times \mathbf{d}+\mathbf{r}_D\times \mathbf{c})=0$ and $\mathbf{r}_C\times\mathbf{r}_D=0$, ensuring the completeness of the protocol.
+
+From the public input, hash values $\alpha,\beta$ are then computed.
+These are used to ensure the soundness of the protocol.
+
+The two vectors are then blinded and multiplied by the $\alpha$ hash to ensure the zero-knowledge and soundness, as well as $H=\beta H$.
+
+
+Now, the recursive proof construction begins.
+As explained, at the start of the recursive round, the \texttt{while}-loop, we find the split of the vectors, with $f(n)$ being the function from~\autoref{fig:schemefunc}.
+Then, we find half the length of the $T$ set, as this is the set, we are doing the recursive round on.
+Equally we split our witness vectors and the group vectors using $T$ and $S$.
+
+After this, the prover constructs cross commitment elements that are computed on the $T$ set.
+These are added to the proof, which eventually is available to the verifier.
+They are also used to construct a hash value, $\gamma_j$, in the next step.
+
+This value is used for completing the folding of $\mathbf{c},\mathbf{d},\mathbf{G},\mathbf{G'}$.
+We do the fold as in the original Curdleproofs protocol, while also appending the elements of $S$ back onto the vectors.
+The figure shows a concatenation, but it is important to know that the vectors are appended together as shown in~\autoref{fig:fold}(b).
+
+At last,~$n$ is updated to the length of the concatenated vectors before starting a new round.
+
+The result of this is a proof constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of 2.
+
+The now constructed proof is then supposed to be added to the block in the chain at the given time slot~\cite{Whisk2024}.
+Having the proof on the blockchain allows for each validator to asynchronously verify whether it is a valid proof.
+Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{fig:ipa-verifier}.
+
+\begin{figure}[ht]
 \begin{framed}
 \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier}]
 $\textbf{Step 1:}$
@@ -164,10 +183,76 @@ $\text{return 1 if both checks pass, else return 0}$
 \end{lstlisting}
 \end{framed}
 \caption{Verifier computation for CAAU-IPA in CAAUrdleproofs}
+\label{fig:ipa-verifier}
 \end{figure}
 
+The changes to the verifier protocol are equivalent to the ones made to the prover protocol.
+First, the vectors are divided into the two sets, $|T|,|S|$.
+The verifier then retrieves the cross-product commitment update values, $L_{C,j},L_{D,j},R_{C,j},R_{D,j}$.
+These are used for constructing a new commitment according to the fold made at round $i$.
+The corresponding left and right side cross-product are multiplied by a challenge, $\gamma_j,\gamma_j^{-1}$, respectively.
+By this time, the $C$ and $D$ commitments are a commitment to the original commitments along with the folded commitment.
+
+$\mathbf{G,G'}$ are updated as in~\autoref{fig:ipa-prover} before the protocol updates $n$ to be the length of the newly constructed vectors.
+
+As in the prover protocol, this is then repeated for $\log n$ round, after which the vectors have length $1$.
+
+At the end of the protocol, the verifier now does its final check.
+From the prover, it has retreived the folded down $c$ and $d$ vectors.
+It therefore constructs commitments with these elements.
+So, it constructs $c\times G_1+cdH$, which is the structure of the $C$ commitment as well as $d\times G'_1$, which is the structure of the $D$ commitment.
+The verifier now checks if these commitments match the commitments that he constructed in the recursive protocol.
+If so, the verifier accepts the proof.
 
 
-\subsection{implementation}\label{subsec:approach-implementation}
+\subsection{Shuffle security}\label{sec:approach-shuffle-security}
+The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
+The shuffle itself however is not too complex.
+A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
+
+\begin{figure}[ht]
+\begin{framed}
+    \[
+        \Pi(c_1, \ldots, c_n)
+    \]
+    \rule{\linewidth}{0.4pt}
+
+    \noindent
+    \textbf{For} $t \in [T]$ \textbf{:}
+    \begin{itemize}
+        \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
+        \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
+        \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
+    \end{itemize}
+\end{framed}
+\caption{Distributed shuffling protocol.}
+\label{fig:shuffle}
+\end{figure}
+
+Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
+In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly and shuffled and added back to the list of ciphertexts.
+It is then encrypts the ciphertexts again and publishes them.
+This process is repeated for $T$ slots and the shuffle is complete.
+During the $T$ shuffles some of the shufflers may be adversarial.
+This means that whenever the shuffling process is taking place a part of the shuffles may be adversarial which can be seen as not being shuffled.
+Therefore the amount of honest shuffles that happen during the shuffle process is $T_H = T - \alpha$.
+Where $\alpha$ is the amount of adversarial shufflers.
+
+The Shuffle is secure if none of these two events occur.
+The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
+Since the subsets of ciphertexts are chosen randomly in each shuffle, if is enough adversarial shufflers in a row to end the process, then a shot backtrack is possible.
+
+The second event that can occur is that since every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
+Then if a shuffle contains a lot of ciphertext with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
+
+It is theoretically possible to find a shuffle size and a number of shuffles given an amount of adversarial shufflers to guarantee that the shuffle is secure.
+For any $0 < \delta < 1/3$, if $T \geq 20 n / k \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
+If $T$ and $k$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,k)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
+
+This formula is the lowest theoretically proven bound for $T$ and $k$.
+It is however possible to find lower secure values for $T$ and $k$ but this has to be done experimentally.
+
+
+\subsection{Implementation}\label{subsec:approach-implementation}
 
 
