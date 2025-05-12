@@ -255,15 +255,32 @@ It is however possible to find lower secure values for $T$ and $k$ but this has 
 
 \subsection{Implementation}\label{subsec:approach-implementation}
 Implementing the above explained protocol introduced some optimizations required to have the code run as fast as possible.
-These are explained in the following.
+These are explained in the following with a focus on how CAAUrdleproofs differentiates itself from Curdleproofs.
 Both our implementation of CAAUrdleproofs and the experiment involving the security of the shuffle are publicly available on GitHub~\footnote{\href{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}}.
 The implementation of CAAUrdleproofs is a fork of and builds directly on the already existing Curdleproofs code.
 \subsubsection{CAAUdleproofs}
 The protocol in Curdleproofs~\cite{Curdleproofs} introduces a lot of multiscalar multiplications.
 As such, CAAUrdleproofs also introduces these multiplications.
-This allows for checks of calculations of the form:
+This allows for checking calculations of the form:
 \begin{align}
     C\stackrel{?}{=}\mathbf{x}\times(\mathbf{g}\|\mathbf{h}\|G_T\|G_U\|H\|\mathbf{R}\|\mathbf{S}\|\mathbf{T}\|\mathbf{U})
 \end{align}
+As explained by Curdleproofs, the verifier computation can be significantly optimized by checking the multiscalar multiplications as a single check at the end of the protocol instead.
+
+Include AccumulateCheck and AccumulateVerify functions?
+
+CAAUrdleproofs introduced a slight difference on this topic in regard to the~\glspl{ipa}, \texttt{sameperm} and \texttt{same multiscalar}.
+In each recursive round, both the folded vectors and the commitments are being multiplied by verification scalars, $\gamma_j$.
+To keep track of which elements of the vectors are multiplied by each $\gamma_j$, a function called \texttt{get\_verification\_scalars\_bitstring} is used.
+The output of this function is a list of length $\ell$, each element with a list corresponding to the rounds in which $gamma_j$ was multiplied to the element.
+Curdleproofs' implementation is simpler than CAAUrdleproofs' in this case.
+As Curdleproofs works on powers of two, it is always the right half of the vectors in each round that are multiplied by the challenge.
+
+The multiplication of challenges are not as easily trackable in the CAAUrdleproofs protocol.
+Here, it is necessary to simulate a run though the recursive protocol.
+Though, this should not have a big impact on performance, as it is run over vectors of small integers, and never actually has to do any multiplications.
+It is simply used as a measuring tool.
+
+
 \subsubsection{Shuffle Security}
 
