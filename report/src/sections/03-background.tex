@@ -14,15 +14,15 @@ Ethereum uses a proof-of-stake consensus mechanism, which allows users to valida
 The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
 In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
 
-\subsubsection{Proposer doss attack}\label{sec:background-proposer-doss-attacks}
-An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack.
-In our preliminary work~\cite{ouroldpaper} we have shown that the attack still possible to perform on the Ethereum network and using that attack a proposer DoS can be preformed.
+\subsubsection{Proposer DoS attack}\label{sec:background-proposer-DoS-attacks}
+An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack on validators.
+In our preliminary work~\cite{ouroldpaper}, we have shown that the attack still possible to perform on the Ethereum network, and using the attack, a proposer DoS can be preformed.
 The proposer DoS attack is a type of attack that targets the block proposers making them unable to propose blocks.
-An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards from proposing a block and increase their rewards~\cite{EthereumSSLE2024}.
+An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their oen rewards~\cite{EthereumSSLE2024}.
 As a response to the proposer DoS attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
 
 \subsubsection{The Whisk protocol}\label{sec:background-mitigation}
-Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output.
+Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}
 Whisk works by selecting a list of proposers 16384 and shuffling them over 8192 slots (1 day).
 Then 8192 proposers are selected from the shuffled list to propose blocks for the next 8192 slots while a new list is being shuffled.
 This way a new list of proposers is created every day.
@@ -33,11 +33,12 @@ This is so that the proposer can prove that they are the correct proposer for th
 Curdleproofs is a zero-knowledge proof system that allows a prover to prove the authenticity of a shuffle without revealing how it was shuffled.
 It does this by using 3 different zero-knowledge proofs with one of them relying on two more zero-knowledge proofs.
 the first proof is a sameperm proof.
-The sameperm proof is used to prove the permutation used is the permutation calculated.
-Sameperm also runs a subroutine to help with the proof called a grand product argument.
-The grand product argument also uses a subroutine called an inner product argument to prove the grand product argument.
-The second proof is a samemultiscalar argument that proves that there is a commitment to the permutation that the prover created.
-The third proof is a samescalar argument that proves that given a public input there exists a scalar such that the commitment is equal to the public input times the scalar.
+The sameperm proof is used to prove a commitment to a specific, but not publicly known, permutation.
+Sameperm also runs a subroutine to help with the proof, called a grand product argument.
+The grand product argument is an intermediate step used to construct an inner product argument, which proves the grand product argument.
+The second proof is a "same multiscalar" argument.
+This proves that permuted set of ciphertexts was made by using the permutation that the prover previously committed to.
+The third proof is a samescalar argument which proves that, given a public input, there exists a scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
 
 
 
