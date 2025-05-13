@@ -270,7 +270,7 @@ As explained by Curdleproofs, the verifier computation can be significantly opti
 CAAUrdleproofs introduced a slight difference on this topic in regard to the~\glspl{ipa}, \texttt{sameperm} and \texttt{same multiscalar}.
 In each recursive round, both the folded vectors and the commitments are being multiplied by verification scalars, $\gamma_j$.
 To keep track of which elements of the vectors are multiplied by each $\gamma_j$, a function called \texttt{get\_verification\_scalars\_bitstring} is used.
-The output of this function is a list of length $\ell$, each element with a list corresponding to the rounds in which $gamma_j$ was multiplied to the element.
+The output of this function is a list of length $\ell$, each element with a list corresponding to the rounds in which $\gamma_j$ was multiplied to the element.
 Curdleproofs' implementation is simpler than CAAUrdleproofs' in this case.
 As Curdleproofs works on powers of two, it is always the right half of the vectors in each round that are multiplied by the challenge.
 
