@@ -9,16 +9,23 @@
 
 
 \subsection{Shuffling algorithm}\label{sec:related-work-Shuffling-algorithm}
-The shuffling algorithm used in curdleproofs has gone though many iterations and improvements in order to increase speed and reduce the size the proof.
-This is because the proposer has a limited amount of time to propose a block in each slot, and the addition of the proof to the protocol increases the size of the block the proposers have to create.
-This is the reason why the current implementation of curdleproofs has chosen the shuffling algorithm~\cite{cryptoeprint:2022/560} proposed by Larsen et al.
 
-The way the shuffle works is by selecting 2 days' worth of proposers, and then shuffling the proposers over one day's worth of slots to create a new list of proposers for the following day.
-In each slot a subset of the proposers are shuffled, and the rest are left unchanged.
+The Håstad square shuffle~\cite{haastad2006square} is one of the proposed ways of integrating an~\gls{ssle}.
+is a more rigid version of the shuffling algorithm used in curdleproofs~\cite{cryptoeprint:2022/560}.
 
-Though experiments Larsen et al. has shown that after enough shuffles becomes secrue even in adversarial environments.
-They also surgests that their may be room to lower the size of the subsets chosen in each lot without losing the security of the shuffle.
-Thereby increasing the speed of the shuffle and reducing the size of the proof being added to the blockchain.
+
+
+
+%The shuffling algorithm used in curdleproofs has gone though many iterations and improvements in order to increase speed and reduce the size the proof.
+%This is because the proposer has a limited amount of time to propose a block in each slot, and the addition of the proof to the protocol increases the size of the block the proposers have to create.
+%This is the reason why the current implementation of curdleproofs has chosen the shuffling algorithm~\cite{cryptoeprint:2022/560} proposed by Larsen et al.
+%
+%The way the shuffle works is by selecting 2 days' worth of proposers, and then shuffling the proposers over one day's worth of slots to create a new list of proposers for the following day.
+%In each slot a subset of the proposers are shuffled, and the rest are left unchanged.
+%
+%Though experiments Larsen et al. has shown that after enough shuffles becomes secrue even in adversarial environments.
+%They also surgests that their may be room to lower the size of the subsets chosen in each lot without losing the security of the shuffle.
+%Thereby increasing the speed of the shuffle and reducing the size of the proof being added to the blockchain.
 
 \subsection{Bulletproofs}\label{sec:related-work-bulletproofs}
 A big inspiration for the curdleproofs protocol is the use of bulletproofs~\cite{bunz2018bulletproofs}.
