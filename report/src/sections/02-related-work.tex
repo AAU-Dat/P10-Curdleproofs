@@ -15,19 +15,11 @@ The Håstad square shuffle is a shuffling algorithm that shuffles a $n$ long vec
 This is because the algorithm works by splitting the vector into $\sqrt {n}$ times $\sqrt {n}$ square matrix and for each step in the algorithm it switches between shuffling a row and a column.
 The Håstad shuffle is a more rigid than the shuffling algorithm used in curdleproofs~\cite{cryptoeprint:2022/560} because of the fixed size of the shuffle being $\sqrt {n}$.
 
+The Feistel shuffle~\cite{Feistle} is the previous shuffle method used in the Whisk protocol~\cite{Whisk2024}.
+The Feistel shuffle is a shuffling algorithm that works by taking $n$ number of trackers and arranging them in a $k$ times $k$ matrix.
+Each round the $i$-th proposer selects the $i$-th row of the created matrix and shuffles it in the form $F(x,y)=(y,x+y^3 mod k)$.
+The Feistel shuffle was then later replaced by the shuffle proposed be Larson et al.~\cite{cryptoeprint:2022/560} because of the Feistel shuffle being too slow to shuffle the list of proposers.
 
-
-
-%The shuffling algorithm used in curdleproofs has gone though many iterations and improvements in order to increase speed and reduce the size the proof.
-%This is because the proposer has a limited amount of time to propose a block in each slot, and the addition of the proof to the protocol increases the size of the block the proposers have to create.
-%This is the reason why the current implementation of curdleproofs has chosen the shuffling algorithm~\cite{cryptoeprint:2022/560} proposed by Larsen et al.
-%
-%The way the shuffle works is by selecting 2 days' worth of proposers, and then shuffling the proposers over one day's worth of slots to create a new list of proposers for the following day.
-%In each slot a subset of the proposers are shuffled, and the rest are left unchanged.
-%
-%Though experiments Larsen et al. has shown that after enough shuffles becomes secrue even in adversarial environments.
-%They also surgests that their may be room to lower the size of the subsets chosen in each lot without losing the security of the shuffle.
-%Thereby increasing the speed of the shuffle and reducing the size of the proof being added to the blockchain.
 
 \subsection{Bulletproofs}\label{sec:related-work-bulletproofs}
 A big inspiration for the curdleproofs protocol is the use of bulletproofs~\cite{bunz2018bulletproofs}.
