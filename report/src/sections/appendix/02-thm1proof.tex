@@ -2,17 +2,29 @@
 \section{Proof of Theorem 1}\label{sec:appendix-thm1proof}
 \begin{proof}
     CAAUrdleproofs is the Curdleproofs DL~\gls{ipa} on which the Springproofs protocol has been applied.
-    So to help show that it is~\gls{hvzk}, we refer to theorem 5 of Springproofs~\cite{zhang2024springproofs}.
+    So to help show that it is~\gls{hvzk}, we refer to Theorem 5 of Springproofs~\cite{zhang2024springproofs}.
     \begin{theorem}[Springproofs Theorem 5]
         Suppose IPA$_k$ is a~\gls{hvzk} IPA which reduces a relation $R_{zk,k}$ into a relation $R_{zk,k/2}$, and the blinding factors in the two relations distribute independently.
         Given a scheme function $f$, if the SIPA$_{\text{IPA}}(f)$ is terminative for any lengths $n$ of the witness vector, and there exists a polynomial $\texttt{poly}(\lambda)$ such that the number of rounds $m<\texttt{poly}(\lambda)$, then SIPA$_{\text{IPA}}(f)$ is~\gls{hvzk} when $n\geq2$.
     \end{theorem}
-    Given this theorem, we interpret$\text{IPA}_k$ as the Curdleproofs DL~\gls{ipa}.
+    Given this Theorem, we interpret $\text{IPA}_k$ as the Curdleproofs DL~\gls{ipa}.
 
-    In theorem 5.3.1 of the Curdleproofs paper, they prove their~\gls{ipa} to be zero-knowledge~\cite{Curdleproofs}.
-    They do this by help of a simulator and show that the provers and simulators responses are distributed identically.
-    This matches the definition of~\gls{hvzk} from definition 2.
+    In Theorem 5.3.1 of the Curdleproofs paper, they prove their~\gls{ipa} to be zero-knowledge~\cite{Curdleproofs}.
+    They do this by help of a simulator and show that the prover's and simulator's response are distributed identically.
+    This matches the definition of~\gls{hvzk} from Definition 2, hence the Curdleproofs~\gls{ipa} is~\gls{hvzk}.
+
     We also know that the~\gls{ipa} is a folding argument, which reduces the size of the argument by half after each iteration.
+    In this reduction, Curdleproofs also proved in Theorem 5.3.1 that the values $B_C,B_D,L_{C,j},L_{D,j},R_{C,j},R_{D,j}$ are blinded and identically distributed.
+
+    The scheme function used in CAAUrdleproofs, as seen in~\autoref{fig:fold}(b), is shown by Springproofs to be a variant of their pre-compression method~\cite{zhang2024springproofs}.
+    Springproofs show this function to be optimal in the number of folding steps, hence it must also terminate.
+    Specifically, the pre-compression is shown to run in $\lceil \log n\rceil$ folding rounds, satisfying the existence of the polynomial mentioned in Theorem 5.
+
+    Curdleproofs show their argument to be zero-knowledge in the random oracle model provided $|\mathbf{G}|\geq8$~\cite{Curdleproofs}.
+    Therefore, following Theorem 1, CAAUrdleproofs must be~\gls{hvzk} when $n\geq2$
+
+    FOR SOUNDNESS AND COMPLETENESS, LOOK AT THEOREM 3 IN SPRINGPROOFS AND THE DISCORD TEXT
 \end{proof}
+
 
 
