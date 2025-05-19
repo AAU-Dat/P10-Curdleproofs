@@ -1,0 +1,18 @@
+
+\section{Proof of Theorem 1}\label{sec:appendix-thm1proof}
+\begin{proof}
+    CAAUrdleproofs is the Curdleproofs DL~\gls{ipa} on which the Springproofs protocol has been applied.
+    So to help show that it is~\gls{hvzk}, we refer to theorem 5 of Springproofs~\cite{zhang2024springproofs}.
+    \begin{theorem}[Springproofs Theorem 5]
+        Suppose IPA$_k$ is a~\gls{hvzk} IPA which reduces a relation $R_{zk,k}$ into a relation $R_{zk,k/2}$, and the blinding factors in the two relations distribute independently.
+        Given a scheme function $f$, if the SIPA$_{\text{IPA}}(f)$ is terminative for any lengths $n$ of the witness vector, and there exists a polynomial $\texttt{poly}(\lambda)$ such that the number of rounds $m<\texttt{poly}(\lambda)$, then SIPA$_{\text{IPA}}(f)$ is~\gls{hvzk} when $n\geq2$.
+    \end{theorem}
+    Given this theorem, we interpret$\text{IPA}_k$ as the Curdleproofs DL~\gls{ipa}.
+
+    In theorem 5.3.1 of the Curdleproofs paper, they prove their~\gls{ipa} to be zero-knowledge~\cite{Curdleproofs}.
+    They do this by help of a simulator and show that the provers and simulators responses are distributed identically.
+    This matches the definition of~\gls{hvzk} from definition 2.
+    We also know that the~\gls{ipa} is a folding argument, which reduces the size of the argument by half after each iteration.
+\end{proof}
+
+
