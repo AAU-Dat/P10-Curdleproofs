@@ -75,27 +75,38 @@ The proposer DoS attack is a type of attack that targets the block proposers mak
 An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their oen rewards~\cite{EthereumSSLE2024}.
 As a response to the proposer DoS attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
 An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack on validators.
-In our preliminary work~\cite{ouroldpaper}, we have shown that the attack still possible to perform on the Ethereum network, and using the attack, a proposer DoS can be preformed.
+In our preliminary work~\cite{ouroldpaper}, we have shown that the attack still possible to perform on the Ethereum network, and using the attack, a proposer~\gls{dos} can be preformed.
 
 
 \paragraph*{\textbf{The Whisk protocol}}\label{sec:background-mitigation}
-Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}
+Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called Curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}.
 Whisk works by selecting a list of proposers 16384 and shuffling them over 8192 slots (1 day).
 Then 8192 proposers are selected from the shuffled list to propose blocks for the next 8192 slots while a new list is being shuffled.
 This way a new list of proposers is created every day.
 After each shuffle Whisk uses a zero-knowledge proof to prove that the shuffle is correct.
-This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer DoS attack because of the identity of the upcoming proposers being hidden now.
+This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer~\gls{dos} attack because of the identity of the upcoming proposers being hidden now.
 
 \paragraph*{\textbf{Curdleproofs}}\label{sec:background-curdleproofs}
-Curdleproofs is a zero-knowledge proof system that allows a prover to prove the authenticity of a shuffle without revealing how it was shuffled.
-It does this by using 3 different zero-knowledge proofs with one of them relying on two more zero-knowledge proofs.
-the first proof is a sameperm proof.
-The sameperm proof is used to prove a commitment to a specific, but not publicly known, permutation.
-Sameperm also runs a subroutine to help with the proof, called a grand product argument.
-The grand product argument is an intermediate step used to construct an inner product argument, which proves the grand product argument.
-The second proof is a "same multiscalar" argument.
+Curdleproofs is a zero-knowledge proof system that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
+It does so by using three different zero-knowledge proofs, with one of them relying on two more zero-knowledge proofs.
+
+The first proof is the~\gls{sameperm} proof.
+The prover first constructs a commitment to the permutation, $\sigma()$, by saying $M=\sigma(1,2,\dots,\ell)\times\mathbf{g}$.
+Then, using the Fiat-Shamir transformation, a challenge, $\mathbf{a}$, from public inputs is constructed, and a new commitment is made from that, $A=\sigma(\mathbf{a})\times\mathbf{g}$.
+The~\gls{sameperm} proof now consists of convincing the verifier that the same permutation was used for constructing commitment $A$ and $M$.
+To do this, the two commitments are used to construct a polynomial equation.
+Then Neff's trick~\cite{10.1145/501983.502000}, which observes that two polynomials are equal iff.\ their roots are the same up to permutation.
+
+This is proven through a grand product argument.
+To prove that argument, Curdleproofs compiles it down to an~\gls{ipa} by expressing each multiplication of the grand product as its own equation.
+
+Hence, the~\gls{sameperm} proof is done, if the prover can prove the~\gls{ipa}.
+
+
+The second proof is a~\gls{samemsm} argument.
 This proves that permuted set of ciphertexts was made by using the permutation that the prover previously committed to.
-The third proof is a samescalar argument which proves that, given a public input, there exists a scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
+
+The third proof is a Same Scalar argument which proves that, given a public input, there exists a scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
 
 
 
