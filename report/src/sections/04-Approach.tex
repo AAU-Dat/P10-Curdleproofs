@@ -31,7 +31,7 @@ The computation is for finding the set, $T$.
 
 \begin{figure}[ht]
 \begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc}]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=left]
     input: $n$, where $n>0$
 
     $\{n\}\gets n$
@@ -76,7 +76,7 @@ The construction can be seen in~\autoref{fig:ipa-prover}.
 
 \begin{figure}[h]
 \begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left]
 $\textbf{Step 1:}$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
  where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
@@ -151,7 +151,7 @@ Again, the originally proposed verifying protocol has been modified according to
 
 \begin{figure}[h]
 \begin{framed}
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier}]
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left]
 $\textbf{Step 1:}$
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z)\gets$parse$(\phi_{dl_{inner}})$
@@ -281,7 +281,7 @@ It is simply used as a measuring tool.
 
 \begin{figure}[ht]
     \begin{framed}
-        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized}]
+        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=left]
 $\textbf{Step 1:}$
 $(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
