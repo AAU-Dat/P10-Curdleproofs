@@ -1,8 +1,7 @@
 \section{approach}\label{sec:approach}
 
 As explained in~\autoref{sec:background}, Curdleproofs makes use of three different proofs.
-This work focuses on improving the underlying~\gls{ipa}.
-Especially the running time and proof size of the protocol are of interest.
+This work focuses on improving the underlying~\gls{ipa}, especially the running time and proof size of the protocol are of interest.
 The following is our approach to, how we modified the~\gls{ipa}.
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
@@ -32,7 +31,7 @@ The computation is for finding the set, $T$.
 
 \begin{figure}[ht]
 \begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc}]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=left]
     input: $n$, where $n>0$
 
     $\{n\}\gets n$
@@ -67,6 +66,7 @@ Though, this defeats the attempt of lowering the proof size, as it would now cor
 It is notable to mention that using the folding as shown in~\autoref{fig:fold}(b) results in the second recursive round being a size corresponding to a power of two.
 This means that the rest of the protocol will run as a general~\gls{ipa}, without the actual need for splitting the vectors, which can also be seen in~\autoref{fig:schemefunc}.
 
+\subsection{CAAUrdleproofs}\label{subsec:approach-CAAUrdleproofs}
 With the idea from Springproofs in mind, we have made a modification to the~\gls{ipa} of Curdleproofs
 We call this modified protocol, CAAUrdleproof.
 For generality and readability, we show the split of vectors happening every round.
@@ -76,7 +76,7 @@ The construction can be seen in~\autoref{fig:ipa-prover}.
 
 \begin{figure}[h]
 \begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover}]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left]
 $\textbf{Step 1:}$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
  where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
@@ -151,7 +151,7 @@ Again, the originally proposed verifying protocol has been modified according to
 
 \begin{figure}[h]
 \begin{framed}
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier}]
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left]
 $\textbf{Step 1:}$
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z)\gets$parse$(\phi_{dl_{inner}})$
@@ -207,7 +207,6 @@ If so, the verifier accepts the proof.
 
 \subsection{Shuffle security}\label{subsec:approach-shuffle-security}
 The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in Curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
-The shuffle itself, however, is not too complex.
 A formal definition of the shuffle is given in~\autoref{fig:shuffle}~\cite{cryptoeprint:2022/560}.
 
 \begin{figure}[ht]
@@ -234,12 +233,13 @@ In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen ran
 The shuffler then re-encrypts the ciphertexts and publishes them.
 This process is repeated for $T$ slots and the shuffle is complete.
 During the $T$ shuffles, some shufflers may be adversarial.
-This means that whenever the shuffling process is taking place, a part of the shuffles may be adversarial, which can be seen as not being shuffled.
+This means that whenever the shuffling process is taking place, a part of the shuffles may be adversarial.
+An adversarial shuffle can be seen as no shuffling being done.
 Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \alpha$, where $\alpha$ is the number of adversarial tracked ciphertexts.
 
 The shuffle is secure if none of the following two events occur.
 The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
-Since the subsets of ciphertexts are chosen randomly in each shuffle, if there are enough adversarial shufflers in a row to end the process, then a short backtracking is possible.
+Since the subsets of ciphertexts are chosen randomly in each shuffle, if there are enough adversarial shufflers in a row at the end of the process, then a short backtracking is possible.
 
 The second event that can occur is related to the fact that every shuffle distributes the possibility of a certain ciphertext to be in a certain slot.
 So, if a shuffle contains a lot of ciphertexts with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
@@ -281,7 +281,7 @@ It is simply used as a measuring tool.
 
 \begin{figure}[ht]
     \begin{framed}
-        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized}]
+        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=left]
 $\textbf{Step 1:}$
 $(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
@@ -365,7 +365,7 @@ So, at each shuffle, the shuffler randomly picks $k$ ciphertexts and shuffles th
 Meanwhile, an average of the water between the active indices of the $k$-shuffle is found.
 All active indices are given this amount of water.
 
-Now, after each shuffle, if any cup has more than $\frac{2}{n-\alpha}$ water, its position can be predicted by the adversary, hence the shuffle is insecure~\cite{cryptoeprint:2022/560}.
+Now, after each shuffle, if any cup has more than $2/(n-\alpha)$ water, its position can be predicted by the adversary, hence the shuffle is insecure~\cite{cryptoeprint:2022/560}.
 If a position can be predicted, another round of shuffling is performed.
 This method is used until no cup exceeds the threshold, after which the shuffle is deemed secure.
 
