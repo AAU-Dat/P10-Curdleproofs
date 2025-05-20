@@ -204,6 +204,10 @@ So, it constructs $c\times G_1+cdH$, which is the structure of the $C$ commitmen
 The verifier now checks if these commitments match the commitments that he constructed in the recursive protocol.
 If so, the verifier accepts the proof.
 
+\begin{theorem}
+    CAAUrdleproofs is a zero-knowledge argument of knowledge when $\left|k\right|\geq8$
+\end{theorem}
+
 
 \subsection{Shuffle security}\label{subsec:approach-shuffle-security}
 The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in Curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.

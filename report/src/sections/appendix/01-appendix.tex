@@ -1,3 +1,52 @@
 
-\section{Appendix}\label{sec:appendix}
-This is the appendix
+\section{Definitions of Zero-Knowledge Argument of Knowledge}\label{sec:appendix}
+\begin{definition}[Honest-Verifier Zero-Knowledge]
+    An interactive argument $(Setup, P, V)$ for a relation $R$ is honest-verifier zero-knowledge, if there exists a
+    probabilistic polynomial time simulator, such that there exists a negligible function $\epsilon(\lambda)$, for all adversaries $A_1$ and $A_2$
+
+    \begin{align*}
+        \left| % Opening absolute value
+        \begin{aligned} % Inner environment for the multi-line content within abs value
+            & \Pr \left[ % Alignment point before Pr
+                \begin{array}{c|l}
+                (\mathbb{x},\mathbb{w}) \in \mathcal{R} \land & \sigma \leftarrow \text{Setup}(1^\lambda) \\
+                \mathcal{A}_1(tr) = 1 & (\mathbb{x},\mathbb{w},\rho) \leftarrow \mathcal{A}_2(\sigma) \\
+                & tr \leftarrow \text{SIM}(x,\rho)
+                \end{array}
+                \right] - \\ % End of first line inside aligned
+            % Start of second line inside aligned
+            & \Pr \left[ % Minus sign, then alignment point before Pr
+                \begin{array}{c|l}
+                (\mathbb{x},\mathbb{w}) \in \mathcal{R} \land & \sigma \leftarrow \text{Setup}(1^\lambda) \\
+                \mathcal{A}_1(tr) = 1 & (\mathbb{x},\mathbb{w},\rho) \leftarrow \mathcal{A}_2(\sigma) \\
+                & tr \leftarrow \langle \mathcal{P}(\sigma,\mathbb{x},\mathbb{w}), \mathcal{V}_\rho(\sigma,\mathbb{x}) \rangle
+                \end{array}
+                \right]
+        \end{aligned}
+        \right| % Closing absolute value
+        \leq \epsilon(\lambda)
+    \end{align*}
+\end{definition}
+
+\begin{definition}[Non-Interactive Knowledge-Soundness]
+    A non-interactive random oracle argument $(Setup, P, V)$ for relation $R$ is knowledge sound, if there exists an efficient knowledge extractor $\mathcal{E}$ and a positive polynomial $z$, such that for any statement $\mathbb{x}\in\{0,1\}^\lambda$ and prover $P^*$ with at most $Q$ queries to the random oracle \texttt{RO},
+
+
+    \begin{align*}
+        \Pr \left[ (\mathbb{x},\mathbb{w}') \in \mathcal{R} \;\middle|\;
+        \begin{array}{@{}l@{}} % Using an array for the assignments to the right of the bar
+            \sigma \leftarrow \text{Setup}(1^\lambda) \\
+            \mathbb{w}' \leftarrow \mathcal{E}^{P^*}(x)
+        \end{array}
+        \right]
+        \geq \frac{\epsilon(P^*, \mathbb{x}) - \kappa(|\mathbb{x}|, Q)}{z(|\mathbb{x}|)},
+    \end{align*}
+\end{definition}
+
+\begin{definition}[Completeness]
+    An argument $(Setup, P, V)$ is complete, if for any statement $\mathbb{x}\in L$ and witness $\mathbb{w}$ such that $(\mathbb{x,w})\in R$, there exists a negligible function $\mu(\lambda)$, such that
+    \begin{align*}
+        \Pr\left[\langle P(\sigma,\mathbb{x},\mathbb{w}), V(\sigma,\mathbb{x})\rangle=1|\sigma\gets Setup(1^\lambda)\right]\geq 1-\mu(\lambda)
+    \end{align*}
+\end{definition}
+
