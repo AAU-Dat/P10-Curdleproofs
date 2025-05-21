@@ -109,7 +109,7 @@ Now, the goal of the~\gls{samemsm} argument is to prove that the output cipherte
 As the multiscalar is a vector this argument is an~\gls{ipa} by nature, contrary to the~\gls{sameperm} argument.
 
 The third proof is a Same Scalar argument.
-To mask the ciphertexts, each prover, besides permuting the set, multiplies all ciphertexs by a scalar, $k$.
+To mask the ciphertexts, each prover, besides permuting the set, multiplies all ciphertexts by a scalar, $k$.
 This is for randomization purposes, making it harder for adversaries to track the ciphertexts~\cite{Whisk2024}.
 Also, all validators are still able to open their commitments if they are chosen as block proposers, even after several randomizations.
 So, the goal of the Same Scalar argument is to prove the existence of the scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
