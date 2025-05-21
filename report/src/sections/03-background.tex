@@ -3,7 +3,7 @@
 In this section, we provide the necessary background information on the Curdleproofs protocol~\cite{Curdleproofs}, the Whisk protocol~\cite{Whisk2024} and an overview of the notation used in the paper.
 
 The notation used throughout this paper can be seen in~\autoref{tab:notation}.
-\begin{table*}[ht]
+\begin{table*}[!htb]
     \centering
     \begin{tabular}{|l|l|}
         \hline
@@ -45,8 +45,8 @@ The notation used throughout this paper can be seen in~\autoref{tab:notation}.
         $\mathbf{a}_{[:k]}=(a_1,\dots,a_k)\in\mathbb{F}^k, \; \mathbf{a}_{[k:]}=(a_{k+1},\dots,a_n)\in\mathbb{F}^{n-k}$
         & Slices of vectors (Python notation) \\
         \hline
-        \{\textit{Public Input}, \textit{Witness}\}: Relation
-        & Relation using the specified public input and witness \\
+        $\left\{\phi; w\middle|\textit{ properties satisfying }\phi,w\right\}$
+        & Relation using the specified public input $phi$ and private witness $w$ \\
         \hline
     \end{tabular}
     \caption{Notation used throughout the paper.}
@@ -61,11 +61,9 @@ Our work therefore runs as a public coin protocol in any cryptographic group whe
  Given a finite, multiplicative cyclic group $\mathbb{G}$ of prime order $p$, the decisional Diffie-Hellman problem is defined as follows: Given $(g^a,g^b,g^c)\in\mathbb{G}$, where $g$ is a generator of $\mathbb{G}$ and $a,b,c\in\mathbb{Z}_p$, decide whether $c=ab$.
 \end{definition}
 
-\subsection{Whisk}\label{sec:related-work-whisk}
+\subsection{Whisk}\label{subsec:related-work-whisk}
 
-\paragraph*{\textbf{Ethereum}}\label{sec:background-ethereum}
-Ethereum is a decentralized blockchain platform that enables developers to build and deploy smart contracts and decentralized applications.
-It is the second-largest blockchain platform by market capitalization and has a large and active developer community.
+\paragraph*{\textbf{Ethereum Proof of Stake}}\label{par:background-ethereum}
 Ethereum uses a proof-of-stake consensus mechanism, which allows users to validate transactions and create new blocks by staking their Ether (ETH) tokens.
 The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
 In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
