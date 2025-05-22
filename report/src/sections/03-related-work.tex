@@ -20,18 +20,24 @@ The Håstad square shuffle is a shuffling algorithm that shuffles a $n$ long vec
 The algorithm works by splitting the vector into $\sqrt {n}$ times $\sqrt {n}$ square matrix and for each step in the algorithm it switches between shuffling a row and a column.
 The Håstad shuffle is more rigid than the shuffling algorithm used in curdleproofs~\cite{cryptoeprint:2022/560} because of the fixed size of the shuffle being $\sqrt {n}$.
 
-The Feistel shuffle~\cite{Feistle} is the previous shuffle method used in the Whisk protocol~\cite{Whisk2024}.
-The Feistel shuffle is a shuffling algorithm that works by taking $n$ number of trackers and arranging them in a $k$ times $k$ matrix.
+The Feistel shuffle~\cite{Feistle} is a previously used shuffle method in the Whisk protocol~\cite{Whisk2024}.
+It takes $n$ number of validator trackers and arranges them in a $k$ times $k$ matrix.
 Each round the $i$-th proposer selects the $i$-th row of the created matrix and shuffles it in the form $F(x,y)=(y,x+y^3 mod k)$.
-The Feistel shuffle was then later replaced by the shuffle proposed be Larsen et al.~\cite{cryptoeprint:2022/560} because of the Feistel shuffle being too slow to shuffle the list of proposers.
-
+The Feistel shuffle was later replaced by the shuffle proposed by Larsen et al.~\cite{cryptoeprint:2022/560}.
+Ethereum mentioned the reason for this to be that the shuffle by Larsen et al.\ provides a simpler protocol~\cite{Whisk2024}.
 
 \subsection{Bulletproofs}\label{subsec:related-work-bulletproofs}
 A big inspiration for the Curdleproofs protocol is bulletproofs~\cite{bunz2018bulletproofs}.
 Bulletproofs is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
 Bulletproofs is in itself not a zero-knowledge proof system, but with the help of Fiat Shamir~\cite{bunz2018bulletproofs} it can be used to create a zero-knowledge proof.
 Bulletproofs also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproofs.
+
 One of these is Bulletproofs+~\cite{chung2022bulletproofs+} which uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
 Bulletproofs+ is also a zero-knowledge proof by itself unlike the original bulletproofs.
+Trying to modify Curdleproofs with the weighted inner product argument introduces complications that would need larger modifications and is therefore not suitable.
+This can be seen in~\autoref{sec:curdleproofs-weighted-inner-product-argument-modification-attempt}
+
 A third version of the Bulletproofs protocol is Bulletproofs++~\cite{eagen2024bulletproofs++} which uses a new type of argument called the norm argument to achieve a better performance.
-Unlike the two other proofs Bulletproofs++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the Curdleproofs protocol due to the binary nature of the bulletproofs++.
+This comes from the prover only needing to commit to a single vector, rather than two.
+Therefore, with the two vectors, $x$ and $y$ of a standard~\gls{ipa}, they need to assume $x=y$ for their protocol to work.
+Then, along with the norm being weighted, which raises the same complications as with Bulletproofs+, this makes it unsuitable for Curdleproofs.
