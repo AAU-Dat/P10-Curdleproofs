@@ -26,12 +26,11 @@ The core concept of the Springproofs scheme function is to split the vectors int
 Then, the fold for that round is only done on one of the two sets, $T$, before the other set, $S$, is appended again at the end of the recursive round.
 
 Springproofs present different scheme functions and prove some of them to be optimal.
-One of these optimal functions is an optimized version of their \textit{pre-compression method}, which splits the vectors as seen in~\autoref{fig:schemefunc}.
+One of these optimal functions is an optimized version of their \textit{pre-compression method}, which splits the vectors as seen in~\autoref{lst:schemefunc}.
 The computation is for finding the set, $T$.
 
-\begin{figure}[ht]
-\begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=left]
+\begin{figure}[!htb]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=right,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
     input: $n$, where $n>0$
 
     $\{n\}\gets n$
@@ -44,8 +43,6 @@ The computation is for finding the set, $T$.
         $\{T\}\gets(1:n)$
     $\{S\}\gets\{n\}-\{T\}$
     \end{lstlisting}
-\end{framed}
-\caption{Scheme function \textbf{\textit{f}} used in CAAUrdleproofs}
 \label{fig:schemefunc}
 \end{figure}
 
@@ -54,30 +51,31 @@ In \autoref{fig:fold}(a) is a scheme function which simply pads the vector to th
 If one wanted to run current~\glspl{ipa}s on vector that are not a power of two, this would generally be the easiest way to achieve that.
 Though, this defeats the attempt of lowering the proof size, as it would now correspond to running an~\gls{ipa} on the size of the next power of two.
 
-\begin{figure*}[t]
+\begin{figure*}[!htb]
     \centering
-    \subfloat[\centering Padding Method]{{\includegraphics[width=0.43\textwidth]{figures/padding} }}%
+    \subfloat[\centering Padding Method]{{\includegraphics[width=0.41\textwidth]{figures/padding} }}%
     \qquad
-    \subfloat[\centering Optimal Pre-Compression Method]{{\includegraphics[width=0.45\textwidth]{figures/fold} }}%
-    \caption{Folding visualization as seen in the Springproofs paper}%
+    \subfloat[\centering Optimal Pre-Compression Method]{{\includegraphics[width=0.43\textwidth]{figures/fold} }}%
+    \caption{Folding visualization as seen in the Springproofs paper. Source:~\cite{zhang2024springproofs}}%
     \label{fig:fold}%
 \end{figure*}
 
 It is notable to mention that using the folding as shown in~\autoref{fig:fold}(b) results in the second recursive round being a size corresponding to a power of two.
-This means that the rest of the protocol will run as a general~\gls{ipa}, without the actual need for splitting the vectors, which can also be seen in~\autoref{fig:schemefunc}.
+This means that the rest of the protocol will run as a general~\gls{ipa}, without the actual need for splitting the vectors, which can also be seen in~\autoref{lst:schemefunc}.
 
 \subsection{CAAUrdleproofs}\label{subsec:approach-CAAUrdleproofs}
 With the idea from Springproofs in mind, we have made a modification to the~\gls{ipa} of Curdleproofs
 We call this modified protocol, CAAUrdleproof.
 For generality and readability, we show the split of vectors happening every round.
 
+\subsubsection*{Prover computation}
 First of all, we have the prover computation, where the proof is constructed.
-The construction can be seen in~\autoref{fig:ipa-prover}.
+The construction can be seen in~\autoref{lst:ipa-prover}.
 
-\begin{figure}[h]
-\begin{framed}
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left]
+\begin{figure}[!htb]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
+$(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
  where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
 $B_C\gets \textbf{r}_C\times \textbf{G}$
@@ -87,14 +85,14 @@ $\textbf{c}\gets \textbf{r}_C+\alpha \textbf{c}$
 $\textbf{d}\gets \textbf{r}_D+\alpha \textbf{d}$
 $H\gets\beta H$
 $\textbf{Step 2:}$
-$m\gets n$
-while $1\leq j\leq\lceil \log m\rceil:$
+$m\gets \lceil \log n\rceil$
+while $1\leq j\leq m:$
     $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
     $n\gets \frac{|T|}{2}$
-    $\textbf{c}=\textbf{c}_T$, $\textbf{cS}=\textbf{c}_S$
-    $\textbf{d}=\textbf{d}_T$, $\textbf{dS}=\textbf{d}_S$
-    $\textbf{G}=\textbf{G}_T$, $\textbf{GS}=\textbf{G}_S$
-    $\textbf{G}'=\textbf{G}'_T$, $\textbf{GS}'=\textbf{G}'_T$
+    $\textbf{c}\gets\textbf{c}_T$, $\textbf{cS}\gets\textbf{c}_S$
+    $\textbf{d}\gets\textbf{d}_T$, $\textbf{dS}\gets\textbf{d}_S$
+    $\textbf{G}\gets\textbf{G}_T$, $\textbf{GS}\gets\textbf{G}_S$
+    $\textbf{G}'\gets\textbf{G}'_T$, $\textbf{GS}'\gets\textbf{G}'_T$
     $L_{C,j}\gets\textbf{c}_{[:n]}\times\textbf{G}_{[n:]}+(\textbf{c}_{[:n]}\times\textbf{d}_{[n:]})H$
     $L_{D,j}\gets\textbf{d}_{[n:]}\times\textbf{G}'_{[:n]}$
     $R_{C,j}\gets\textbf{c}_{[n:]}\times\textbf{G}_{[:n]}+(\textbf{c}_{[n:]}\times\textbf{d}_{[:n]})H$
@@ -112,46 +110,52 @@ $d\gets d_1$
 
 return $(B_C,B_D,\mathbf{\pi},c,d)$
     \end{lstlisting}
-\end{framed}
-\caption{Prover computation for CAAU-IPA in CAAUrdleproofs}
 \label{fig:ipa-prover}
 \end{figure}
-
 First, we have step 1, which is the setup phase.
 It is done exactly the same way as in Curdleproofs.
-To ensure zero-knowledge, two blinding vectors for each commitment are constructed.
-These are also given the properties, $(\mathbf{r}_C\times \mathbf{d}+\mathbf{r}_D\times \mathbf{c})=0$ and $\mathbf{r}_C\times\mathbf{r}_D=0$, ensuring the completeness of the protocol.
+In line 2, the prover gets the cryptographic generators, $\mathbf{G}$, $\mathbf{G}'$ and $H$, which are going to be used for commitment constructions.
+To ensure zero-knowledge, two blinding vectors for each commitment are constructed on lines 3--4.
+These are also given the properties, $(\mathbf{r}_C\times \mathbf{d}+\mathbf{r}_D\times \mathbf{c})=0$~and~ $\mathbf{r}_C\times\mathbf{r}_D=0$, ensuring the completeness of the protocol.
 
-From the public input, hash values $\alpha,\beta$ are then computed.
+After this, commitments of the blinding vectors are constructed as $B_C$ and $B_D$, on lines 5--6.
+These will eventually be used for verification by the verifier.
+
+From the public input, hash values $\alpha,\beta$ are then computed on line 7.
 These are used to ensure the soundness of the protocol.
 
-The two vectors are then blinded and multiplied by the $\alpha$ hash to ensure the zero-knowledge and soundness, as well as $H=\beta H$.
+On lines 8--10, the two vectors are then blinded and multiplied by the $\alpha$ hash to ensure the zero-knowledge and soundness, as well as $H=\beta H$.
 
 
-Now, the recursive proof construction begins.
-As explained, at the start of the recursive round, the \texttt{while}-loop, we find the split of the vectors, with $f(n)$ being the function from~\autoref{fig:schemefunc}.
-Then, we find half the length of the $T$ set, as this is the set, we are doing the recursive round on.
-Equally we split our witness vectors and the group vectors using $T$ and $S$.
+Now, the recursive proof construction, and step 2, begins.
+As explained, at the start of the recursive round, line 13, we find the split of the vectors on line 14, with $f(n)$ being the scheme function from~\autoref{lst:schemefunc}.
+Then on line 15, we find half the length of the $T$ set, as it is the set, we are doing the recursive folding round on.
+Equally, on lines 16--19, we split our witness vectors and the group vectors using $T$ and $S$.
 
-After this, the prover constructs cross commitment elements that are computed on the $T$ set.
-These are added to the proof, which eventually is available to the verifier.
-They are also used to construct a hash value, $\gamma_j$, in the next step.
+After this, the prover constructs cross-commitment elements on lines 20--23 that are computed on the $T$ set.
+These are added to the proof on line 24, which eventually is available to the verifier.
+They are also used to construct a hash value,~$\gamma_j$, in the next step on line 25.
 
-This value is used for completing the folding of $\mathbf{c},\mathbf{d},\mathbf{G},\mathbf{G'}$.
+This value is used on lines 26--29 for completing the folding of $\mathbf{c},\mathbf{d},\mathbf{G},\mathbf{G'}$.
 We do the fold as in the original Curdleproofs protocol, while also appending the elements of $S$ back onto the vectors.
 The figure shows a concatenation, but it is important to know that the vectors are appended together as shown in~\autoref{fig:fold}(b).
 
-At last,~$n$ is updated to the length of the concatenated vectors before starting a new round.
+At last, on line 30,~$n$ is updated to the length of the concatenated vectors before starting a new round.
 
-The result of this is a proof constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of 2.
+The result of this is a proof,~$\mathbf{\pi}$, constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of 2.
+
+In step 3, lines 31--35, the folded vectors of size 1 are added to the proof as values as well as the commitments to the blinding values,~$B_C$ and~$B_D$.
+This is what is returned for the verifier to use for verification.
+
 
 The now constructed proof is then supposed to be added to the block in the chain at the given time slot~\cite{Whisk2024}.
-Having the proof on the blockchain allows for each validator to asynchronously verify whether it is a valid proof.
-Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{fig:ipa-verifier}.
 
-\begin{figure}[h]
-\begin{framed}
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left]
+\subsubsection*{Verifier computation}
+Having the proof on the blockchain allows for each validator to asynchronously verify whether it is a valid proof.
+Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{lst:ipa-verifier}.
+
+\begin{figure}[!htb]
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left,caption={Verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z)\gets$parse$(\phi_{dl_{inner}})$
@@ -179,33 +183,49 @@ for $1\leq j\leq m$
 $\textbf{Step 3:}$
 Check $C=c\times G_1+cdH$
 Check $D=d\times G'_1$
-$\text{return 1 if both checks pass, else return 0}$
+return 1 $\text{if both checks pass, else}$ return 0
 \end{lstlisting}
-\end{framed}
-\caption{Verifier computation for CAAU-IPA in CAAUrdleproofs}
 \label{fig:ipa-verifier}
 \end{figure}
 
-The changes to the verifier protocol are equivalent to the ones made to the prover protocol.
-First, the vectors are divided into the two sets, $|T|,|S|$.
-The verifier then retrieves the cross-product commitment update values, $L_{C,j},L_{D,j},R_{C,j},R_{D,j}$.
-These are used for constructing a new commitment according to the fold made at round $i$.
-The corresponding left and right side cross-product are multiplied by a challenge, $\gamma_j,\gamma_j^{-1}$, respectively.
-By this time, the $C$ and $D$ commitments are a commitment to the original commitments along with the folded commitment.
+Many of the changes to the verifier protocol are equivalent to the ones made to the prover protocol.
 
-$\mathbf{G,G'}$ are updated as in~\autoref{fig:ipa-prover} before the protocol updates $n$ to be the length of the newly constructed vectors.
+At step 1, the verifier sets up to run the protocol.
 
-As in the prover protocol, this is then repeated for $\log n$ round, after which the vectors have length $1$.
+The verifier, on line 2, gets the same cryptographic generators used by the prover,~$\mathbf{G}$, $\mathbf{G}'$ and $H$, from the common reference string.
+Then, from the public input $\phi$, line 3, the verifier gets hold of the original commitments, $C$ and $D$, as well as the result of the inner product between $c$ and $d$.
+From the prover's proof, on line 4, the verifier gets the blinding commitments $B_C$ and $B_D$, the proof elements $\mathbf{\pi}$, and the folded vector values $c$ and $d$.
+With this, the verifier is able to compute the same~$\alpha$ and~$\beta$ challenges as the prover in line 5, as well as computing the same~$H$ generator on line 6.
 
-At the end of the protocol, the verifier now does its final check.
-From the prover, it has retreived the folded down $c$ and $d$ vectors.
-It therefore constructs commitments with these elements.
-So, it constructs $c\times G_1+cdH$, which is the structure of the $C$ commitment as well as $d\times G'_1$, which is the structure of the $D$ commitment.
-The verifier now checks if these commitments match the commitments that he constructed in the recursive protocol.
+Now the verifier updates the commitments~$C$ and~$D$ on lines 7--8.
+The reason being that on lines 7--8 in~\autoref{lst:ipa-prover}, the witness vectors are updated to be both blinded and multiplied by the challenge,~$\alpha$.
+Those modifications mean that the commitments~$C$ and~$D$ need to be commitments to the modified witnesses instead.
+
+The setup phase is now done, and the verifier has to also run a recursive protocol, which is shown in step 2.
+First, the vectors are on line 13 divided into the two sets,~$|T|,|S|$, as in~\autoref{lst:ipa-prover}.
+After this, the group vectors are in lines 14--16 split in according to those sets, along with updating~$n$ to be half the size of~$T$.
+
+The verifier then, on line 17, retrieves from the proof the cross-product commitment update values for the given round,~$L_{C,j},L_{D,j},R_{C,j},R_{D,j}$.
+These are used for constructing a new commitment, lines 19--20, according to the fold made at round $i$.
+
+By fetching the cross-commitments of the round, the verifier is able to compute a challenge $\gamma_j$, line 18, made from the same public inputs as the prover.
+
+The corresponding left and right side cross-product are then, in lines 19--20, also multiplied by said challenge,~$\gamma_j,\gamma_j^{-1}$, respectively.
+By this time, the~$C$ and~$D$ commitments are a commitment to the original commitments along with the folded commitment.
+
+$\mathbf{G,G'}$~are on lines 21--22 updated as in~\autoref{lst:ipa-prover} before the protocol on line 23 updates $n$ to be the length of the newly constructed vectors.
+
+As in the prover protocol, this is then repeated for $\lceil \log n \rceil$ rounds, after which the vectors have length $1$.
+
+At the end of the protocol, in step 3, the verifier now does its final check.
+From the prover, line 4, it has retreived the folded down $c$ and $d$ vectors.
+It therefore constructs commitments with those elements.
+So, it constructs $c\times G_1+cdH$ on line 26, which is the structure of the $C$ commitment as well as $d\times G'_1$ on line 27, which is the structure of the $D$ commitment.
+The verifier now checks if these commitments match the commitments that were constructed in the recursive part of the protocol.
 If so, the verifier accepts the proof.
 
 \begin{theorem}
-    CAAUrdleproofs is a zero-knowledge argument of knowledge when $\left|k\right|\geq8$
+    CAAUrdleproofs is a zero-knowledge argument of knowledge when~$\left|k\right|\geq8$.
 \end{theorem}
 
 
@@ -213,7 +233,7 @@ If so, the verifier accepts the proof.
 The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that was used in Curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
 A formal definition of the shuffle is given in~\autoref{fig:shuffle}~\cite{cryptoeprint:2022/560}.
 
-\begin{figure}[ht]
+\begin{figure}[!htb]
 \begin{framed}
     \[
         \Pi(c_1, \ldots, c_n)
@@ -228,7 +248,7 @@ A formal definition of the shuffle is given in~\autoref{fig:shuffle}~\cite{crypt
         \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
     \end{itemize}
 \end{framed}
-\caption{Distributed shuffling protocol.}
+\caption{Distributed shuffling protocol. Source:~\cite{cryptoeprint:2022/560}}
 \label{fig:shuffle}
 \end{figure}
 
@@ -239,7 +259,11 @@ This process is repeated for $T$ slots and the shuffle is complete.
 During the $T$ shuffles, some shufflers may be adversarial.
 This means that whenever the shuffling process is taking place, a part of the shuffles may be adversarial.
 An adversarial shuffle can be seen as no shuffling being done.
-Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \alpha$, where $\alpha$ is the number of adversarial tracked ciphertexts.
+Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \beta$, where $\beta$ is the number of adversarial shuffles.
+
+The adversary can also track cups.
+For instance, if some of the cups are the adversary's own.
+Those tracked cups are denoted by~$\alpha$, which is $\leq n$.
 
 The shuffle is secure if none of the following two events occur.
 The first event is a short backtracking, where an adversary can find the original ciphertexts from the shuffled ciphertexts.
@@ -271,7 +295,7 @@ This allows for checking calculations of the form:
 \end{align}
 As explained by Curdleproofs, the verifier computation can be significantly optimized by checking the multiscalar multiplications as a single check at the end of the protocol instead.
 
-CAAUrdleproofs introduced a slight difference on this topic in regard to the~\glspl{ipa}, \texttt{sameperm} and \texttt{same multiscalar}.
+CAAUrdleproofs introduced a slight difference on this topic in regard to the~\glspl{ipa},~\gls{sameperm} and~\gls{samemsm}.
 In each recursive round, both the folded vectors and the commitments are being multiplied by verification scalars, $\gamma_j$.
 To keep track of which elements of the vectors are multiplied by each $\gamma_j$, a function called \texttt{get\_verification\_scalars\_bitstring} is used.
 The output of this function is a list of length $\ell$, each element with a list corresponding to the rounds in which $\gamma_j$ was multiplied to the element.
@@ -283,9 +307,8 @@ Here, it is necessary to simulate a run though the recursive protocol.
 Though, this should not have a big impact on performance, as it is run over vectors of small integers, and never actually has to do any multiplications.
 It is simply used as a measuring tool.
 
-\begin{figure}[ht]
-    \begin{framed}
-        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=left]
+\begin{figure}[!htb]
+        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=right,caption={Optimized verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
 $(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
@@ -337,12 +360,10 @@ for $1\leq j\leq n$:
     $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}$
     $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
         \end{lstlisting}
-    \end{framed}
-    \caption{Optimized verifier computation for CAAU-IPA in CAAUrdleproofs}
     \label{fig:ipa-verifier-optimized}
 \end{figure}
 
-The protocol used in the implementation can be seen in~\autoref{fig:ipa-verifier-optimized}.
+The protocol used in the implementation can be seen in~\autoref{lst:ipa-verifier-optimized}.
 A list, \texttt{ActivePos}, keeps track of the original index placement and its position after each fold.
 Doing this, we can run the recursion and find the correct challenges for each index, while still knowing what the original index was.
 A bit matrix,~$b_{i,j}$, is constructed as in Curdleproofs, such that the vector, $\mathbf{s}$, is made in the same way for both protocols.
@@ -350,9 +371,9 @@ A bit matrix,~$b_{i,j}$, is constructed as in Curdleproofs, such that the vector
 The vector, $\mathbf{u}$, is used for optimization in the grand product argument rather than $\mathbf{G'}$, and the \texttt{AccumulateCheck} function is used for the multiscalar multiplication optimization.
 For a thorough explanation of these, we refer to Curdleproofs~\cite{Curdleproofs}.
 
-In Curdleproofs, both the \texttt{SamePerm} and \texttt{SameMultiscalar} proof are recursive~\glspl{ipa}.
-So, the modifications and optimization used on the \texttt{SamePerm} argument are also used on the \texttt{SameMultiscalar} argument.
-This includes the split into set $T$ and $S$ before recursion, and the construction of the bit matrix, $b_{i,j}$, to keep track of multiplications on individual elements.
+In Curdleproofs, both the~\gls{sameperm} and~\gls{samemsm} proof are recursive~\glspl{ipa}.
+So, the modifications and optimization used on the~\gls{sameperm} argument are also used on the~\gls{samemsm} argument.
+This includes the split into set $T$ and $S$ before recursion, and the construction of the bit matrix,~$b_{i,j}$, to keep track of multiplications on individual elements.
 
 
 \subsubsection{Shuffle Security}
