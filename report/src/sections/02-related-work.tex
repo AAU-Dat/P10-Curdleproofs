@@ -13,7 +13,7 @@ One~\gls{pos} cryptocurrency that uses an~\gls{ssle} is Polkadot which uses Safr
 
 
 
-\subsection{Shuffling algorithm}\label{sec:related-work-Shuffling-algorithm}
+\subsection{Shuffling algorithms}\label{subsec:related-work-shuffling-algorithm}
 
 The Håstad square shuffle~\cite{haastad2006square} is one of the proposed ways of integrating an~\gls{ssle}.
 The Håstad square shuffle is a shuffling algorithm that shuffles a $n$ long vector with a shuffle size of $\sqrt {n}$.
@@ -26,12 +26,12 @@ Each round the $i$-th proposer selects the $i$-th row of the created matrix and 
 The Feistel shuffle was then later replaced by the shuffle proposed be Larsen et al.~\cite{cryptoeprint:2022/560} because of the Feistel shuffle being too slow to shuffle the list of proposers.
 
 
-\subsection{Bulletproofs}\label{sec:related-work-bulletproofs}
-A big inspiration for the curdleproofs protocol is bulletproofs~\cite{bunz2018bulletproofs}.
+\subsection{Bulletproofs}\label{subsec:related-work-bulletproofs}
+A big inspiration for the Curdleproofs protocol is bulletproofs~\cite{bunz2018bulletproofs}.
 Bulletproofs is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
 Bulletproofs is in itself not a zero-knowledge proof system, but with the help of Fiat Shamir~\cite{bunz2018bulletproofs} it can be used to create a zero-knowledge proof.
 Bulletproofs also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproofs.
 One of these is Bulletproofs+~\cite{chung2022bulletproofs+} which uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
-Bulletproofs+ is also different because it is zero-knowledge proof by itself unlike the original bulletproofs.
-A third version of the bulletproofs is Bulletproofs++~\cite{eagen2024bulletproofs++} which uses a new type of argument called the norm argument to achieve a better performance.
-Unlike the two other proofs Bulletproofs++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the curdleproofs protocol due to the binary nature of the bulletproofs++.
+Bulletproofs+ is also a zero-knowledge proof by itself unlike the original bulletproofs.
+A third version of the Bulletproofs protocol is Bulletproofs++~\cite{eagen2024bulletproofs++} which uses a new type of argument called the norm argument to achieve a better performance.
+Unlike the two other proofs Bulletproofs++ is a binary range proof, which means that even if it is the fastest proof it is not suitable for the Curdleproofs protocol due to the binary nature of the bulletproofs++.
