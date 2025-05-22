@@ -5,13 +5,7 @@ This work focuses on improving the underlying~\gls{ipa}, especially the running 
 The following is our approach to, how we modified the~\gls{ipa}.
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
-In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
-They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
-As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
-The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
-The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
-
-The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in this scenario.
+The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in solving the problem stated in~\autoref{subsec:problem-definition}.
 The theory of Springproofs provides support for~\glspl{ipa} to use vectors of arbitrary length.
 Using the findings of Springproofs means Curdleproofs could be used on shuffle sizes other than powers of two.
 As such, they could lower the shuffle size from the current 128 to a size significantly lower, given it is still secure.
@@ -258,11 +252,12 @@ The shuffler then re-encrypts the ciphertexts and publishes them.
 This process is repeated for $T$ slots and the shuffle is complete.
 During the $T$ shuffles, some shufflers may be adversarial.
 This means that whenever the shuffling process is taking place, a part of the shuffles may be adversarial.
-An adversarial shuffle can be seen as no shuffling being done.
+An adversary can choose to do anything with its shuffle, including not shuffling.
+Hence, an adversarial shuffle can be seen as no shuffling being done.
 Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \beta$, where $\beta$ is the number of adversarial shuffles.
 
 The adversary can also track cups.
-For instance, if some of the cups are the adversary's own.
+For instance, if some of the cups are owned by the adversary.
 Those tracked cups are denoted by~$\alpha$, which is $\leq n$.
 
 The shuffle is secure if none of the following two events occur.
