@@ -116,9 +116,17 @@ So, the goal of the Same Scalar argument is to prove the existence of the scalar
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
 Curdleproofs is a zero-knowledge proof system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
-within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
+Within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
+In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
 
 \begin{definition}[Zero-Knowledge Argument of Knowledge]
     An argument $(Setup, P, V)$ is a zero-knowledge argument of knowledge of a relation $\mathbb{R}$ if it satisfies completeness, knowledge-soundness and is honest-verifier zero-knowledge.
 \end{definition}
+
+\subsection{Problem definition}\label{subsec:problem-definition}
+In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
+They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
+As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
+The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
+The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
 
