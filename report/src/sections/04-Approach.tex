@@ -67,7 +67,7 @@ First of all, we have the prover computation, where the proof is constructed.
 The construction can be seen in~\autoref{lst:ipa-prover}.
 
 \begin{figure}[!htb]
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=right,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
@@ -359,11 +359,11 @@ for $1\leq j\leq n$:
 \end{figure}
 
 The protocol used in the implementation can be seen in~\autoref{lst:ipa-verifier-optimized}.
-A list, \texttt{ActivePos}, keeps track of the original index placement and its position after each fold.
+A list, \texttt{ActivePos}, on line 32, keeps track of the original index placement and its position after each fold.
 Doing this, we can run the recursion and find the correct challenges for each index, while still knowing what the original index was.
 A bit matrix,~$b_{i,j}$, is constructed as in Curdleproofs, such that the vector, $\mathbf{s}$, is made in the same way for both protocols.
 
-The vector, $\mathbf{u}$, is used for optimization in the grand product argument rather than $\mathbf{G'}$, and the \texttt{AccumulateCheck} function is used for the multiscalar multiplication optimization.
+The vector, $\mathbf{u}$, seen on line 3, is used for optimization in the grand product argument rather than $\mathbf{G'}$, and the \texttt{AccumulateCheck} function, on line 21 and 23, is used for the multiscalar multiplication optimization.
 For a thorough explanation of these, we refer to Curdleproofs~\cite{Curdleproofs}.
 
 In Curdleproofs, both the~\gls{sameperm} and~\gls{samemsm} proof are recursive~\glspl{ipa}.
