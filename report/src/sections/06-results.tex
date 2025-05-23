@@ -13,7 +13,7 @@
 After running the experiment where Curdleproofs and CAAUrdleproofs were compared across different shuffle sizes, we obtained the results shown in \autoref{fig:resulttimes}.
 
 As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUdleproofs was run with a shuffle size $k$ of $\{8,9,\dots,256\}$ but Curdleproofs was only run with a shuffle size $k$ of $\{8,16,32,64,128,256\}$.
-This is why the results for Curdleproofs instantly goes up to the next power of 2 size of $k$ because it would have to pad the inputset until it reaches the next size of a power of 2.
+This is why the results for Curdleproofs show the shuffle size, $\ell$, instantly goes up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
 
 From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when $k$ is a power of 2 but whenever $k$ is not a power of 2 CAAUrdleproofs is faster.
 
