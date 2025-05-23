@@ -18,7 +18,8 @@ This is why the results for Curdleproofs show the shuffle size, $\ell$, instantl
 From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when $\ell$ is a power of 2.
 However, when $k$ is not a power of 2, CAAUrdleproofs is faster.
 
-Additional to the proving and verifying times, the time used on shuffling is also lower for any $k$ that is not a power of 2, but that was to be expected since CAAUrdleproofs uses the same shuffling algorithm but does not have to add additional padding values to the non power of 2 input sizes.
+Additional to the proving and verifying times, the time used on shuffling is also lower for any $\ell$ that is not a power of 2.
+Though, that was to be expected since CAAUrdleproofs uses the same shuffling algorithm as Curdleproofs but does not have to add additional padding values to the non power of 2 input sizes.
 
 
 \subsection{Shuffle security}\label{subsec:Shuffle-security}
