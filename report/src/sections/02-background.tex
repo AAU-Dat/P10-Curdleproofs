@@ -1,5 +1,5 @@
 \section{Background}\label{sec:background}
-In this section, we provide the necessary background information on Ethereum and a specific attack it is vulnerable to, the Curdleproofs protocol~\cite{Curdleproofs}, the Whisk protocol~\cite{Whisk2024} and an overview of the notation used in the paper.
+In this section, we provide the necessary background information on Ethereum and a specific attack it is vulnerable to, the Curdleproofs protocol~\cite{Curdleproofs}, and the Whisk protocol~\cite{Whisk2024}
 
 The notation used throughout this paper can be seen in~\autoref{tab:notation}.
 \begin{table*}[!htb]
@@ -55,13 +55,13 @@ The notation used throughout this paper can be seen in~\autoref{tab:notation}.
 
 Since this work is based on the existing Curdleproofs protocol~\cite{Curdleproofs}, it inherits the same security assumptions.
 Our work therefore runs as a public coin protocol in any cryptographic group where~\gls{ddh} is hard~\cite{10.1007/BFb0054851}.
+\gls{ddh} is defined as follows.
 
 \begin{definition}[DDH]
  Given a finite, multiplicative cyclic group $\mathbb{G}$ of prime order $p$, the decisional Diffie-Hellman problem is defined as follows: Given $(g^a,g^b,g^c)\in\mathbb{G}$, where $g$ is a generator of $\mathbb{G}$ and $a,b,c\in\mathbb{Z}_p$, decide whether $c=ab$.
 \end{definition}
 
 \subsection{Whisk}\label{subsec:related-work-whisk}
-
 Ethereum uses a proof-of-stake consensus mechanism, which allows users to validate transactions and create new blocks by staking their Ether (ETH) tokens.
 The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
 In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
