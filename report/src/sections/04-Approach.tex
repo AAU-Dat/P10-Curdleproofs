@@ -5,13 +5,7 @@ This work focuses on improving the underlying~\gls{ipa}, especially the running 
 The following is our approach to, how we modified the~\gls{ipa}.
 
 \subsection{Springproofs}\label{sec:approach-springproofs}
-In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
-They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
-As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
-The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
-The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
-
-The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in this scenario.
+The Springproofs protocol~\cite{zhang2024springproofs} can be used very effectively in solving the problem stated in~\autoref{subsec:problem-definition}.
 The theory of Springproofs provides support for~\glspl{ipa} to use vectors of arbitrary length.
 Using the findings of Springproofs means Curdleproofs could be used on shuffle sizes other than powers of two.
 As such, they could lower the shuffle size from the current 128 to a size significantly lower, given it is still secure.
@@ -73,7 +67,7 @@ First of all, we have the prover computation, where the proof is constructed.
 The construction can be seen in~\autoref{lst:ipa-prover}.
 
 \begin{figure}[!htb]
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=right,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
@@ -225,7 +219,7 @@ The verifier now checks if these commitments match the commitments that were con
 If so, the verifier accepts the proof.
 
 \begin{theorem}
-    CAAUrdleproofs is a zero-knowledge argument of knowledge when~$\left|k\right|\geq8$.
+    CAAUrdleproofs is a zero-knowledge argument of knowledge when~$\left|\ell\right|\geq8$.
 \end{theorem}
 
 
@@ -243,9 +237,9 @@ A formal definition of the shuffle is given in~\autoref{fig:shuffle}~\cite{crypt
     \noindent
     \textbf{For} $t \in [T]$ \textbf{:}
     \begin{itemize}
-        \item[$S_t$] picks random $\{i_1, \ldots, i_k\} \subset [n]$
-        \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_k})$
-        \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_k})$
+        \item[$S_t$] picks random $\{i_1, \ldots, i_\ell\} \subset [n]$
+        \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_\ell})$
+        \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell})$
     \end{itemize}
 \end{framed}
 \caption{Distributed shuffling protocol. Source:~\cite{cryptoeprint:2022/560}}
@@ -253,16 +247,17 @@ A formal definition of the shuffle is given in~\autoref{fig:shuffle}~\cite{crypt
 \end{figure}
 
 Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
-In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_k}$ is chosen randomly, shuffled, and added back to the list of ciphertexts.
+In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_\ell}$ is chosen randomly, shuffled, and added back to the list of ciphertexts.
 The shuffler then re-encrypts the ciphertexts and publishes them.
 This process is repeated for $T$ slots and the shuffle is complete.
 During the $T$ shuffles, some shufflers may be adversarial.
 This means that whenever the shuffling process is taking place, a part of the shuffles may be adversarial.
-An adversarial shuffle can be seen as no shuffling being done.
+An adversary can choose to do anything with its shuffle, including not shuffling.
+Hence, an adversarial shuffle can be seen as no shuffling being done.
 Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \beta$, where $\beta$ is the number of adversarial shuffles.
 
 The adversary can also track cups.
-For instance, if some of the cups are the adversary's own.
+For instance, if some of the cups are owned by the adversary.
 Those tracked cups are denoted by~$\alpha$, which is $\leq n$.
 
 The shuffle is secure if none of the following two events occur.
@@ -273,12 +268,12 @@ The second event that can occur is related to the fact that every shuffle distri
 So, if a shuffle contains a lot of ciphertexts with a larger than average chance of containing a certain ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
 
 It is theoretically possible to find a number of shuffles, given the shuffle size, and a number of adversarial shufflers, to guarantee that the shuffle is secure.
-For any $0 < \delta < 1/3$, if $T \geq 20 n / k \ln(n/\delta) + \beta $ and $ k \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
-If $T$ and $k$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,k)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
+For any $0 < \delta < 1/3$, if $T \geq 20 n / \ell \ln(n/\delta) + \beta $ and $ \ell \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
+If $T$ and $\ell$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,\ell)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
 
-This formula is the lowest theoretically proven bound for $T$ and $k$.
+This formula is the lowest theoretically proven bound for $T$ and $\ell$.
 Plotting numbers relevant to Whisk will show that this theoretical bound is too large to use for argumentation of security.
-It is, however, possible to find lower secure values for $T$ and $k$, but this has to be done experimentally.
+It is, however, possible to find lower secure values for $T$ and $\ell$, but this has to be done experimentally.
 
 
 \subsection{Implementation}\label{subsec:approach-implementation}
@@ -308,7 +303,7 @@ Though, this should not have a big impact on performance, as it is run over vect
 It is simply used as a measuring tool.
 
 \begin{figure}[!htb]
-        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=right,caption={Optimized verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+        \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=left,caption={Optimized verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$
 $(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
@@ -364,11 +359,11 @@ for $1\leq j\leq n$:
 \end{figure}
 
 The protocol used in the implementation can be seen in~\autoref{lst:ipa-verifier-optimized}.
-A list, \texttt{ActivePos}, keeps track of the original index placement and its position after each fold.
+A list, \texttt{ActivePos}, on line 32, keeps track of the original index placement and its position after each fold.
 Doing this, we can run the recursion and find the correct challenges for each index, while still knowing what the original index was.
 A bit matrix,~$b_{i,j}$, is constructed as in Curdleproofs, such that the vector, $\mathbf{s}$, is made in the same way for both protocols.
 
-The vector, $\mathbf{u}$, is used for optimization in the grand product argument rather than $\mathbf{G'}$, and the \texttt{AccumulateCheck} function is used for the multiscalar multiplication optimization.
+The vector, $\mathbf{u}$, seen on line 3, is used for optimization in the grand product argument rather than $\mathbf{G'}$, and the \texttt{AccumulateCheck} function, on line 21 and 23, is used for the multiscalar multiplication optimization.
 For a thorough explanation of these, we refer to Curdleproofs~\cite{Curdleproofs}.
 
 In Curdleproofs, both the~\gls{sameperm} and~\gls{samemsm} proof are recursive~\glspl{ipa}.
@@ -386,8 +381,8 @@ Each cup contains an amount of water between 0 and 1.
 
 An experiment run starts with the first cup being full and the rest being empty.
 As mentioned, $\alpha$ cups are tracked by an adversary, the first $n-\alpha$ cups are called active cups, while the last $\alpha$ cups are tracked.
-So, at each shuffle, the shuffler randomly picks $k$ ciphertexts and shuffles them, also randomly.
-Meanwhile, an average of the water between the active indices of the $k$-shuffle is found.
+So, at each shuffle, the shuffler randomly picks $\ell$ ciphertexts and shuffles them, also randomly.
+Meanwhile, an average of the water between the active indices of the $\ell$-shuffle is found.
 All active indices are given this amount of water.
 
 Now, after each shuffle, if any cup has more than $2/(n-\alpha)$ water, its position can be predicted by the adversary, hence the shuffle is insecure~\cite{cryptoeprint:2022/560}.

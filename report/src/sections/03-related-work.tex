@@ -1,0 +1,56 @@
+\section{Related Work}\label{sec:related-work}
+
+
+
+
+\subsection{Single Secret Leader Election}\label{sec:related-work-SSLE}
+A~\gls{ssle} is a protocol where a group of participants randomly elects only one leader from the group.
+The identity of the leader is kept secret from all other participants so only the leader themselves know that they have been chosen.
+The elected leader can then later publicly prove that they have been elected~\cite{10.1145/3419614.3423258}.
+
+Leading research on~\gls{ssle} includes proposals for post-quantum secure protocols based on Learning With Errors and Ring Learning With Errors~\cite{cryptoeprint:2023/1241}.
+This work also constructs a new concept called~\gls{rrc} for easier work with such protocols.
+\gls{rrc} is based on the commit-and-shuffle approach also used in Whisk.
+
+One of the use cases of~\gls{ssle} is to make~\gls{pos} blockchains more secure due to the added privacy that the proposer has.
+
+One~\gls{pos} blockchain that uses an~\gls{ssle} is Polkadot which uses Safrole as their~\gls{ssle} protocol~\cite{safrole}.
+Safrole is the production version of the research protocol Sassafras~\cite{sassafras}.
+In this, validators each produce a number of tickets, some of which are winning, depending on some threshold.
+A~\gls{zk-snark} is then used to prove that a ticket is winning, after which the winning tickets are published to the chain.
+A randomization algorithm will then pick, from all the winning tickets, proposers for all the slots two epochs later.
+
+
+
+\subsection{Shuffling algorithms}\label{subsec:related-work-shuffling-algorithm}
+
+The Håstad square shuffle~\cite{haastad2006square} is one of the proposed ways of shuffling, which could be integrated in a shuffling~\gls{ssle} such as Whisk.
+The Håstad square shuffle is a shuffling algorithm that shuffles a vector with $n$ items with a shuffle size of $\sqrt {n}$.
+The algorithm works by re-arranging the vector into a~$\sqrt{n}\times\sqrt{n}$ square matrix.
+It then works in time steps, starting at 1.
+For each odd step, each column and its elements are shuffled independently.
+For each even step, each row and its elements are shuffled independently as well.
+Håstad shows that at least three time steps are needed for the shuffle to be secure.
+The Håstad shuffle is more rigid than the shuffling algorithm used in curdleproofs~\cite{cryptoeprint:2022/560} because of the fixed size of the shuffle being $\sqrt{n}$.
+
+The Feistel shuffle~\cite{Feistle} is a previously used shuffle method in the Whisk protocol~\cite{Whisk2024}.
+It takes $n$ number of validator trackers and arranges them in a $k\times k$ matrix.
+Each round the $i$-th proposer selects the $i$-th row of the created matrix and shuffles it in the form $F(x,y)=(y,x+y^3\text{ mod }k)$.
+The Feistel shuffle was later replaced by the shuffle proposed by Larsen et al.~\cite{cryptoeprint:2022/560}.
+Ethereum mentioned the reason for this to be that the shuffle by Larsen et al.\ provides a simpler protocol~\cite{Whisk2024}.
+
+\subsection{Bulletproofs}\label{subsec:related-work-bulletproofs}
+A big inspiration for the Curdleproofs protocol is bulletproofs~\cite{bunz2018bulletproofs}.
+Bulletproofs is a type of range proof that uses inner product arguments to prove that a committed value is within a certain range without revealing the value itself.
+Bulletproofs is in itself not a zero-knowledge proof system, but with the help of Fiat Shamir~\cite{bunz2018bulletproofs} it can be used to create a zero-knowledge proof.
+Bulletproofs also has had a few iterations and improvements to increase the speed and reduce the size of the proof since it was used in curdleproofs.
+
+One of these is Bulletproofs+~\cite{chung2022bulletproofs+} which uses a weighted inner product argument instead of the standard inner product argument to achieve a better performance.
+Bulletproofs+ is also a zero-knowledge proof by itself unlike the original bulletproofs.
+Trying to modify Curdleproofs with the weighted inner product argument introduces complications that would need larger modifications and is therefore not suitable.
+This can be seen in~\autoref{sec:curdleproofs-weighted-inner-product-argument-modification-attempt}
+
+A third version of the Bulletproofs protocol is Bulletproofs++~\cite{eagen2024bulletproofs++} which uses a new type of argument called the norm argument to achieve a better performance.
+This comes from the prover only needing to commit to a single vector, rather than two.
+Therefore, with the two vectors, $x$ and $y$ of a standard~\gls{ipa}, they need to assume $x=y$ for their protocol to work.
+Then, along with the norm being weighted, which raises the same complications as with Bulletproofs+, this makes it unsuitable for Curdleproofs.

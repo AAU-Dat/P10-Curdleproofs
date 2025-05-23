@@ -1,6 +1,12 @@
 
 \section{Proof of Theorem 1}\label{sec:appendix-thm1proof}
 \begin{proof}
+    The following proof is divided into two separate proofs.
+    First we prove~\gls{hvzk}.
+
+    After this, both knowledge-soundness and completeness are proven in the same proof.
+
+    \paragraph*{\textbf{Proof of HVZK}}
     CAAUrdleproofs is the Curdleproofs DL~\gls{ipa} on which the Springproofs protocol has been applied.
     So to help show that it is~\gls{hvzk}, we refer to Theorem 5 of Springproofs~\cite{zhang2024springproofs}.
     \begin{theorem}[Springproofs Theorem 5]
@@ -23,6 +29,7 @@
     Curdleproofs show their argument to be zero-knowledge in the random oracle model provided $|\mathbf{G}|\geq8$~\cite{Curdleproofs}.
     Therefore, following Theorem 1, CAAUrdleproofs must be~\gls{hvzk} when $n\geq8$
 
+    \paragraph*{\textbf{Proof of knowledge-soundness and completeness}}
     For soundness and completeness, we refer to Theorem 3 of Springproofs~\cite{zhang2024springproofs}.
     \begin{theorem}[Springproofs Theorem 3]
         Given a terminative SIPA$(f)$, if the number of compression steps in SIPA$(f)$ is $O(\log n)$, then SIPA$(f)$ is a complete and computational knowledge sound argument of relation (1).
@@ -83,7 +90,7 @@
     Furthermore, Curdleproofs uses the Fiat-Shamir transformation for its verifier challenges.
     So, the SIPA$(f)$, analogously CAAUrdleproofs, is a non-interactive random oracle argument having completeness and computational knowledge soundness as well.
 
-    From this, we can conclude that CAAUrdleproofs is a zero-knowledge argument of knowledge when shuffle size $|k|\geq8$.
+    From this, we can conclude that CAAUrdleproofs is a zero-knowledge argument of knowledge when shuffle size $|\ell|\geq8$.
 \end{proof}
 
 
