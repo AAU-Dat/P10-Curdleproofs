@@ -82,6 +82,55 @@ This is so that the proposer can prove that they are the correct proposer for th
 
 Curdleproofs is a zero-knowledge proof system that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
 It does so by using three different zero-knowledge proofs, with one of them relying on two more zero-knowledge proofs.
+The overview can be seen in~\autoref{fig:curdleproof-protocol}.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{circuitikz}[scale = 0.8, transform shape]
+        \tikzstyle{every node}=[font=\normalsize]
+        \draw[rounded corners]  (4,11.75) rectangle (7.75,10.75);
+        \node  at (5.75,11.25) {$\mathbf{R}$, $\mathbf{S}$, $\mathbf{T}$, $\mathbf{U}$, $M$};
+        \node  at (3.2,11.25) {Input};
+        \draw [->, >=Stealth] (5.75,10.75) -- (5.75,10.25);
+        \draw[rounded corners]  (4,10.25) rectangle (7.75,9.25);
+        \node  at (5.875,9.75) {$T=\sigma(k\mathbf{R})$, $U=\sigma(k\mathbf{S})$};
+        \node  at (2.875,9.75) {Statement};
+        \draw [->, >=Stealth] (5.75,9.25) -- (5.75,8.75);
+        \draw[rounded corners]  (4,8.75) rectangle (7.75,7.75);
+        \node  at (5.75,8.25) {$\mathbf{a\leftarrow}$Fiat-Shamir};
+        \draw [->, >=Stealth] (5.75,7.75) -- (5.75,7.25);
+        \draw[rounded corners]  (3.75,7.25) rectangle (8,5.75);
+        \node  at (5.75,6.75) {A=$\sigma(\mathbf{a})\times \mathbf{g}$};
+        \node  at (5.875,6.25) {$T=\mathbf{a}\times k\mathbf{R}$, $U=\mathbf{a}\times k\mathbf{S}$};
+        \draw [->, >=Stealth] (5.75,5.75) -- (2.75,5);
+        \draw [->, >=Stealth] (5.75,5.75) -- (5.75,5);
+        \draw [->, >=Stealth] (5.75,5.75) -- (8.75,5);
+        \draw[fill=red, fill opacity=0.3, rounded corners]  (0.6,5) rectangle (4.25,2.75);
+        \draw[fill=green, fill opacity=0.3, rounded corners]  (7.25,5) rectangle (9.75,2.75);
+        \draw[fill=blue, fill opacity=0.3, rounded corners]  (4.5,5) rectangle (7,2.75);
+        \node [font=\large] at (2.4,4.5) {SamePerm};
+        \node  at (2.4,4) {A=$\sigma(\mathbf{a})\times \mathbf{g}$};
+        \node  at (2.4,3.5) {$M=\sigma(1,2,\dots,\ell)\times \mathbf{g}$};
+        \node [font=\large] at (5.75,4.5) {SameMSM};
+        \node  at (5.75,4) {$A=\mathbf{c}\times \mathbf{g}$};
+        \node  at (5.75,3.5) {$T=\mathbf{c}\times \mathbf{T}$};
+        \node  at (5.75,3) {$U=\mathbf{c}\times \mathbf{U}$};
+        \node [font=\large] at (8.5,4.5) {SameScalar};
+        \node  at (8.5,4) {$T=k(\mathbf{a}\times \mathbf{R})$};
+        \node  at (8.5,3.5) {$U=k(\mathbf{a}\times \mathbf{S})$};
+        \draw [->, >=Stealth] (2.4,2.75) -- (2.4,2.5);
+        \draw[fill=red, fill opacity=0.3, rounded corners]  (0.6,2.5) rectangle (4.25,1);
+        \node [font=\large] at (2.4,2) {GrandProd};
+        \node  at (2.4,1.5) {$p=\Pi_{i=1}^\ell b_i$};
+        \draw [->, >=Stealth] (4.25,1.75) -- (4.5,1.75);
+        \draw[fill=red, fill opacity=0.3, rounded corners]  (4.5,2.5) rectangle (7,1);
+        \node [font=\large] at (5.75,2) {DL IPA};
+        \node  at (5.75,1.5) {$z=\mathbf{c}\times\mathbf{d}$};
+    \end{circuitikz}
+
+    \caption{Overall structure of the Curdleproofs protocol. Modified figure from~\cite{Curdleproofs}.}
+    \label{fig:curdleproof-protocol}
+\end{figure}
 
 The first proof is the~\gls{sameperm} proof.
 The prover first constructs a commitment to the permutation, $\sigma()$, by saying $M=\sigma(1,2,\dots,\ell)\times\mathbf{g}$.
