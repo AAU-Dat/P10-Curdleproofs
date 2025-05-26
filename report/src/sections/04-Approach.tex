@@ -393,3 +393,26 @@ The experiment denotes how many rounds it took before the shuffle was secure.
 
 By repeating this experiment for several runs, one can experimentally say, when a shuffle with given parameters is secure.
 
+\subsubsection{Size reduction}
+If we can reduce the shuffle size used in Whisk and still prove it secure, then we expect to see some reduction in the size overhead on the blockchain.
+
+We first set our focus on Curdleproofs, as this is the protocol we have modified directly.
+As mentioned in~\autoref{sec:background-zkps}, the size of Curdleproofs is $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
+The dependence on the $\log$ stems from the number of recursive rounds that take place in the~\gls{sameperm} and~\gls{samemsm} proofs.
+In the proof of theorem 1, we show CAAUrdleproofs to be $O(\log n)$.
+This means that the size of CAAUrdleproofs must be $18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}$.
+
+CAAUrdleproofs therefore has the same proof size in Curdleproofs.
+
+The CAAUrdleproofs modification can still reduce the overall block size overhead, though.
+Using Whisk with CAAUurdleproofs has a block size of $17.04$ KB, when the shuffle size is 128\cite{Whisk2024}.
+This can be seen in the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
+\begin{itemize}
+    \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }128\cdot96=12,288$ bytes).
+    \item Shuffle proof ($18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}\Rightarrow\text{eg. }(18+10\lceil\log(124+4)\rceil)\cdot48+7\cdot32=4,448$ bytes).
+    \item A fresh tracker (two BLS G1 points $\Rightarrow48\cdot2=96$ bytes).
+    \item A new commitment $com(k)$ to the proposer's tracker (one BLS G1 point $\Rightarrow48$ bytes).
+    \item A Discrete Logarithm Equivalence Proof on the ownership of the elected proposer commitment (two G1 points, two Fr scalars $\Rightarrow2\cdot48+2\cdot32=160$ bytes).
+\end{itemize}
+The majority of the block size comes from the list of shuffled trackers.
+Hence, using CAAUrdleproofs could majorly decrease the block size by allowing~$\ell$ to be chosen at arbitrary length.
