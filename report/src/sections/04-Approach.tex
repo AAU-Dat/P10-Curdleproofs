@@ -405,7 +405,7 @@ This means that the size of CAAUrdleproofs must be $18+10 \lceil\log(\ell+4)\rce
 CAAUrdleproofs therefore has the same proof size as Curdleproofs.
 
 The CAAUrdleproofs modification can still reduce the overall block size overhead, though.
-Using Whisk with CAAUurdleproofs has a block size of $17.04$ KB, when the shuffle size is 128\cite{Whisk2024}.
+Using Whisk with CAAUrdleproofs has a block size of $17.04$ KB, when the shuffle size is 128\cite{Whisk2024}.
 Note that this is the same size as Curdleproofs, as the shuffle size is a power of 2.
 The calculation of the block size comes from the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
 \begin{itemize}
