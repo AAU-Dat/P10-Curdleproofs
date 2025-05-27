@@ -399,7 +399,7 @@ If we can reduce the shuffle size used in Whisk and still prove it secure, then 
 We first set our focus on Curdleproofs, as this is the protocol we have modified directly.
 As mentioned in~\autoref{sec:background-zkps}, the size of Curdleproofs is $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
 The dependence on the $\log$ stems from the number of recursive rounds that take place in the~\gls{sameperm} and~\gls{samemsm} proofs.
-In the proof of theorem 1, we show CAAUrdleproofs to be $O(\log n)$.
+In the proof of theorem 1, we show CAAUrdleproofs to be $\mathcal{O}(\log n)$.
 This means that the size of CAAUrdleproofs must be $18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}$.
 
 CAAUrdleproofs therefore has the same proof size as Curdleproofs.

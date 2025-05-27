@@ -32,7 +32,7 @@
     \paragraph*{\textbf{Proof of knowledge-soundness and completeness}}
     For soundness and completeness, we refer to Theorem 3 of Springproofs~\cite{zhang2024springproofs}.
     \begin{theorem}[Springproofs Theorem 3]
-        Given a terminative SIPA$(f)$, if the number of compression steps in SIPA$(f)$ is $O(\log n)$, then SIPA$(f)$ is a complete and computational knowledge sound argument of relation (1).
+        Given a terminative SIPA$(f)$, if the number of compression steps in SIPA$(f)$ is $\mathcal{O}(\log n)$, then SIPA$(f)$ is a complete and computational knowledge sound argument of relation (1).
         Moreover, the Fiat-Shamir transformation of SIPA$(f)$ is a non-interactive random oracle argument having completeness and computational knowledge soundness as well.
     \end{theorem}
     Here, relation (1) is
@@ -84,7 +84,7 @@
     \end{align}
     This exactly the same commitment as in~\autoref{al:P}.
 
-    Therefore, using Curdleproofs' DL~\gls{ipa} and the pre-compression scheme function, we can instantiate SIPA$(f)$, equivalent to CAAUrdleproofs, as a terminative SIPA$(f)$, with $O(\log n)$ compression steps.
+    Therefore, using Curdleproofs' DL~\gls{ipa} and the pre-compression scheme function, we can instantiate SIPA$(f)$, equivalent to CAAUrdleproofs, as a terminative SIPA$(f)$, with $\mathcal{O}(\log n)$ compression steps.
     Hence, SIPA$(f)$ is a complete and computational knowledge sound argument of relation (1).
     We have just shown that Curdleproofs'~\gls{ipa} proves the same relation, so the properties hold for our SIPA$(f)$ as well.
     Furthermore, Curdleproofs uses the Fiat-Shamir transformation for its verifier challenges.
