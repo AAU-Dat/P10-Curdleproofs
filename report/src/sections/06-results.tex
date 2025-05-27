@@ -1,6 +1,8 @@
 \section{Results}\label{sec:results}
 \subsection{Proving and Verifying Times}\label{subsec:results:provingverifying}
 
+After running the experiment where Curdleproofs and CAAUrdleproofs were compared across different shuffle sizes, we obtained the results shown in \autoref{fig:resulttimes}.
+
 \begin{figure*}[!htb]
     \centering
     \subfloat[\centering Proving Time]{{\includegraphics[width=0.45\textwidth]{figures/results/provingtime} }}%
@@ -10,13 +12,13 @@
     \label{fig:resulttimes}%
 \end{figure*}
 
-After running the experiment where Curdleproofs and CAAUrdleproofs were compared across different shuffle sizes, we obtained the results shown in \autoref{fig:resulttimes}.
-
-As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUdleproofs was run with a shuffle size $\ell$ of $\{8,9,\dots,256\}$ but Curdleproofs was only run with a shuffle size $\ell$ of $\{8,16,32,64,128,256\}$.
-This is why the results for Curdleproofs show the shuffle size, $\ell$, instantly goes up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
+As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUdleproofs was run with a shuffle size $\ell$ of $\{8,9,\dots,256\}$.
+Curdleproofs was only run with a shuffle size $\ell$ of $\{8,16,32,64,128,256\}$, as it is only able to run in powers of 2.
+This is why the results for Curdleproofs show the shuffle size, $\ell$, instantly going up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
 
 From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when $\ell$ is a power of 2.
 However, when $\ell$ is not a power of 2, CAAUrdleproofs is faster.
+The more below a power of 2 $\ell$ is, the more CAAUrdleproofs is faster than Curdleproofs
 
 The results for the verifying time also shows that the verifying time jumps up the first four times it reaches a power of 2.
 
