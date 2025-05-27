@@ -66,22 +66,22 @@ Ethereum uses a proof-of-stake consensus mechanism, which allows users to valida
 The Proof-of stake protocol works in epochs of 32 slots, where each slot is 12 seconds long.
 In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
 
-The proposer DoS attack is a type of attack that targets the block proposers making them unable to propose blocks.
-An adversary can use the proposer DoS attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their own rewards~\cite{EthereumSSLE2024}.
-As a response to the proposer DoS attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
+The proposer~\gls{dos} attack is a type of attack that targets the block proposers making them unable to propose blocks.
+An adversary can use the proposer~\gls{dos} attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their own rewards~\cite{EthereumSSLE2024}.
+As a response to the proposer~\gls{dos} attack, Ethereum has proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
 An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack on validators.
 In our preliminary work~\cite{ouroldpaper}, we have shown that the attack is still possible to perform on the Ethereum network, and using the attack, a proposer~\gls{dos} can be performed.
 
 
-Whisk is a zero-knowledge Single Secret Leader Election (SSLE) system that uses a zero-knowledge argument called Curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}.
+Whisk is a~\gls{zk}~\gls{ssle} system that uses a~\gls{zk} argument called Curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle without revealing the input or output~\cite{10.1145/3419614.3423258}.
 Whisk works by selecting a list of 16,384 validator trackers and shuffles them over 8,192 slots ($\sim$1 day).
 Then 8,192 proposers are selected from the shuffled list to propose blocks for the next 8,192 slots while a new list is being shuffled.
 This way a new list of proposers is created every day.
-After each shuffle, Whisk uses a zero-knowledge proof to prove that the shuffle is correct.
+After each shuffle, Whisk uses a~\gls{zkp} to prove that the shuffle is correct.
 This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer~\gls{dos} attack because of the identity of the upcoming proposers being hidden now.
 
-Curdleproofs is a zero-knowledge proof system that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
-It does so by using three different zero-knowledge proofs, with one of them relying on two more zero-knowledge proofs.
+Curdleproofs is a~\gls{zkp} system that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
+It does so by using three different~\glspl{zkp}, with one of them relying on two more~\glspl{zkp}.
 The overview can be seen in~\autoref{fig:curdleproof-protocol}.
 
 \begin{figure}[!ht]
@@ -155,13 +155,13 @@ The third proof is a Same Scalar argument.
 To mask the ciphertexts, each prover, besides permuting the set, multiplies all ciphertexts by a scalar, $k$.
 This is for randomization purposes, making it harder for adversaries to track the ciphertexts~\cite{Whisk2024}.
 Also, all validators are still able to open their commitments if they are chosen as block proposers, even after several randomizations.
-So, the goal of the Same Scalar argument is to prove the existence of the scalar, $k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
+So, the goal of the Same Scalar argument is to prove the existence of the scalar,~$k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
 
 
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
-Curdleproofs is a zero-knowledge proof system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
-Within the context of Ethereum it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
+Curdleproofs is a~\gls{zkp} system, which means that it allows a prover to convince a verifier that they know a secret without revealing the secret itself.
+Within the context of Ethereum, it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
 In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
 
 \begin{definition}[Zero-Knowledge Argument of Knowledge]
@@ -171,7 +171,7 @@ In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
 Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in~\autoref{sec:appendix}.
 
 Two of the three proofs in Curdleproofs are~\glspl{ipa}.
-These are also zero-knowledge proofs, and will be the focus of this paper.
+These are also~\glspl{zkp}, and will be the focus of this paper.
 Hence, we provide a definition on~\glspl{ipa}.
 
 \begin{definition}[Inner Product Argument]
@@ -182,8 +182,8 @@ Hence, we provide a definition on~\glspl{ipa}.
 
 \subsection{Problem definition}\label{subsec:problem-definition}
 In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
-They specifically mention that the proof has size $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
-As the proof size is dependent on the size of the shuffle, $\ell$, an interest in the possibility of reducing this parameter arises.
-The current proposal of curdleproofs only works on shuffles, where the size is a power of 2.
-The reason is that the underlying proofs, such as the~\gls{ipa}, needs to fold recursively down to 1, by halving the size in every round.
+They specifically mention that the proof has size~$18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
+As the proof size is dependent on the size of the shuffle,~$\ell$, an interest in the possibility of reducing this parameter arises.
+The current proposal of Curdleproofs only works on shuffles, where the size is a power of 2.
+The reason is that the underlying proofs, such as the~\gls{ipa}, need to fold recursively down to 1, by halving the size in every round.
 
