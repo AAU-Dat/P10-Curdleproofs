@@ -42,6 +42,10 @@ The results of the shuffle security experiment are shown in \autoref{fig:shuffle
 \autoref{fig:shufflesecurity} shows the mean of the 1000 runs of each shuffle size $\ell$ as well as one standard deviation higher and lower.
 
 We can see that the bigger the shuffle size $\ell$ is, the less honest shuffles are necessary to make the shuffle secure.
+In Ethereum, each shuffling phase is limited to 8192 shuffles, meaning that the maximum number of honest shuffles that can be used is 8192.
+Therefore, the results of the experiment also find $T_H=T-\Beta$.
+This is how many of the $T$ shuffles, available during the shuffling phase, are needed to be honest, $T_H$, shuffles.
+The rest could then be the number of dishonest shuffles,~$\beta$.
 We also see that the bigger the shuffle size the narrower the standard deviation gets.
 
 From the results of the experiment with $\alpha=8192$ we can see that number of honest shuffles necessary to make the shuffle secure sharply goes down until a size of $\ell=64$, and then it starts to flatten out.
@@ -71,5 +75,10 @@ Like the results in \autoref{fig:shufflesecurity}, \autoref{fig:shufflesecurityv
 
 It is worth noting that there is a spike in the distribution of the necessary honest shuffles at $\ell=32$ for $\alpha=4096$.
 This spike is not present for the other two $\alpha$ values, and is due to the probabilistic nature of the shuffling method.
+
+Another thing that is notable is that in the setting of Ethereum, the maximum number of shuffles available is 8192.
+This means that in the cases where more than the 8192 shuffles were necessary to make the shuffle secure, the shuffle would not have been secure within the Ethereum setting.
+Therefore, it is also possible to see the experiment as running 1000 days worth of each shuffle size $\ell$ and then seeing how many of those days would have been secure.
+We found that the first size of $\ell$ that could have been secure for the entire duration of the experiment would be $\ell=42$ for $\alpha=8192$ and $\ell=40$ for $\alpha=5462$ and $\alpha=4096$.
 
 

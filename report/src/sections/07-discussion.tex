@@ -1,4 +1,21 @@
 
 
 \section{Discussion}\label{sec:discussion}
-This is the discussion
+In this section we will discuss the results of the experiments in \autoref{sec:results} and how they relate to the CAAUrdleproofs protocol.
+We will also discuss some of the limitations of the CAAUrdleproofs protocol and how it compares to Curdleproofs.
+
+
+\subsection{CAAUrdleproofs in comparison to Curdleproofs}\label{subsec:CAAUrdleproofs-vs-Curdleproofs}
+
+
+
+
+\subsection{Shuffle Security}\label{subsec:Discution-Shuffle-security}
+When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
+Even when taking into account the worst case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8192 shuffles available.
+
+We would however not recommend using an~$\ell$ lower than 80, as the worst case scenario uses a little under half the available shuffles, and you would only need one third to get within the standard deviation.
+This would still lead to the size of the block overhead and the speed of the protocol being significantly reduced.
+
+
+
