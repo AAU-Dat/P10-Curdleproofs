@@ -141,6 +141,7 @@ Then Neff's trick~\cite{10.1145/501983.502000} is used, which observes that two 
 
 To prove that, the protocol makes use of a grand product argument.
 To prove that argument, Curdleproofs compiles it down to an~\gls{ipa} by expressing each multiplication of the grand product as its own equation.
+This~\gls{ipa} stems from the protocol originally proposed by Bootle et al.~\cite{cryptoeprint:2016/263,Curdleproofs}
 
 Hence, the~\gls{sameperm} proof is done if the prover can prove the~\gls{ipa}.
 
@@ -168,6 +169,16 @@ In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
 \end{definition}
 
 Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in~\autoref{sec:appendix}.
+
+Two of the three proofs in Curdleproofs are~\glspl{ipa}.
+These are also zero-knowledge proofs, and will be the focus of this paper.
+Hence, we provide a definition on~\glspl{ipa}.
+
+\begin{definition}[Inner Product Argument]
+    Takes as input two binding vector commitments $C=\mathbf{c}\times\mathbf{G}\in\mathbb{G}$ and $D=\mathbf{d}\times\mathbf{G'}\in\mathbb{G}$ to the vectors $\mathbf{c},\mathbf{d}\in\mathbb{Z}_p^n$ and $z\in\mathbb{Z}_p$.
+    The goal is to prove that $z=\mathbf{c}\times\mathbf{d}$.
+    The argument has logarithmic communication by halving the dimensions of $\mathbf{c}$ and $\mathbf{d}$ in each iteration.
+\end{definition}
 
 \subsection{Problem definition}\label{subsec:problem-definition}
 In Chapter 6 of Curdleproofs~\cite{Curdleproofs}, they explain the efficiency of the protocol, including also the size of the proof.
