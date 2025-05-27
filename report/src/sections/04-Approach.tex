@@ -24,17 +24,17 @@ One of these optimal functions is an optimized version of their \textit{pre-comp
 The computation is for finding the set, $T$.
 
 \begin{figure}[!htb]
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=right,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=left,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
     input: $n$, where $n>0$
 
     $\{n\}\gets n$
     $N\gets 2^{\lceil\log n\rceil-1}$
     $i_h \gets \lfloor (2N-n)/2\rfloor+1$
     $i_t=\lfloor n/2\rfloor$
-    if $n\neq N$:
+    if $n\neq N$: #Not power of 2
         $\{T\}\gets(i_h:i_t)\cup(N+1:n)$
-    else if $n=N$:
-        $\{T\}\gets(1:n)$
+    else if $n=N$: #Power of 2
+        $\{T\}\gets(1:n)$ #Meaning S is empty
     $\{S\}\gets\{n\}-\{T\}$
     \end{lstlisting}
 \label{fig:schemefunc}
@@ -67,42 +67,42 @@ First of all, we have the prover computation, where the proof is constructed.
 The construction can be seen in~\autoref{lst:ipa-prover}.
 
 \begin{figure}[!htb]
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=right,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
-$\textbf{Step 1:}$
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-prover},numbers=left,caption={Prover computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+$\textbf{Step 1:}$ #Setup phase
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
-$\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$
+$\textbf{r}_C,\textbf{r}_D\overset{\$}{\leftarrow}\mathbb{F}^n$ #Vector blinders
  where $(\textbf{r}_C\times \textbf{d} + \textbf{r}_D\times \textbf{c})=0\text{ and }\textbf{r}_C\times \textbf{r}_D=0$
-$B_C\gets \textbf{r}_C\times \textbf{G}$
+$B_C\gets \textbf{r}_C\times \textbf{G}$ #Blinder commitments
 $B_D\gets \textbf{r}_D\times \textbf{G}'$
-$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_C)$
-$\textbf{c}\gets \textbf{r}_C+\alpha \textbf{c}$
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_C)$ #FS challenges
+$\textbf{c}\gets \textbf{r}_C+\alpha \textbf{c}$ #Blinded vectors
 $\textbf{d}\gets \textbf{r}_D+\alpha \textbf{d}$
 $H\gets\beta H$
-$\textbf{Step 2:}$
+$\textbf{Step 2:}$ #Recursive protocol
 $m\gets \lceil \log n\rceil$
 while $1\leq j\leq m:$
-    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
     $n\gets \frac{|T|}{2}$
-    $\textbf{c}\gets\textbf{c}_T$, $\textbf{cS}\gets\textbf{c}_S$
+    $\textbf{c}\gets\textbf{c}_T$, $\textbf{cS}\gets\textbf{c}_S$ #Vector splitting
     $\textbf{d}\gets\textbf{d}_T$, $\textbf{dS}\gets\textbf{d}_S$
     $\textbf{G}\gets\textbf{G}_T$, $\textbf{GS}\gets\textbf{G}_S$
     $\textbf{G}'\gets\textbf{G}'_T$, $\textbf{GS}'\gets\textbf{G}'_T$
-    $L_{C,j}\gets\textbf{c}_{[:n]}\times\textbf{G}_{[n:]}+(\textbf{c}_{[:n]}\times\textbf{d}_{[n:]})H$
+    $L_{C,j}\gets\textbf{c}_{[:n]}\times\textbf{G}_{[n:]}+(\textbf{c}_{[:n]}\times\textbf{d}_{[n:]})H$ #Cross-comm
     $L_{D,j}\gets\textbf{d}_{[n:]}\times\textbf{G}'_{[:n]}$
     $R_{C,j}\gets\textbf{c}_{[n:]}\times\textbf{G}_{[:n]}+(\textbf{c}_{[n:]}\times\textbf{d}_{[:n]})H$
     $R_{D,j}\gets\textbf{d}_{[:n]}\times\textbf{G}'_{[n:]}$
-    $\pi_j\gets(L_{C,j},L_{D,j},R_{C,j},R_{D,j})$
-    $\gamma_j\gets Hash(\pi_j)$
-    $\textbf{c}\gets\textbf{cS}\|\textbf{c}_{[:n]}+\gamma_j^{-1}\textbf{c}_{[n:]}$
+    $\pi_j\gets(L_{C,j},L_{D,j},R_{C,j},R_{D,j})$ #Proof elements
+    $\gamma_j\gets Hash(\pi_j)$ #Folding challenges
+    $\textbf{c}\gets\textbf{cS}\|\textbf{c}_{[:n]}+\gamma_j^{-1}\textbf{c}_{[n:]}$ #Next round vectors
     $\textbf{d}\gets\textbf{dS}\|\textbf{d}_{[:n]}+\gamma_j\textbf{d}_{[n:]}$
     $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$
     $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
     $n\gets len(c)$
-$\textbf{Step 3:}$
+$\textbf{Step 3:}$ #Final proof element
 $c\gets c_1$
 $d\gets d_1$
 
-return $(B_C,B_D,\mathbf{\pi},c,d)$
+return $(B_C,B_D,\mathbf{\pi},c,d)$ # Elements for verifier
     \end{lstlisting}
 \label{fig:ipa-prover}
 \end{figure}
@@ -149,33 +149,33 @@ Having the proof on the blockchain allows for each validator to asynchronously v
 Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{lst:ipa-verifier}.
 
 \begin{figure}[!htb]
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left,caption={Verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
-$\textbf{Step 1:}$
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=right,caption={Verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+$\textbf{Step 1:}$ #Setup phase
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
-$(C,D,z)\gets$parse$(\phi_{dl_{inner}})$
-$(B_C,B_D,\mathbf{\pi},c,d)\gets$parse$(\pi_{dl_{inner}})$
-$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$
+$(C,D,z)\gets$parse$(\phi_{dl_{inner}})$ #Public input
+$(B_C,B_D,\mathbf{\pi},c,d)\gets$parse$(\pi_{dl_{inner}})$ #From prover
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$ #FS challenges
 $H\gets \beta H$
-$C\gets B_C+\alpha C+(\alpha^2z)H$
+$C\gets B_C+\alpha C+(\alpha^2z)H$ #Blinded commitments
 $D\gets B_D+\alpha D$
 
-$\textbf{Step 2:}$
+$\textbf{Step 2:}$ #Recursive round
 $m\gets \lceil\log n\rceil$
 for $1\leq j\leq m$
-    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
     $n\gets \frac{|T|}{2}$
-    $\textbf{G}=\textbf{G}_T$, $\textbf{GS}=\textbf{G}_S$
+    $\textbf{G}=\textbf{G}_T$, $\textbf{GS}=\textbf{G}_S$ #Vector splitting
     $\textbf{G}'=\textbf{G}'_T$, $\textbf{GS}'=\textbf{G}'_T$
-    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$
-    $\gamma_j\gets$Hash$(\pi_j)$
-    $C\gets\gamma_j L_{C,j}+C+\gamma_j^{-1}R_{C,j}$
+    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$ #Proof elem
+    $\gamma_j\gets$Hash$(\pi_j)$ #Folding challenges
+    $C\gets\gamma_j L_{C,j}+C+\gamma_j^{-1}R_{C,j}$ #Update comms
     $D\gets\gamma_j L_{D,j}+D+\gamma_j^{-1}R_{D,j}$
-    $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$
+    $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$ #Next round vectors
     $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
     $n\gets\text{len}(\textbf{G})$
 
-$\textbf{Step 3:}$
-Check $C=c\times G_1+cdH$
+$\textbf{Step 3:}$ #Final check
+Check $C=c\times G_1+cdH$ #Initial ?= Folded
 Check $D=d\times G'_1$
 return 1 $\text{if both checks pass, else}$ return 0
 \end{lstlisting}
@@ -304,23 +304,23 @@ It is simply used as a measuring tool.
 
 \begin{figure}[!htb]
         \begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier-optimized},numbers=left,caption={Optimized verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
-$\textbf{Step 1:}$
+$\textbf{Step 1:}$ #Setup phase
 $(\textbf{G},H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z,\mathbf{u})\gets$parse$(\phi_{dl_{inner}})$
 $(B_C,B_D,\mathbf{\pi},c,d)\gets$parse$(\pi_{dl_{inner}})$
-$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$
+$\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$ #FS challenges
 
-$\textbf{Step 2:}$
+$\textbf{Step 2:}$ #Recursive phase
 $m\gets \lceil\log n\rceil$
 for $1\leq j\leq m$
-    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$
+    $T,S\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
     $n\gets \frac{|T|}{2}$
-    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$
-    $\gamma_j\gets$Hash$(\pi_j)$
+    $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$ #Proof elem
+    $\gamma_j\gets$Hash$(\pi_j)$ #Folding challenges
     $n\gets n+\text{len}(S)$
 
-$\textbf{Step 3:}$
-$\mathbf{CP}\text{: }\mathbf{\gamma}\gets(\gamma_m,...,\gamma_1)$
+$\textbf{Step 3:}$ # Accumulated checking phase
+$\mathbf{CP}\text{: }\mathbf{\gamma}\gets(\gamma_m,...,\gamma_1)$ #Construction difference
 $\mathbf{CAAUP}\text{: }\mathbf{\gamma}\gets(\gamma_1,...,\gamma_m)$
 $\textit{Compute }\mathbf{s}\textit{: see below for difference}$
 
@@ -331,27 +331,27 @@ AccumulateCheck$(\mathbf{\gamma}\times\mathbf{L}_D+(B_D+\alpha D)$
 $\text{return 1}$
 
 $\textbf{s-step Curdleproofs:}$
-for $1\leq j\leq n$:
+for $1\leq j\leq n$: Simulate halving each round
     $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}\text{, }b_{i,j}\in\{0,1\}\text{ s.t. }i=\sum_{j=1}^mb_{i,j}2^j$
     $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
 $\textbf{s-step CAAUrdleproofs:}$
-$ActivePos\gets[(i,i)\text{, }i=1,\dots,n]$
+$ActivePos\gets[(i,i)\text{, }i=1,\dots,n]$ #Pos after round
 for $1\leq j\leq m:$
     $h\gets\frac{2^{\lceil\log n\rceil}}{2}$
     $f\gets n-h$
     $nf\gets h-f$
     $fs\gets \frac{nf}{2}$
     for $(i,k)$ in $ActivePos$:
-        if $k\geq h:$
+        if $k\geq h:$ #Elem has challenge j
             $b_{i,j}\gets1$
             $newPos=k-h-fs$
-        else:
+        else: #Elem has no challenge j
             $b_{i,j}\gets0$
             $newPos=k$
         $nextActivePos.push((i,newPos))$
-    $ActivePos\gets nextActivePos$
+    $ActivePos\gets nextActivePos$ #New positions
     $n\gets h$
-for $1\leq j\leq n$:
+for $1\leq j\leq n$: #Same as Curdleproofs
     $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}$
     $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
         \end{lstlisting}
