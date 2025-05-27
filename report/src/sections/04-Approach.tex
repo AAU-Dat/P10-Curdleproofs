@@ -406,7 +406,8 @@ CAAUrdleproofs therefore has the same proof size as Curdleproofs.
 
 The CAAUrdleproofs modification can still reduce the overall block size overhead, though.
 Using Whisk with CAAUurdleproofs has a block size of $17.04$ KB, when the shuffle size is 128\cite{Whisk2024}.
-This can be seen in the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
+Note that this is the same size as Curdleproofs, as the shuffle size is a power of 2.
+The calculation of the block size comes from the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
 \begin{itemize}
     \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }128\cdot96=12,288$ bytes).
     \item Shuffle proof ($18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}\Rightarrow\text{eg. }(18+10\lceil\log(124+4)\rceil)\cdot48+7\cdot32=4,448$ bytes).
