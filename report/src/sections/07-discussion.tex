@@ -12,10 +12,18 @@ We will also discuss some of the limitations of the CAAUrdleproofs protocol and 
 
 \subsection{Shuffle Security}\label{subsec:Discution-Shuffle-security}
 When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
-Even when taking into account the worst case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8192 shuffles available.
+Even when taking into account the worst case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8192 shuffles available with an $\alpha$ of 8192.
 
-We would however not recommend using an~$\ell$ lower than 80, as the worst case scenario uses a little under half the available shuffles, and you would only need one third to get within the standard deviation.
+We would however not recommend using an~$\ell$ lower than 80, as here the worst case scenario needs a little under half the available shuffles to be honest in order to be secure, and you would only need a third of the 8192 shuffles to be honest to get within the one standard deviation.
 This would still lead to the size of the block overhead and the speed of the protocol being significantly reduced.
 
+Some other things to keep in mind when deciding on how many honest shuffles should be necessary to make the shuffle secure is that there are other factors that can affect the security of the blockchain.
+One of such factors is some of the know attacks that takes advantage of controlling a large number of validators.
+Attacks like the $>-50\%$ stake attack and the $33\%$ finality attack~\cite{EthereumAttackDefense2024} takes advantage of controlling a large number of validators in order to negatively effect the blockchain system.
+Because of attacks like these, which rely on controlling a large number of validators, we would recommend that when evaluating how many honest shuffles should be necessary to make the shuffle secure, one should also take into account how many honest validators are necessary to make the blockchain secure.
+
+Another thing to keep in mind is that within the Ethereum system not every validator is owned by a different person.
+Some nodes contain multiple validators, and this means that during the shuffling phase, when selecting the 16384 possible proposers, the chance that a single individual controls multible of the chosen validators.
+This is also possible during the selecting of the shufflers.
 
 
