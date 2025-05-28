@@ -1,7 +1,7 @@
 \section{Results}\label{sec:results}
 \subsection{Proving and Verifying Times}\label{subsec:results:provingverifying}
 
-After running the experiment where Curdleproofs and CAAUrdleproofs were compared across different shuffle sizes, we obtained the results shown in \autoref{fig:resulttimes}.
+After running the experiment where Curdleproofs and CAAUrdleproofs were compared across different shuffle sizes, we got the results shown in \autoref{fig:resulttimes}.
 
 \begin{figure*}[!htb]
     \centering
@@ -12,18 +12,20 @@ After running the experiment where Curdleproofs and CAAUrdleproofs were compared
     \label{fig:resulttimes}%
 \end{figure*}
 
-As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUdleproofs was run with a shuffle size $\ell$ of $\{8,9,\dots,256\}$.
+As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUrdleproofs was run with a shuffle size $\ell$ of $\{8,9,\dots,256\}$.
 Curdleproofs was only run with a shuffle size $\ell$ of $\{8,16,32,64,128,256\}$, as it is only able to run in powers of 2.
-This is why the results for Curdleproofs show the shuffle size, $\ell$, instantly going up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
+This is why the results for Curdleproofs show the shuffle size,~$\ell$, instantly going up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
 
-From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when $\ell$ is a power of 2.
-However, when $\ell$ is not a power of 2, CAAUrdleproofs is faster.
-The more below a power of 2 $\ell$ is, the more CAAUrdleproofs is faster than Curdleproofs
+From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when~$\ell$ is a power of 2.
+However, when~$\ell$ is not a power of 2, CAAUrdleproofs is faster.
+When $\ell$ is below a power of 2, we see that the performance advantage of CAAUrdleproofs contra Curdleproofs grows the lower~$\ell$ is.
 
-The results for the verifying time also shows that the verifying time jumps up the first four times it reaches a power of 2.
+The results for the verifying time also show that the verifying time jumps up quite significantly the first four times it reaches a power of 2.
+Though, this seems to not be the case, at least not as aggressively, when increasing $\ell$ from 128.
+We find, however, that the bump is smaller the higher $\ell$ is.
 
-Additional to the proving and verifying times, the time used on shuffling is also lower for any $\ell$ that is not a power of 2.
-Though, that was to be expected since CAAUrdleproofs uses the same shuffling algorithm as Curdleproofs but does not have to add additional padding values to the non power of 2 input sizes.
+Additional to the proving and verifying times, the time used on shuffling is also lower for any $\ell$ that is not a power of 2; see~\autoref{sec:shuffling-results}.
+Though, that was to be expected since CAAUrdleproofs uses the same shuffling algorithm as Curdleproofs, but does not have to add additional padding to the non-power of 2 input sizes.
 
 
 
@@ -46,21 +48,21 @@ The results of the shuffle security experiment are shown in \autoref{fig:shuffle
 We can see that the bigger the shuffle size $\ell$ is, the less honest shuffles are necessary to make the shuffle secure.
 In Ethereum, each shuffling phase is limited to 8192 shuffles, meaning that the maximum number of honest shuffles that can be used is 8192.
 Therefore, the results of the experiment also find $T_H=T-\beta$.
-This is how many of the $T$ shuffles, available during the shuffling phase, are needed to be honest, $T_H$, shuffles.
+This is how many of the $T$ shuffles, available during the shuffling phase, are needed to be honest~$T_H$ shuffles.
 The rest could then be the number of dishonest shuffles,~$\beta$.
-We also see that the bigger the shuffle size the narrower the standard deviation gets.
+We also see that the bigger the shuffle size, the narrower the standard deviation gets.
 
-From the results of the experiment with $\alpha=8192$ we can see that number of honest shuffles necessary to make the shuffle secure sharply goes down until a size of $\ell=64$, and then it starts to flatten out.
+From the results of the experiment, with~$\alpha=8192$ we can see that the number of honest shuffles necessary to make the shuffle secure sharply goes down until the size of $\ell=64$, and then it starts to flatten out.
 we can see that with a size of $\ell=75$ we need about 1/3 of the shuffles to be honest to make the shuffle secure.
-Likewise, we can see the at $\ell=108$ we need about 1/4 of the shuffles to be honest to make the shuffle secure.
+Likewise, we see that at~$\ell=108$ we need about 1/4 of the shuffles to be honest to make the shuffle secure.
 
-In general all three of the experiments, despite the difference in $\alpha$, show the same trend.
-They all level out but the higher the $\alpha$ is, the lower the leveling happens but the later it happens as well.
-There are two things however that are different between the experiments.
-At an $\alpha$ of 4096 we can see that at the start, with $\ell=32$, the mean number of honest shuffles necessary to make the shuffle secure is $\sim500$ lower than the 2 others.
-As $\ell$ increases, the mean number of honest shuffles necessary to make the shuffle secure becomes similar to the other $\alpha$ values.
-Another thing that differs between the experiments is that they all have sudden dip later on in the experiment.
-Here we can see a trend that the lower the~$\alpha$ is, the earlier the dip happens.
+In general, all three of the experiments, despite the difference in $\alpha$, show the same trend.
+They all level out, but the higher~$\alpha$ is, the lower the leveling happens, but the later it happens as well.
+There are two things, however, that are different between the experiments.
+At an~$\alpha$ of 4096 we see that at the start, with $\ell=32$, the mean number of honest shuffles necessary to make the shuffle secure is $\sim 500$ lower than the 2 others.
+As~$\ell$ increases, the mean number of honest shuffles necessary to make the shuffle secure becomes similar to the other $\alpha$ values.
+Another thing that differs between the experiments is that they all have a sudden dip in higher $\ell$ values in the experiment.
+Here we see a trend that the lower the~$\alpha$ is, the earlier the dip happens.
 
 \begin{figure*}[!htb]
     \centering
