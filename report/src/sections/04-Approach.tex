@@ -297,7 +297,7 @@ The output of this function is a list of length $\ell$, each element with a list
 Curdleproofs' implementation is simpler than CAAUrdleproofs' in this case.
 As Curdleproofs works on powers of two, it is always the right half of the vectors in each round that are multiplied by the challenge.
 
-The multiplication of challenges are not as easily trackable in the CAAUrdleproofs protocol.
+The multiplication of challenges on each element is not as easily trackable in the CAAUrdleproofs protocol.
 Here, it is necessary to simulate a run though the recursive protocol.
 Though, this should not have a big impact on performance, as it is run over vectors of small integers, and never actually has to do any multiplications.
 It is simply used as a measuring tool.
@@ -370,6 +370,11 @@ In Curdleproofs, both the~\gls{sameperm} and~\gls{samemsm} proof are recursive~\
 So, the modifications and optimization used on the~\gls{sameperm} argument are also used on the~\gls{samemsm} argument.
 This includes the split into set $T$ and $S$ before recursion, and the construction of the bit matrix,~$b_{i,j}$, to keep track of multiplications on individual elements.
 
+It is also worth noting that the concatenation of $T$ and $S$ in the recursive phase, lines 26--29 in~\autoref{lst:ipa-prover}, is handled effectively in the code.
+Instead of concatenating, the computation uses pointers to the original vector, so it never practically concatenates.
+
+The code is also using the fact that the used scheme function will always end up with vectors being a power of two after the first round.
+So, after the first round of recursion, we use the same code as Curdleproofs to run the rest of the protocol.
 
 \subsubsection{Shuffle Security}
 As mentioned in~\autoref{subsec:approach-shuffle-security}, the theoretically proven bound, on the necessary number of shuffles to ensure security is too high.
@@ -399,17 +404,19 @@ If we can reduce the shuffle size used in Whisk and still prove it secure, then 
 We first set our focus on Curdleproofs, as this is the protocol we have modified directly.
 As mentioned in~\autoref{sec:background-zkps}, the size of Curdleproofs is $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
 The dependence on the $\log$ stems from the number of recursive rounds that take place in the~\gls{sameperm} and~\gls{samemsm} proofs.
+The addition of four elements in the $\log$ stems from the protocol needing those as blinders.
+Hence, at a proof of size 128, $\ell$ is 124.
 In the proof of theorem 1, we show CAAUrdleproofs to be $\mathcal{O}(\log n)$.
 This means that the size of CAAUrdleproofs must be $18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}$.
 
 CAAUrdleproofs therefore has the same proof size as Curdleproofs.
 
 The CAAUrdleproofs modification can still reduce the overall block size overhead, though.
-Using Whisk with CAAUrdleproofs has a block size of $17.04$ KB, when the shuffle size is 128\cite{Whisk2024}.
+Using Whisk with CAAUrdleproofs has a block size of $16.656$ KB, when the shuffle size is 128\cite{Whisk2024}.
 Note that this is the same size as Curdleproofs, as the shuffle size is a power of 2.
 The calculation of the block size comes from the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
 \begin{itemize}
-    \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }128\cdot96=12,288$ bytes).
+    \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }124\cdot96=11,904$ bytes).
     \item Shuffle proof ($18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}\Rightarrow\text{eg. }(18+10\lceil\log(124+4)\rceil)\cdot48+7\cdot32=4,448$ bytes).
     \item A fresh tracker (two BLS G1 points $\Rightarrow48\cdot2=96$ bytes).
     \item A new commitment $com(k)$ to the proposer's tracker (one BLS G1 point $\Rightarrow48$ bytes).
