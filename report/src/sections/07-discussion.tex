@@ -44,6 +44,8 @@ We would however not recommend using an~$\ell$ lower than 80, as here the worst 
 As seen in~\autoref{fig:shufflesecurity} you would also only need a third of the 8192 shuffles to be honest to get within the one standard deviation.
 This would still lead to a reduction of the proving time of 62.69ms, which is 74.25\% of the current Curdleproofs time and a reduction in the verifying time of 0.89ms, which is 96.11\% of the current Curdleproofs time.
 It would also reduce the size of the block overhead from 16.656KB to 12.048KB.
+Only 72.33\% of the currently calculated size for Curdleproofs.
+This would result in saving $\sim 12.11GB$ of space on the blockchain each year.
 Some other things to keep in mind when deciding on how many honest shuffles should be necessary to make the shuffle secure is that there are other factors that can affect the security of the blockchain.
 One of such factors is some of the know attacks that takes advantage of controlling a large number of validators.
 Attacks like the $>-50\%$ stake attack and the $33\%$ finality attack~\cite{EthereumAttackDefense2024} takes advantage of controlling a large number of validators in order to negatively effect the blockchain system.
