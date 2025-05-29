@@ -40,7 +40,8 @@ As $\ell$ increases, the memory system will have more data to predict and optimi
 When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
 Even when taking into account the worst case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8192 shuffles available with an $\alpha$ of 8192.
 
-We would however not recommend using an~$\ell$ lower than 80, as here the worst case scenario needs a little under half the available shuffles to be honest in order to be secure, and you would only need a third of the 8192 shuffles to be honest to get within the one standard deviation.
+We would however not recommend using an~$\ell$ lower than 80, as here the worst case scenario needs a little under half the available shuffles to be honest in order to be secure.
+As seen in~\autoref{fig:shufflesecurity} you would also only need a third of the 8192 shuffles to be honest to get within the one standard deviation.
 This would still lead to a reduction of the proving time of 62.69ms, which is 74.25\% of the current time and a reduction in the verifying time of 0.89ms, which is 96.11\% of the current time.
 It would also reduce the size of the block overhead from 16.656KB to 12.048KB.
 Some other things to keep in mind when deciding on how many honest shuffles should be necessary to make the shuffle secure is that there are other factors that can affect the security of the blockchain.
