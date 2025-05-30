@@ -62,7 +62,8 @@ Our work therefore runs as a public coin protocol in any cryptographic group whe
 \end{definition}
 
 \subsection{Zero-knowledge proofs}\label{sec:background-zkps}
-Before explaining the protocol, we must mention that Curdleproofs is a~\gls{zkp} system, which is a system that allows a prover to convince a verifier that they know a secret without revealing the secret itself.
+Before explaining the protocol, we must mention that Curdleproofs, and hence also Whisk, is a~\gls{zkp} system.
+It is a system that allows a prover to convince a verifier that they know a secret without revealing the secret itself.
 Within the context of Ethereum, it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
 In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
 
@@ -70,7 +71,7 @@ In Whisk, it uses Curdleproofs to prove the validity of a shuffle.
     An argument $(Setup, P, V)$ is a zero-knowledge argument of knowledge of a relation $\mathbb{R}$ if it satisfies completeness, knowledge-soundness and is honest-verifier zero-knowledge.
 \end{definition}
 
-Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in Appendix~\autoref{app:definitions}.
+Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in Appendix~\ref{sec:appendix}.
 
 Also, two of three proofs that make up Curdleproofs are~\glspl{ipa}.
 These are also~\glspl{zkp}, and will be the focus of this paper.
@@ -162,7 +163,7 @@ Then Neff's trick~\cite{10.1145/501983.502000} is used, which observes that two 
 
 In order to show this, the protocol makes use of a~\gls{grandprod} argument.
 To prove that argument, Curdleproofs compiles it down to a~\gls{dlipa} by expressing each multiplication of the grand product as its own equation.
-This~\gls{dlipa} stems from the protocol originally proposed by Bootle et al.~\cite{cryptoeprint:2016/263,Curdleproofs}
+The proof of the~\gls{dlipa} then stems from the protocol originally proposed by Bootle et al.~\cite{cryptoeprint:2016/263,Curdleproofs}
 
 Hence, the~\gls{sameperm} proof is done if the prover can prove the~\gls{dlipa}.
 
