@@ -402,19 +402,20 @@ By repeating this experiment for several runs, one can experimentally say, when 
 If we can reduce the shuffle size used in Whisk and still prove it secure, then we expect to see some reduction in the size overhead on the blockchain.
 
 We first set our focus on Curdleproofs, as this is the protocol we have modified directly.
-As mentioned in~\autoref{sec:background-zkps}, the size of Curdleproofs is $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
+As mentioned in~\autoref{subsec:related-work-whisk}, the size of Curdleproofs is $18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$.
 The dependence on the $\log$ stems from the number of recursive rounds that take place in the~\gls{sameperm} and~\gls{samemsm} proofs.
 The addition of four elements in the $\log$ stems from the protocol needing those as blinders.
 Hence, at a proof of size 128, $\ell$ is 124.
-In the proof of theorem 1, we show CAAUrdleproofs to be $\mathcal{O}(\log n)$.
+In the proof of theorem 1, see Appendix~\ref{sec:appendix-thm1proof}, we show that CAAUrdleproofs is $\mathcal{O}(\log n)$, which is the same as Curdleproofs.
+However, as discussed in~\autoref{subsec:approach-CAAUrdleproofs}, CAAUrdleproofs'~\gls{ipa} proofs use $\lceil \log n \rceil$ recursive rounds.
 This means that the size of CAAUrdleproofs must be $18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}$.
 
 CAAUrdleproofs therefore has the same proof size as Curdleproofs.
 
 The CAAUrdleproofs modification can still reduce the overall block size overhead, though.
-Using Whisk with CAAUrdleproofs has a block size of $16.656$ KB, when the shuffle size is 128\cite{Whisk2024}.
+By using the overhead calculation described by Whisk on CAAUrdleproofs, it measures a block overhead of $16.656$ KB, when the shuffle size is 128~\cite{Whisk2024}.
 Note that this is the same size as Curdleproofs, as the shuffle size is a power of 2.
-The calculation of the block size comes from the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
+The provided calculation of the block overhead is provided as the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
 \begin{itemize}
     \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }124\cdot96=11,904$ bytes).
     \item Shuffle proof ($18+10 \lceil\log(\ell+4)\rceil\mathbb{G}$, $7\mathbb{F}\Rightarrow\text{eg. }(18+10\lceil\log(124+4)\rceil)\cdot48+7\cdot32=4,448$ bytes).
@@ -422,5 +423,5 @@ The calculation of the block size comes from the following, where $\mathbb{G}=48
     \item A new commitment $com(k)$ to the proposer's tracker (one BLS G1 point $\Rightarrow48$ bytes).
     \item A Discrete Logarithm Equivalence Proof on the ownership of the elected proposer commitment (two G1 points, two Fr scalars $\Rightarrow2\cdot48+2\cdot32=160$ bytes).
 \end{itemize}
-The majority of the block size comes from the list of shuffled trackers.
-Hence, using CAAUrdleproofs could majorly decrease the block size by allowing~$\ell$ to be chosen at arbitrary length.
+The majority of the block overhead comes from the list of shuffled trackers.
+Hence, as the list size is heavily dependent on~$\ell$, using CAAUrdleproofs could majorly decrease the block overhead by allowing~$\ell$ to be more flexibly chosen as a smaller size than 128.
