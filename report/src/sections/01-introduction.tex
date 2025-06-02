@@ -3,5 +3,33 @@
 \section{Introduction}\label{sec:introduction}
 Ethereum is a decentralized blockchain platform that enables developers to build and deploy smart contracts and decentralized applications.
 It is the second-largest blockchain platform by market capitalization and has a large and active developer community.
+Currently working as a Proof-of-Stake protocol, it allocates block proposal opportunities to the ones in the community willing to stake their ether; also called validators.
+Though, previous work from Heimbach et al., confirmed by ourselves, shows that adversaries are able to gather validator IP addresses~\cite{heimbach2024deanonymizingethereumvalidatorsp2p,ouroldpaper}.
+These can be used to perform a Denial-of-Service (DoS) attack on the validators, threatening the liveness of the blockchain~\cite{EthereumAttackDefense2024,ouroldpaper}.
+
+In response to the potential threat, Ethereum has proposed a protocol, Whisk, which hides validators' identities making the DoS attack harder to perform~\cite{Whisk2024}.
+Whisk is a Single Secret Leader Election protocol~\cite{10.1145/3419614.3423258}, where validators each publish a private tracker, which is used for proposer selection instead.
+When proposing a block, the validator will then prove the ownership of the tracker.
+To ensure that adversaries are unable to trace the tracker to specific validators, each block proposer shuffles the list of validator trackers while adding randomness to the trackers.
+
+Making sure that this has been done correctly is essential to the protocol.
+Hence, Whisk uses a proof protocol, called Curdleproofs, which is a Zero-Knowledge proof of shuffle~\cite{Curdleproofs}.
+Therefore, the block proposer constructs such a proof, adds it to the block, after which other validators can verify the proof.
+
+This introduces block size overhead to the blockchain.
+Also, additional work is required for both provers and verifiers.
+
+In this paper, we dive into the structure of Curdleproofs to understand, where the protocol can be optimized.
+Specifically, we work with the concept of Inner Product Arguments and how they generally only work vector sizes that are powers of two.
+
+Our protocol, CAAUrdleproofs, aims to improve on the rigid nature of Curdleproofs.
+Following this, we also provide argumentation of when CAAUrdleproofs is still secure.
+
+Working with this led to the following contributions:
+\begin{itemize}
+    \item We have successfully modified Curdleproofs, using the Springproofs framework~\cite{zhang2024springproofs}, to allow flexibility when choosing the shuffle size.
+    \item We have implemented CAAUrdleproofs and run experiments on both protocols, showing that CAAUrdleproofs has potential to be faster and smaller in size compared to Curdleproofs.
+    \item We have experimentally provided argumentation that CAAUrdleproofs is still secure when lowering the size of shuffled elements.
+\end{itemize}
 
 
