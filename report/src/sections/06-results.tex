@@ -33,12 +33,20 @@ Though, that was to be expected since CAAUrdleproofs uses the same shuffling alg
 
 \begin{figure*}[!htb]
     \centering
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/4096-256-p2} }}%
-    \qquad
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/5462-256-p2} }}%
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/8192-256-p2} }}%
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/4096-256-p2} }}%
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/5462-256-p2} }}%
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/8192-256-p2} }}%
     \caption{The results of the shuffle security experiment showing the mean amount of honest shuffles necessary with one standard deviation}%
     \label{fig:shufflesecurity}%
+\end{figure*}
+
+\begin{figure*}[!htb]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/violin-4096} }}%
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/violin-5462} }}%
+    \subfloat[\centering]{{\includegraphics[width=0.32\textwidth]{figures/results/violin-8192} }}%
+    \caption{The results of the shuffle security experiment showing the spread of nessecary shuffle need for the shuffle to be secure}%
+    \label{fig:shufflesecurityviolin}%
 \end{figure*}
 
 The results of the shuffle security experiment are shown in \autoref{fig:shufflesecurity}.
@@ -64,15 +72,7 @@ As~$\ell$ increases, the mean number of honest shuffles necessary to make the sh
 Another thing that differs between the experiments is that they all have a sudden dip in higher $\ell$ values in the experiment.
 Here we see a trend that the lower the~$\alpha$ is, the earlier the dip happens.
 
-\begin{figure*}[!htb]
-    \centering
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/violin-4096} }}%
-    \qquad
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/violin-5462} }}%
-    \subfloat[\centering]{{\includegraphics[width=0.45\textwidth]{figures/results/violin-8192} }}%
-    \caption{The results of the shuffle security experiment showing the spread of nessecary shuffle need for the shuffle to be secure}%
-    \label{fig:shufflesecurityviolin}%
-\end{figure*}
+
 
 The results in \autoref{fig:shufflesecurityviolin} show that for all three $\alpha$ values, the spread of the necessary honest shuffles tightens the larger the shuffle size $\ell$ gets.
 Like the results in \autoref{fig:shufflesecurity}, \autoref{fig:shufflesecurityviolin} also shows that the bigger a shuffle size $\ell$, the less honest shuffles on average are necessary to make the shuffle secure.
