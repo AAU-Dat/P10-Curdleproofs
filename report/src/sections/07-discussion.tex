@@ -6,9 +6,35 @@ We will also discuss some of the limitations of the CAAUrdleproofs protocol and 
 
 
 \subsection{CAAUrdleproofs in comparison to Curdleproofs}\label{subsec:CAAUrdleproofs-vs-Curdleproofs}
+As mentioned in~\autoref{subsec:results:provingverifying}, the proving and verifying times between the two protocols are close to identical when $\ell$ is a power of two.
+We expect that this is because the added computation is negligible compared to other computations that are present in the original Curdleproofs protocol.
 
+On the prover, there is the addition of the scheme function from Springproofs.
+Though, as seen in~\autoref{lst:schemefunc}, the scheme function only makes integer calculations based on $n$, and hence should have a negligible impact compared to the cryptographic group computations.
+In addition to that, mentioned in~\autoref{subsec:approach-implementation}, the vector is never practically split in two but instead uses pointers.
+Therefore, we avoid having to add new variables to memory in every round.
 
+Also, we mentioned in~\autoref{subsec:approach-implementation} that, every round after the first, runs the same code as Curdleproofs.
+Thus, only the first round should be able to introduce some computational overhead.
+But, as mentioned before, the overhead should be negligible.
 
+The same kind of explanation can be used to describe the same scenario at powers of two on the verifier side.
+Looking at~\autoref{lst:ipa-verifier-optimized}(b), we see that the only difference in computation between CAAUrdleproofs and Curdleproofs stems from the calculation of $\mathbf{s}$.
+Comparing line 29 and lines 33--47, it becomes clear that both ways work in $\mathcal{O}(n\log n)$, as they do $m$ computations for each of the $n$ elements.
+CAAUrdleproofs does, however, need some more integer variables for splitting as well as an array for keeping track of the vector elements' active positions during recursion.
+Nevertheless,~\autoref{fig:resulttimes}(b) shows that this does not have a big, if any, impact on the running time.
+
+However, as mentioned in~\autoref{subsec:results:provingverifying}, when~$\ell$ is just above a power of two, we see some more aggressively increasing verifying times.
+We expect this to be a result of~$m$ being set to~$\lceil\log n\rceil$ in line 8 of~\autoref{lst:ipa-verifier-optimized}.
+E.g., when~$\ell$ is~$65$, it will have to handle computations from an additional recursive round, in comparison to when~$\ell$ is~$64$.
+Additionally, this also explains why the increase in running time flattens when~$\ell$ is increases.
+
+Though the pattern shows that this bump has a decreasing impact on the running time, the higher $\ell$ is, as mentioned in~\autoref{subsec:results:provingverifying}.
+In theory, the addition of an extra proof element should introduce a constant amount of work for the verifier.
+
+Therefore, we believe this to be an artifact of memory optimizations done either by hardware or Rust.
+This could, for instance, include pre-fetching, in which the memory system can optimize access if it suspects some values in memory are going to be used some time later on\footnote{\href{https://doc.rust-lang.org/core/arch/aarch64/fn._prefetch.html}{https://doc.rust-lang.org/core/arch/aarc.h64/fn.\_prefetch.html} — Accessed: 29/05/2025}.
+As $\ell$ increases, the memory system will have more data to predict and optimize memory access.
 
 \subsection{Shuffle Security}\label{subsec:Discution-Shuffle-security}
 When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
