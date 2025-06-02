@@ -8,7 +8,7 @@ Though, previous work from Heimbach et al., confirmed also by our study, shows t
 These can be used to perform a Denial-of-Service (DoS) attack on the validators, threatening the liveness of the blockchain~\cite{EthereumAttackDefense2024,ouroldpaper}.
 
 In response to the potential threat, Ethereum has proposed a protocol, Whisk, which hides validators' identities making the DoS attack harder to perform~\cite{Whisk2024}.
-Whisk is a Single Secret Leader Election protocol~\cite{10.1145/3419614.3423258}, where validators each publish a private tracker, which is used for proposer selection instead.
+Whisk is a Single Secret Leader Election (SSLE) protocol~\cite{10.1145/3419614.3423258}, where validators each publish a private tracker, which is used for proposer selection instead.
 When proposing a block, the validator will then prove the ownership of the tracker.
 To ensure that adversaries are unable to trace the tracker to specific validators, each block proposer shuffles the list of validator trackers while adding randomness to the trackers.
 
