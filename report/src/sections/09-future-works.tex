@@ -2,5 +2,29 @@
 In this section we will focus on where there is still room for improvement in the Whisk protocol.
 
 The main modification from Curdleproofs to CAAUrdleproofs is the added flexibilty in choosing the shuffle size for Whisk.
-Hence, a topic to delve into in the future could be more structural modifications.
-As seen in~\autoref{sec:curdleproofs-weighted-inner-product-argument-modification-attempt}, we tried this, but found that we did not have time to follow through, as it seemed that significant structural changes were needed.
+Hence, a topic for future improvements could be proof structure modifications.
+The goal of this is to improve the protocol in all cases.
+Also in cases where the shuffle size is a power of two, for which Curdleproofs and CAAUrdleproofs show similar results.
+As seen in Appendix~\ref{app:curdleproofs-weighted-inner-product-argument-modification-attempt}, we tried to do this using~\glspl{wipa} instead of~\glspl{ipa}.
+Though, we found that there was not enough time to follow through, as it seemed that significant structural changes were needed for this change to be possible.
+
+
+Besides trying to make the proof faster, and the block overhead smaller, there are also calls for making the protocol more secure.
+Specifically, work has already begun trying to make Curdleproofs post-quantum secure~\cite{pqwhisk}.
+In this work, they make use of~\gls{csidh}~\cite{10.1007/978-3-030-03332-3_15}.
+Isogeny-based cryptography is based on maps between elliptic curves.
+Using isogenies, a hard problem comes up, namely the~\gls{gaip}.
+\begin{definition}[Group Action Inverse Problem (GAIP)]
+    Given a curve $E$, with $End(E)=O$, find an ideal $a\subset O$ such that $E=[a]E_0$
+\end{definition}
+Using this problem, an almost one to one conversion into using post-quantum cryptography can be done on Whisk, as shown by Sanso~\cite{pqwhisk}.
+At the moment, though, there does not exist a~\gls{nizk} proof of shuffle based on isogenies.
+
+
+With Whisk, a list of upcoming proposers is still chosen and published some time before they are needed for duty.
+But because upcoming proposers are published as trackers that only the chosen validator can open and prove ownership of, attacks such as~\gls{dos} attacks are a lot harder to accurately perform.
+
+Though, as found by Heimbach et al.~and confirmed by ourselves, the execution of the~\gls{dos} attack is only half the attack~\cite{heimbach2024deanonymizingethereumvalidatorsp2p,ouroldpaper}.
+Even if the blockchain is using Whisk, it is still possible for an adversary to gather and de-anonymize validator IP addresses only by running a node on the network.
+A sustainable solution for this therefore needs to be found.
+Currently, ideas such as $k$-anonymity, where nodes group together in $k$-size groups and randomize who sends routine messages to the network, have been proposed.
