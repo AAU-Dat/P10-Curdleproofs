@@ -14,4 +14,9 @@ An advantage that is bigger the more below a power of two the shuffle size is.
 
 Since CAAUrdleproofs enables the use of any shuffle size, it can be used to reduce the block overhead related to the protocol without having to compromise the security of the protocol.
 
+We have shown the security through an experiment inspired by~\cite{cryptoeprint:2022/560}.
+Here we found that the shuffle size could be reduced to 80 and still be secure, also considering the domain in which the protocol is intended.
+Using this, we see a block overhead of just 72.33\% the size compared to Curdleproof.
+ 
+
 This is why we think that CAAUrdleproofs is a good alternative to Curdleproofs, as it allows for more flexibility in the choice of shuffle size base things like the size of the block overhead and the proving and verifying times.
