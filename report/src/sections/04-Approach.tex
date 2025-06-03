@@ -24,7 +24,7 @@ One of these optimal functions is an optimized version of their \textit{pre-comp
 The computation is for finding the set, $T$.
 
 \begin{figure}[!htb]
-    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=left,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
+    \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=right,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
     input: $n$, where $n>0$
 
     $\{n\}\gets n$
@@ -149,7 +149,7 @@ Having the proof on the blockchain allows for each validator to asynchronously v
 Again, the originally proposed verifying protocol has been modified according to Springproofs, which is seen in~\autoref{lst:ipa-verifier}.
 
 \begin{figure}[!htb]
-\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=right,caption={Verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
+\begin{lstlisting}[language=Python,mathescape=true,label={lst:ipa-verifier},numbers=left,caption={Verifier computation for CAAU-IPA in CAAUrdleproofs},captionpos=b,frame=single]
 $\textbf{Step 1:}$ #Setup phase
 $(\textbf{G},\textbf{G}',H)\gets$parse$(crs_{dl_{inner}})$
 $(C,D,z)\gets$parse$(\phi_{dl_{inner}})$ #Public input
