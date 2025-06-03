@@ -90,6 +90,15 @@
     Furthermore, Curdleproofs uses the Fiat-Shamir transformation for its verifier challenges.
     So, the SIPA$(f)$, analogously CAAUrdleproofs, is a non-interactive random oracle argument having completeness and computational knowledge soundness as well.
 
+    Now we switch our focus to another argument, namely the~\gls{samemsm} argument.
+    As with the~\gls{dlipa},~\gls{samemsm} is also an inner product argument.
+    Hence, to work in CAAUrdleproofs, it also needs the optimizations used in the~\gls{dlipa}.
+
+    This means that the~\gls{samemsm} argument uses the Springproofs scheme function.
+    Also, it uses the new computation of $\mathbf{s}$, see~\autoref{lst:ipa-verifier-optimized}, used for coupling the correct challenges to each element in the vector.
+    Furthermore, Curdleproofs blinds the argument in the same way as the~\gls{dlipa}.
+    Hence, our argumentation of~\gls{hvzk}, knowledge-soundness and completeness follows from the above explaination of~\gls{dlipa}.
+
     From this, we can conclude that CAAUrdleproofs is a zero-knowledge argument of knowledge when shuffle size $|\ell|\geq8$.
 \end{proof}
 
