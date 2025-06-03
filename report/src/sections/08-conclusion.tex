@@ -1,4 +1,23 @@
 
 
 \section{Conclusion}\label{sec:conclusion}
-This is the conclusion
+After looking into the \glspl{zk} \glspl{ssle} protocol Whisk and the Curdleproofs protocol, we found that there was still was room for improvement in the Curdleproofs protocol.
+We saw the strict requirement of the shuffle size being a power of two as a limitation, and we wanted to remove this limitation to try to reduce the block overhead related to the protocol.
+
+To do this, we looked at Springproofs which allows for \glspl{ipa} to be of any size.
+Through combining the Curdleproofs protocol with the flexiblility of Springproofs, we made the CAAUrdleproofs protocol.
+The implementation of the CAAUrdleproofs protocol, is a modified version of the Curdleproofs protocol that allows for any shuffle size.
+
+Through our experiments, we found that the CAAUrdleproofs protocol has similar proving and verifying times to the Curdleproofs protocol when the shuffle size is a power of two.
+But for any shuffle size that is not a power of two, the CAAUrdleproofs protocol has a performance advantage. 
+An advantage that is bigger the more below a power of two the shuffle size is.
+
+Since CAAUrdleproofs enables the use of any shuffle size, it can be used to reduce the block overhead related to the protocol without having to compromise the security of the protocol.
+
+We have shown the security through an experiment inspired by~\cite{cryptoeprint:2022/560}.
+Here we found that the shuffle size could be reduced to 80 and still be secure, also considering the domain in which the protocol is intended.
+Using this, we see a block overhead of just 72.33\% the size compared to Curdleproof.
+ 
+
+Hence, we have shown CAAUrdleproofs to be an optimized modification of Curdleproofs, as it allows for more flexibility in the choice of shuffle size. 
+The optimization is based on reduction in size of the block overhead and faster proving and verifying times.
