@@ -3,8 +3,8 @@
 \section{Introduction}\label{sec:introduction}
 Ethereum is a decentralized blockchain platform that enables developers to build and deploy smart contracts and decentralized applications.
 It is the second-largest blockchain platform by market capitalization and has a large and active developer community.
-Currently working as a Proof-of-Stake protocol, block proposal opportunities are allocated to the community members willing to stake their ether on entities called validators.
-Though, previous work from Heimbach et al., confirmed also by our study, shows that adversaries are able to gather validator IP addresses~\cite{heimbach2024deanonymizingethereumvalidatorsp2p,ouroldpaper}.
+Currently working as a Proof-of-Stake protocol, block proposal opportunities are allocated to the community members willing to stake their ether cryptocurrency on entities called validators.
+Though, previous work from Heimbach et al., confirmed also by our previous study, shows that adversaries are able to gather validator IP addresses~\cite{heimbach2024deanonymizingethereumvalidatorsp2p,ouroldpaper}.
 These can be used to perform a Denial-of-Service (DoS) attack on the validators, threatening the liveness of the blockchain~\cite{EthereumAttackDefense2024,ouroldpaper}.
 
 In response to the potential threat, Ethereum has proposed a protocol, Whisk, which hides validators' identities making the DoS attack harder to perform~\cite{Whisk2024}.
@@ -23,12 +23,12 @@ In this paper, we dive into the structure of Curdleproofs to understand, where t
 Specifically, we work with the concept of Inner Product Arguments (IPA) and how they generally only work for vector sizes that are powers of two.
 
 Our protocol, CAAUrdleproofs, aims to improve on the rigid nature of Curdleproofs.
-Following this, we also provide argumentation of when CAAUrdleproofs is still secure.
+Following this, we also provide argumentation of in which conditions CAAUrdleproofs is still secure.
 
 Working with this led to the following contributions:
 \begin{itemize}
     \item We have successfully modified Curdleproofs, using the Springproofs framework~\cite{zhang2024springproofs}, to allow flexibility when choosing the shuffle size.
-    \item We have implemented CAAUrdleproofs and run experiments on both protocols, showing that CAAUrdleproofs has potential to be faster and smaller in size compared to Curdleproofs.
+    \item We have implemented CAAUrdleproofs and run experiments on both protocols, showing that CAAUrdleproofs has potential to be faster and smaller compared to Curdleproofs.
     \item We have experimentally provided argumentation that CAAUrdleproofs is still secure when lowering the size of shuffled elements.
 \end{itemize}
 
