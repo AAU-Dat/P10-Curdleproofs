@@ -26,15 +26,13 @@ Nevertheless,~\autoref{fig:resulttimes}(b) shows that this does not have a big, 
 
 However, as mentioned in~\autoref{subsec:results:provingverifying}, when~$\ell$ is just above a power of two, we see some more aggressively increasing verifying times.
 We expect this to be a result of~$m$ being set to~$\lceil\log n\rceil$ in line 8 of~\autoref{lst:ipa-verifier-optimized}.
-E.g., when~$\ell$ is~$65$, it will have to handle computations from an additional recursive round, in comparison to when~$\ell$ is~$64$.
-Additionally, this also explains why the increase in running time flattens when~$\ell$ is increases.
-
-Though the pattern shows that this bump has a decreasing impact on the running time, the higher $\ell$ is, as mentioned in~\autoref{subsec:results:provingverifying}.
-In theory, the addition of an extra proof element should introduce a constant amount of work for the verifier.
-
-Therefore, we believe this to be an artifact of memory optimizations done either by hardware or Rust.
-This could, for instance, include pre-fetching, in which the memory system can optimize access if it suspects some values in memory are going to be used some time later on\footnote{\href{https://doc.rust-lang.org/core/arch/aarch64/fn._prefetch.html}{https://doc.rust-lang.org/core/arch/aarc.h64/fn.\_prefetch.html} — Accessed: 29/05/2025}.
-As $\ell$ increases, the memory system will have more data to predict and optimize memory access.
+E.g., when~$\ell$ is~$65$, computations for an additional round are added, compared to when~$\ell$ is~$64$.
+This explains why the running time flattens when~$\ell$ is increased.
+The pattern shows the bump to have a decreasing impact on the running time, the higher $\ell$ is.
+In theory, the extra recursive round should introduce a constant amount of work for the verifier.
+Therefore, we believe the bump to be an artifact of memory optimizations.
+For instance, pre-fetching, where the memory system can optimize access if it suspects some values in memory are going to be reused\footnote{\href{https://doc.rust-lang.org/core/arch/aarch64/fn._prefetch.html}{https://doc.rust-lang.org/core/arch/aarc.h64/fn.\_prefetch.html} — Accessed: 29/05/2025}.
+As~$\ell$ increases, the memory system will have more data to predict and optimize memory access.
 
 \subsection{Shuffle Security}\label{subsec:Discution-Shuffle-security}
 When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
