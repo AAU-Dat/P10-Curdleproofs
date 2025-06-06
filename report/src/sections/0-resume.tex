@@ -12,7 +12,8 @@
     ]
         \textbf{\large Summary}%
 
-This paper addresses a key vulnerability in Ethereum’s proof-of-stake (PoS), namely the vulnerability of block proposers against denial-of-service (DoS) attacks through deanonymization.
+This paper addresses a key vulnerability in Ethereum’s proof-of-stake (PoS) protocol, namely the vulnerability of block proposers against denial-of-service (DoS) attacks.
+This is made possible through deanonymization, where adversaries get validator IP addresses, after which they check for matches and attack upcoming proposers.
 To counter this, Ethereum has proposed the Whisk protocol, a Single Secret Leader Election (SSLE) protcol that uses zero-knowledge proofs to hide proposer identities.
 Whisk relies on a shuffle-based zero-knowledge proof protocol called Curdleproofs, which uses Inner Product Arguments (IPAs) to validate the correctness of shuffles.
 However, Curdleproofs is constrained to shuffle sizes that are only a power of two due to the recursive nature of the IPA.
