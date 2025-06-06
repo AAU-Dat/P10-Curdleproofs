@@ -17,7 +17,7 @@ This is made possible through deanonymization, where adversaries get validator I
 To counter this, Ethereum has proposed the Whisk protocol, a Single Secret Leader Election (SSLE) protocol that uses zero-knowledge proofs to hide proposer identities.
 Whisk is shuffle-based, meaning it resists adversarial tracking by iteratively shuffling a subset of a list of trackers, where each validator has a single tracker.
 Each shuffle in Whisk relies on a shuffle-based zero-knowledge proof called Curdleproofs, which uses Inner Product Arguments (IPAs) to validate the correctness of the shuffle.
-However, Curdleproofs is constrained to shuffle sizes that are only a power of two due to the recursive nature of the IPA.
+However, Curdleproofs is constrained to shuffling subsets of sizes that are only a power of two due to the recursive nature of the IPA.
 
 
 This is why we propose a modified protocol, CAAUrdleproofs, which lifts this restriction by integrating ideas from Springproofs.
