@@ -1,5 +1,17 @@
+\onecolumn     % switch to one‐column formatting
 \thispagestyle{empty}
-\textbf{\large Summary}
+
+\begin{center}
+    \begin{tcolorbox}[
+        width=\dimexpr\paperwidth - 2in\relax,  % span from 1" margin to 1" margin
+        colback=white,                          % white background
+        colframe=white,                         % black border
+        left=60pt, right=60pt, top=10pt, bottom=10pt, % internal padding
+        boxrule=0.8pt, % thickness of border line
+        fontupper=\large
+    ]
+        \textbf{\large Summary}%
+
 This paper addresses a key vulnerability in Ethereum’s proof-of-stake (PoS), namely the vulnerability of block proposers against denial-of-service (DoS) attacks through deanonymization.
 To counter this, Ethereum has proposed the Whisk protocol, a Single Secret Leader Election (SSLE) protcol that uses zero-knowledge proofs to hide proposer identities.
 Whisk relies on a shuffle-based zero-knowledge proof protocol called Curdleproofs, which uses Inner Product Arguments (IPAs) to validate the correctness of shuffles.
@@ -17,3 +29,6 @@ The results validate that smaller shuffle sizes can still maintain a secure shuf
 The paper concludes by mentioning that CAAUrdleproofs is an efficient improvement to Curdleproofs, and it suggests future development in the directions of post-quantum security, protocol refinement or possibly looking at the use of Weighted inner product argument (WIPA).
 
 
+
+        \end{tcolorbox}
+    \end{center}
