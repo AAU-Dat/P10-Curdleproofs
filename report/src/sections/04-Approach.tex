@@ -281,7 +281,7 @@ Implementing the above-explained CAAUrdleproofs protocol introduced some optimiz
 These are explained in the following with a focus on how CAAUrdleproofs differentiates itself from Curdleproofs.
 Both our implementation of CAAUrdleproofs and the experiment involving the security of the shuffle are publicly available on GitHub~\footnote{\href{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}{https://github.com/AAU-Dat/curdleproofsplus/tree/SIPA}}.
 The implementation of CAAUrdleproofs is a fork of and builds directly on the already existing Curdleproofs code.
-\subsubsection{CAAUdleproofs}
+\subsubsection{CAAUrdleproofs}
 The protocol in Curdleproofs~\cite{Curdleproofs} introduces a lot of multiscalar multiplications.
 As such, CAAUrdleproofs also introduces these multiplications.
 This allows for checking calculations of the form:
@@ -290,7 +290,7 @@ This allows for checking calculations of the form:
 \end{align}
 As explained by Curdleproofs, the verifier computation can be significantly optimized by checking the multiscalar multiplications as a single check at the end of the protocol instead.
 
-CAAUrdleproofs introduced a slight difference on this topic in regard to the~\glspl{ipa},~\gls{sameperm} and~\gls{samemsm}.
+CAAUrdleproofs differs on this topic in regard to the~\glspl{ipa},~\gls{sameperm} and~\gls{samemsm}.
 In each recursive round, both the folded vectors and the commitments are being multiplied by verification scalars, $\gamma_j$.
 To keep track of which elements of the vectors are multiplied by each $\gamma_j$, a function called \texttt{get\_verification\_scalars\_bitstring} is used.
 The output of this function is a list of length $\ell$, each element with a list corresponding to the rounds in which $\gamma_j$ was multiplied to the element.
@@ -374,14 +374,14 @@ It is also worth noting that the concatenation of $T$ and $S$ in the recursive p
 Instead of concatenating, the computation uses pointers to the original vector, so it never practically concatenates.
 
 The code is also using the fact that the used scheme function will always end up with vectors being a power of two after the first round.
-So, after the first round of recursion, we use the same code as Curdleproofs to run the rest of the protocol.
+So, after the first round of recursion, we use the original algorithm code from Curdleproofs to run the rest of the protocol.
 
 \subsubsection{Shuffle Security}
 As mentioned in~\autoref{subsec:approach-shuffle-security}, the theoretically proven bound, on the necessary number of shuffles to ensure security is too high.
 Hence, as also done in~\cite{cryptoeprint:2022/560}, we implement an experiment to find the bounds, where the shuffle is secure.
 The goal of the experimental code is to find the number of honest shuffles required for security.
 
-We inherit the authors of the shuffle's terminology, and interpret each ciphertext as a cup that can contain water.
+We inherit the terminology introduced by Larsen et al.~\cite{cryptoeprint:2022/560}, and interpret each ciphertext as a cup that can contain water.
 Each cup contains an amount of water between 0 and 1.
 
 An experiment run starts with the first cup being full and the rest being empty.
