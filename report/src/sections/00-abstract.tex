@@ -1,11 +1,11 @@
 
 \begin{abstract}
-    Ethereum is one of the leading proof-of-stake blockchains.
+    Ethereum is one of the leading Proof-of-Stake blockchains.
     However, it is still vulnerable to attacks.
     One such attack is the de-anonymization attack by Heimbach et al.~where an adversary could get validator IP addresses and then perform a denial-of-service attack on them.
     To try and combat this attack, Ethereum has proposed the use of the Whisk protocol.
-    Whisk is a Single secret leader election protocol that uses a zero-knowledge proof called Curdleproofs that uses inner product arguments to prove the validity of a shuffle of validators.
-    This paper improves upon Curdleproofs' inner product arguments by introducing CAAUrdleproofs, which is a modified version of Curdleproofs with ideas from Springproofs as to overcome the limitations of Curdleproofs regarding the shuffle size.
+    Whisk is a Single Secret Leader Election protocol that uses a zero-knowledge proof called Curdleproofs that uses Inner Product Arguments to prove the validity of a shuffle of validators.
+    This paper improves upon Curdleproofs' Inner Product Arguments by introducing CAAUrdleproofs, which is a modified version of Curdleproofs with ideas from Springproofs as to overcome the limitations of Curdleproofs regarding the shuffle size.
     We show that CAAUrdleproofs has similar proving and verifying times to Curdleproofs when the shuffle size is a power of two.
     We also show that CAAUrdleproofs has a performance advantage for any shuffle size that is not a power of two, and that this advantage grows the lower the shuffle size is below a power of two.
     After performing experiments, we also suggest a new shuffle size which is smaller than the current one used in Curdleproofs that would result in a smaller block overhead than the one created by the current Curdleproofs protocol.
@@ -14,5 +14,5 @@
 \end{abstract}
 
 \begin{IEEEkeywords}
-    Ethereum, Proof of Shuffle, Distributed Systems, Inner Product Arguments, Zero-Knowledge Proof
+    Ethereum, Proof of Shuffle, Distributed Systems, Inner Product Arguments, Zero-Knowledge Proof, Single Secret Leader Election
 \end{IEEEkeywords}
