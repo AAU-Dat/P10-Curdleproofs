@@ -73,7 +73,7 @@ Whisk uses Curdleproofs to prove the validity of a shuffle.
 
 Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in Appendix~\ref{sec:appendix}.
 
-Also, two of three proofs that make up Curdleproofs are~\glspl{ipa}.
+Also, two of three proofs that make up Curdleproofs are proven using~\glspl{ipa}.
 These are also~\glspl{zkp}, and will be the focus of this paper.
 Hence, we provide a definition on~\glspl{ipa}.
 
@@ -90,19 +90,20 @@ In each slot a proposer is chosen to propose a block thereby allowing the networ
 
 The proposer~\gls{dos} attack is a type of attack that targets the block proposers, making them unable to propose blocks.
 An adversary can use the proposer~\gls{dos} attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their own rewards~\cite{EthereumSSLE2024}.
+The proposer~\gls{dos} is made possible by an attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} in which they deanonymize validators and get their IP addresses.
+In our preliminary work~\cite{ouroldpaper}, we show that the attack is still possible to perform on the Ethereum network.
 As a response to the proposer~\gls{dos} attack, Ethereum proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
-An attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} is the deanonymization attack on validators.
-In our preliminary work~\cite{ouroldpaper}, we show that the attack is still possible to perform on the Ethereum network, and using the attack, a proposer~\gls{dos} can be performed.
-
 
 Whisk is a~\gls{zk}~\gls{ssle} system that uses a~\gls{zk} argument called Curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle with size $\ell$ without revealing the input or output~\cite{10.1145/3419614.3423258}.
-Whisk works by selecting a list of 16,384 validator trackers and shuffles them over 8,192 slots ($\sim$1 day).
+Whisk works by selecting a list of 16,384 validator trackers and then the following 8,192 block proposers shuffle them over 8,192 slots ($\sim$1 day).
 Then 8,192 proposers are selected from the shuffled list to propose blocks for the next 8,192 slots while a new list is being shuffled.
-This way a new list of proposers is created every day.
+This way, a new list of proposers is created every day.
 After each shuffle, Whisk uses a~\gls{zkp} to prove that the shuffle is correct.
-This is so that the proposer can prove that they are the correct proposer for the slot without revealing their identity, thereby mitigating the proposer~\gls{dos} attack because of the identity of the upcoming proposers being hidden now.
+As the specific shuffle is hidden to prevent adversarial tracking, this is done to ensure that the trackers are shuffled according to protocol specifications.
+Whenever a proposer is chosen, they can prove that they are the correct proposer for the slot without revealing their identity.
+Thereby, Whisk mitigates the proposer~\gls{dos} attack because of the identity of the upcoming proposers being hidden now.
 
-Curdleproofs is a~\gls{zkp} system that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
+Curdleproofs is a~\gls{zkp} system, used by Whisk, that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
 It does so by using three different~\glspl{zkp}, with one of them relying on two more~\glspl{zkp}.
 The overview can be seen in~\autoref{fig:curdleproof-protocol}.
 
@@ -170,8 +171,8 @@ Hence, the~\gls{sameperm} proof is done if the prover can prove the~\gls{dlipa}.
 
 The second proof is a~\gls{samemsm} argument.
 The prover has proven the existence of the permutation.
-Now, the goal of the~\gls{samemsm} argument is to prove that the output ciphertext set was constructed with the same permutation, $\sigma$, here called multiscalar $\mathbf{v}$\footnote{Denoted as $\mathbf{c}$ in the Curdleproofs paper but changed for readability}, committed to in commitment $A$.
-Note, therefore, that $A$ in~\gls{sameperm} and~\gls{samemsm} is the same commitment, where $\mathbf{v}=\sigma(\mathbf{a})$
+Now, the goal of the~\gls{samemsm} argument is to prove that the output ciphertext set was constructed with the same permutation,~$\sigma$, here called multiscalar $\mathbf{v}$\footnote{Denoted as $\mathbf{c}$ in the Curdleproofs paper but changed for readability}, committed to in commitment $A$.
+Note, therefore, that commitment~$A$ in~\gls{sameperm} and~\gls{samemsm} is the same commitment, where $\mathbf{v}=\sigma(\mathbf{a})$.
 As the multiscalar is a vector, this argument is an~\gls{ipa} by nature, contrary to the~\gls{sameperm} argument.
 
 The third proof is a Same Scalar argument.
@@ -181,7 +182,7 @@ Also, all validators are still able to open their commitments if they are chosen
 Therefore, the goal of the Same Scalar argument is to prove the existence of the scalar,~$k$, such that the commitment of the permuted set is equal to the commitment of the pre-permuted set multiplied by $k$.
 
 
-In Chapter 6 of Curdleproofs~\cite{Curdleproofs} they explain that the proof has size~$18+10 \log(\ell+4)\mathbb{G}$, $7\mathbb{F}$, where $\mathbb{G}$ is a cryptographic group point, and $\mathbb{F}$ is a field element.
+In Chapter 6 of Curdleproofs~\cite{Curdleproofs} they explain that the proof has size~$(18+10 \log(\ell+4))\mathbb{G}+7\mathbb{F}$, where $\mathbb{G}$ is a cryptographic group point, and $\mathbb{F}$ is a field element.
 
 \subsection{Problem definition}\label{subsec:problem-definition}
 The current proposal of Curdleproofs only works when the shuffle size of Whisk is set to a power of 2.

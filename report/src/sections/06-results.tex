@@ -13,7 +13,7 @@ After running the experiment where Curdleproofs and CAAUrdleproofs were compared
 \end{figure*}
 
 As mentioned in \autoref{sec:CAAUrdleproof-experiment}, CAAUrdleproofs was run with a shuffle size $\ell=\{8,9,\dots,256\}$.
-Curdleproofs was only run with a shuffle size $\ell = 2^N$ of $N = \{3,4,5,6,7,8\}$, as it is only able to run in powers of 2.
+Curdleproofs was only run with a shuffle size $\ell = 2^N$, where $N = \{3,4,5,6,7,8\}$, as it is only able to run in powers of 2.
 This is why the results for Curdleproofs show the shuffle size,~$\ell$, instantly going up to the next power of 2, because it theoretically would have to pad the input set until it reached the next power of 2.
 
 From the results, we can see that CAAUrdleproofs and Curdleproofs have similar proving and verifying times when~$\ell$ is a power of 2.
@@ -54,14 +54,14 @@ The results of the shuffle security experiment are shown in \autoref{fig:shuffle
 \autoref{fig:shufflesecurity} shows the mean of the 1000 runs of each shuffle size $\ell$ and the standard deviation.
 
 We can see that the bigger the shuffle size $\ell$ is, the less honest shuffles are necessary to make the shuffle secure.
-In Ethereum, each shuffling phase is limited to 8192 shuffles, meaning that the maximum number of honest shuffles that can be used is 8192.
-Therefore, the results of the experiment also find $T_H=T-\beta$.
+In Ethereum, each shuffling phase is limited to 8,192 shuffles, meaning that the maximum number of honest shuffles that can be used is 8192.
+Therefore, the results of the experiment actually find $T_H=T-\beta$.
 This is how many of the $T$ shuffles, available during the shuffling phase, are needed to be honest~$T_H$ shuffles.
-The rest could then be the number of dishonest shuffles,~$\beta$.
+The rest is therefore the maximum number of dishonest shuffles allowed,~$\beta$.
 We also see that the bigger the shuffle size, the narrower the standard deviation gets.
 
 From the results of the experiment, with~$\alpha=8192$ we can see that the number of honest shuffles necessary to make the shuffle secure sharply goes down until the size of $\ell=64$, and then it starts to flatten out.
-we can see that with a size of $\ell=75$ we need about 1/3 of the shuffles to be honest to make the shuffle secure.
+We can see that with a size of $\ell=75$ we need about 1/3 of the shuffles to be honest to make the shuffle secure.
 Likewise, we see that at~$\ell=108$ we need about 1/4 of the shuffles to be honest to make the shuffle secure.
 
 In general, all three of the experiments, despite the difference in $\alpha$, show the same trend.
@@ -81,7 +81,7 @@ We can also see that the widest point of the violin plot is below the mean.
 This means that the outliers are a lot more significant above the mean than below it.
 
 It is worth noting that there is a spike in the distribution of the necessary honest shuffles at $\ell=32$ for $\alpha=4096$.
-This spike is not present for the other two $\alpha$ values, and is due to the probabilistic nature of the shuffling method.
+This spike is not present for the other two $\alpha$ values, and is likely due to the probabilistic nature of the shuffling method.
 
 Another thing that is notable is that in the setting of Ethereum, the maximum number of shuffles available is 8192.
 This means that in the cases where more than the 8192 shuffles were necessary to make the shuffle secure, the shuffle would not have been secure within the Ethereum setting.
