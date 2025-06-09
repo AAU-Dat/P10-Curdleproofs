@@ -1,17 +1,17 @@
 
 \section{Experimental Protocol}\label{sec:experimental-protocol}
-In this section, we will describe how our experiments are run, and what we want to measure.
-We also discuss which parameters we can tweak in the different experiments that we have.
+In this section, we will describe how our experiments are run and what we want to measure.
+We also discuss which parameters we can adjust in the various experiments we have.
 
 The experiments are run on a virtual machine hosted on Strato CLAAUDIA at Aalborg University.
-The machine is using an Intel Xeon Cascadelake processor, CPU family 6, model 85.
-It has 16 virtual CPUs and 64 GB of RAM available.
+The machine uses an Intel Xeon Cascadelake processor, CPU family 6, model 85.
+It features 16 virtual CPUs and 64 GB of RAM\@.
 The virtual machine is running Ubuntu Server 24.
 
 
 \subsection{CAAUrdleproof}\label{sec:CAAUrdleproof-experiment}
-In this experiment we measure the time to run the CAAUrdleproofs protocol.
-The results will be compared to those of Curdleproofs, which we re-run on our own hardware.
+In this experiment, we measure the time to run the CAAUrdleproofs protocol.
+The results will be compared to those of Curdleproofs, which we re-run on our hardware.
 As Curdleproofs already has a Rust benchmark implemented, we will be using that same benchmark for both protocols.
 The parameter that we want to change between benchmark runs is the shuffle size, $\ell$.
 
@@ -25,11 +25,11 @@ Since Curdleproofs is unable to run benchmarks, unless the shuffle size is a pow
 \subsection{Shuffle security}\label{subsec:experimental-protocol-shuffle-security}
 In this experiment, we run the shuffle protocol with varying shuffle sizes and varying numbers of adversarial tracked ciphertexts.
 The purpose of this experiment is to find the lowest possible shuffle size that is still secure against adversarial tracking.
-We therefore run the experiment with shuffle sizes,~$\ell$, between 32 and 512.
+We, therefore, run the experiment with shuffle sizes,~$\ell$, between 32 and 512.
 For the number of adversarial tracked ciphertexts, we use the values $\alpha=\{1/2,1/3,1/4\}$
 
 Because Curdleproofs is meant to be used in an Ethereum setting, a maximum of 8,192 shuffles is available.
-Though, we will keep running the shuffling experiments until they are deemed secure.
-Also, the experiments shuffle over a set of 16,384 ciphertexts.
+However, we will keep running the shuffling experiments until they are deemed secure.
+Additionally, the experiments are conducted with a set of 16,384 ciphertexts.
 Both of these numbers come from the Ethereum Whisk proposal~\cite{Whisk2024}.
-Every experiment is run 1000 times to avoid statistical uncertainty.
+Every experiment is run 1,000 times to avoid statistical uncertainty.

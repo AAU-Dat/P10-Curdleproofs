@@ -12,25 +12,25 @@
     ]
         \textbf{\large Summary}%
 
-This paper addresses a key vulnerability in Ethereum’s proof-of-stake (PoS) protocol, namely the vulnerability of block proposers against denial-of-service (DoS) attacks.
-This is made possible through deanonymization, where adversaries get validator IP addresses, after which they check for matches and attack upcoming proposers.
-To counter this, Ethereum has proposed the Whisk protocol, a Single Secret Leader Election (SSLE) protocol that uses zero-knowledge proofs to hide proposer identities.
-Whisk is shuffle-based, meaning it resists adversarial tracking by iteratively shuffling a subset of a list of trackers, where each validator has a single tracker.
-Each shuffle in Whisk relies on a shuffle-based zero-knowledge proof called Curdleproofs, which uses Inner Product Arguments (IPAs) to validate the correctness of the shuffle.
-However, Curdleproofs is constrained to shuffling subsets of sizes that are only a power of two due to the recursive nature of the IPA.
+        This paper addresses a key vulnerability in Ethereum’s Proof-of-Stake (PoS) protocol, namely the vulnerability of block proposers against Denial-of-Service (DoS) attacks.
+        The attack is made possible through deanonymization, where adversaries get validator IP addresses, after which they check for matches and attack upcoming proposers.
+        To counter this, Ethereum has proposed the Whisk protocol, a Single Secret Leader Election (SSLE) protocol that uses zero-knowledge proofs to hide proposer identities.
+        Whisk is shuffle-based, meaning it resists adversarial tracking by iteratively shuffling a subset of a list of trackers, where each validator has a single tracker.
+        Each shuffle in Whisk relies on a shuffle-based zero-knowledge proof called Curdleproofs, which uses Inner Product Arguments (IPAs) to validate the correctness of the shuffle.
+        However, Curdleproofs is constrained to shuffling subsets of sizes that are only a power of two due to the recursive nature of the IPA.
 
 
-This is why we propose a modified protocol, CAAUrdleproofs, which lifts this restriction by integrating ideas from Springproofs.
-CAAUrdleproofs introduces a new folding scheme which allows the use of arbitrary shuffle sizes to enable more flexibility when reducing or increasing the size.
-The experiments show that CAAUrdleproofs maintains similar performance to Curdleproofs for power of two shuffle sizes but outperforms it when shuffle sizes are not a power of two; especially when the size is slightly above a power of two.
-This paper also proposes reducing the shuffle size from 128 down to 80 which would result in a notable decrease in the block overhead created by the protocol.
-The overhead would go from 16.656 KB to 12.048 KB, saving around 12.11 GB annually.
+        For that reason, we propose a modified protocol, CAAUrdleproofs, which lifts this restriction by integrating ideas from Springproofs.
+        CAAUrdleproofs introduces a new folding scheme that allows the use of arbitrary shuffle sizes, enabling more flexibility when reducing or increasing the size.
+        The experiments show that CAAUrdleproofs maintains a similar performance to Curdleproofs for power of two shuffle sizes but outperforms it when shuffle sizes are not a power of two, especially when the size is slightly above a power of two.
+        This paper also proposes reducing the shuffle size from 128 down to 80, which would result in a notable decrease in the block overhead created by the protocol.
+        The overhead would decrease from 16.656 KB to 12.048 KB, resulting in annual savings of approximately 12.11 GB.
 
 
-This paper also provides security analysis of the shuffle mechanism with different shuffle sizes and under various amounts of adversarial influence.
-The results validate that smaller shuffle sizes can still maintain a secure shuffle within the total amount of shuffles available in a round of the Whisk protocol.
-The paper concludes by mentioning that CAAUrdleproofs is an efficient improvement to Curdleproofs.
-It suggests future development in the directions of post-quantum security, protocol refinement or possibly looking at the use of a Weighted Inner Product Argument (WIPA).
+        This paper also provides a security analysis of the shuffle mechanism with different shuffle sizes and under various amounts of adversarial influence.
+        The results validate that smaller shuffle sizes can still maintain a secure shuffle within the total amount of shuffles available in a round of the Whisk protocol.
+        The paper concludes by mentioning that CAAUrdleproofs is an efficient improvement to Curdleproofs.
+        It suggests future development in the direction of post-quantum security, protocol refinement, or exploring the use of a Weighted Inner Product Argument (WIPA).
 
 
 

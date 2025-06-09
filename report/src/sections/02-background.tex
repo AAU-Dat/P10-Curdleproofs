@@ -54,17 +54,17 @@ The notation used throughout this paper can be seen in~\autoref{tab:notation}.
 
 
 Since this work is based on the existing Curdleproofs protocol~\cite{Curdleproofs}, it inherits the same security assumptions.
-Our work therefore runs as a public coin protocol in any cryptographic group where~\gls{ddh} is hard~\cite{10.1007/BFb0054851}.
+Our work, therefore, runs as a public coin protocol in any cryptographic group where~\gls{ddh} is hard~\cite{10.1007/BFb0054851}.
 \gls{ddh} is defined as follows.
 
 \begin{definition}[DDH]
  Given a finite, multiplicative cyclic group $\mathbb{G}$ of prime order $p$, the decisional Diffie-Hellman problem is defined as follows: Given $(g^a,g^b,g^c)\in\mathbb{G}$, where $g$ is a generator of $\mathbb{G}$ and $a,b,c\in\mathbb{Z}_p$, decide whether $c=ab$.
 \end{definition}
 
-\subsection{Zero-knowledge proofs}\label{sec:background-zkps}
+\subsection{Zero-Knowledge Proofs}\label{sec:background-zkps}
 Before explaining the protocol, we must mention that Curdleproofs, and hence also Whisk, is a~\gls{zkp} system.
 It is a system that allows a prover to convince a verifier that they know a secret without revealing the secret itself.
-Within the context of Ethereum, it could be the ability to convince someone that a transaction is valid without revealing information about the transaction such as the value of it.
+Within the context of Ethereum, it could convince someone that a transaction is valid without revealing information about the transaction, such as its value.
 Whisk uses Curdleproofs to prove the validity of a shuffle.
 
 \begin{definition}[Zero-Knowledge Argument of Knowledge]
@@ -73,9 +73,9 @@ Whisk uses Curdleproofs to prove the validity of a shuffle.
 
 Definitions for knowledge-soundness, completeness, and~\gls{hvzk} can be found in Appendix~\ref{sec:appendix}.
 
-Also, two of three proofs that make up Curdleproofs are proven using~\glspl{ipa}.
-These are also~\glspl{zkp}, and will be the focus of this paper.
-Hence, we provide a definition on~\glspl{ipa}.
+Additionally, two of the three proofs that comprise Curdleproofs are proven using~\glspl{ipa}.
+These are also~\glspl{zkp} and will be the focus of this paper.
+Hence, we define~\glspl{ipa}.
 
 \begin{definition}[Inner Product Argument]
     The argument takes as input two binding vector commitments $C=\mathbf{c}\times\mathbf{g}\in\mathbb{G}$ and $D=\mathbf{d}\times\mathbf{g'}\in\mathbb{G}$ to the vectors $\mathbf{c},\mathbf{d}\in\mathbb{Z}_p^n$ and $z\in\mathbb{Z}_p$.
@@ -84,27 +84,27 @@ Hence, we provide a definition on~\glspl{ipa}.
 \end{definition}
 
 \subsection{Whisk}\label{subsec:related-work-whisk}
-Ethereum uses a~\gls{pos} consensus mechanism, which allows users to validate transactions and create new blocks by staking their~\gls{eth} tokens.
-The~\gls{pos} protocol works in epochs of 32 slots, where slots are 12 seconds long.
-In each slot a proposer is chosen to propose a block thereby allowing the network to reach consensus on the state of the blockchain.
+Ethereum utilizes a~\gls{pos} consensus mechanism, enabling users to validate transactions and create new blocks by staking their~\gls{eth} tokens.
+The~\gls{pos} protocol operates in epochs of 32 slots, where each slot is 12 seconds long.
+In each slot, a proposer is chosen to propose a block, thereby allowing the network to reach a consensus on the state of the blockchain.
 
 The proposer~\gls{dos} attack is a type of attack that targets the block proposers, making them unable to propose blocks.
-An adversary can use the proposer~\gls{dos} attack to prevent a proposer from receiving rewards, gotten from proposing a block, and increase their own rewards~\cite{EthereumSSLE2024}.
-The proposer~\gls{dos} is made possible by an attack on the Ethereum network that was discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p} in which they deanonymize validators and get their IP addresses.
+An adversary can use the proposer~\gls{dos} attack to prevent a proposer from receiving rewards from proposing a block, increasing the adversarial reward~\cite{EthereumSSLE2024}.
+The proposer~\gls{dos} is made possible by an attack on the Ethereum network, discovered by Heimbach et al.~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}, which deanonymizes validators and obtains their IP addresses.
 In our preliminary work~\cite{ouroldpaper}, we show that the attack is still possible to perform on the Ethereum network.
-As a response to the proposer~\gls{dos} attack, Ethereum proposed a new protocol called Whisk~\cite{Whisk2024} as an attempt to mitigate the attack.
+As a response to the proposer~\gls{dos} attack, Ethereum proposed a new protocol called Whisk~\cite{Whisk2024} to mitigate the attack.
 
 Whisk is a~\gls{zk}~\gls{ssle} system that uses a~\gls{zk} argument called Curdleproofs~\cite{Curdleproofs} to verify the correctness of a shuffle with size $\ell$ without revealing the input or output~\cite{10.1145/3419614.3423258}.
-Whisk works by selecting a list of 16,384 validator trackers and then the following 8,192 block proposers shuffle them over 8,192 slots ($\sim$1 day).
-Then 8,192 proposers are selected from the shuffled list to propose blocks for the next 8,192 slots while a new list is being shuffled.
+Whisk works by selecting a list of 16,384 validator trackers, and then the following 8,192 block proposers shuffle them over 8,192 slots ($\sim$1 day).
+Then, 8,192 proposers are selected from the shuffled list to propose blocks for the next 8,192 slots while a new list is being shuffled.
 This way, a new list of proposers is created every day.
 After each shuffle, Whisk uses a~\gls{zkp} to prove that the shuffle is correct.
 As the specific shuffle is hidden to prevent adversarial tracking, this is done to ensure that the trackers are shuffled according to protocol specifications.
 Whenever a proposer is chosen, they can prove that they are the correct proposer for the slot without revealing their identity.
-Thereby, Whisk mitigates the proposer~\gls{dos} attack because of the identity of the upcoming proposers being hidden now.
+Therefore, Whisk mitigates the proposer~\gls{dos} attack because the identities of the upcoming proposers are now hidden.
 
-Curdleproofs is a~\gls{zkp} system, used by Whisk, that allows a prover to prove knowledge of a shuffle without revealing how it shuffled the elements.
-It does so by using three different~\glspl{zkp}, with one of them relying on two more~\glspl{zkp}.
+Curdleproofs is a~\gls{zkp} system used by Whisk that allows a prover to prove knowledge of a shuffle without revealing the specific order in which the elements were shuffled.
+It does so by using three different~\glspl{zkp}, with one of them relying on two more \glspl{zkp}.
 The overview can be seen in~\autoref{fig:curdleproof-protocol}.
 
 \begin{figure}[!ht]
@@ -163,7 +163,7 @@ To do this, the two commitments are used to construct a polynomial equation.
 Then Neff's trick~\cite{10.1145/501983.502000} is used, which observes that two polynomials are equal iff.\ their roots are the same up to permutation.
 
 In order to show this, the protocol makes use of a~\gls{grandprod} argument.
-To prove that argument, Curdleproofs compiles it down to a~\gls{dlipa} by expressing each multiplication of the grand product as its own equation.
+To prove that argument, Curdleproofs compiles it down to a~\gls{dlipa} by expressing the multiplications of the grand product as individual equations.
 The proof of the~\gls{dlipa} then stems from the protocol originally proposed by Bootle et al.~\cite{cryptoeprint:2016/263,Curdleproofs}
 
 Hence, the~\gls{sameperm} proof is done if the prover can prove the~\gls{dlipa}.
@@ -184,9 +184,9 @@ Therefore, the goal of the Same Scalar argument is to prove the existence of the
 
 In Chapter 6 of Curdleproofs~\cite{Curdleproofs} they explain that the proof has size~$(18+10 \log(\ell+4))\mathbb{G}+7\mathbb{F}$, where $\mathbb{G}$ is a cryptographic group point, and $\mathbb{F}$ is a field element.
 
-\subsection{Problem definition}\label{subsec:problem-definition}
-The current proposal of Curdleproofs only works when the shuffle size of Whisk is set to a power of 2.
-The reason is that the underlying proofs,~\gls{dlipa} in~\gls{sameperm} and~\gls{samemsm}, need to fold recursively down to 1, by halving the size in every round.
+\subsection{Problem Definition}\label{subsec:problem-definition}
+The current proposal of Curdleproofs only works when the shuffle size of Whisk is set to a power of two.
+The reason is that the underlying proofs,~\gls{dlipa} in~\gls{sameperm} and~\gls{samemsm}, need to fold recursively down to 1 by halving the size in every round.
 With the current shuffling size of 128, being able to choose the size more flexibly could lead to both performance and size gains.
-The problem we study in this article is therefore how to extend Curdleproofs to~$\ell$ values that are not a power of 2.
+The problem we study in this article is, therefore, how to extend Curdleproofs to~$\ell$ values that are not a power of two.
 

@@ -2,31 +2,31 @@
 \section{Proof of Theorem 1}\label{sec:appendix-thm1proof}
 \begin{proof}
     The following proof is divided into two separate proofs.
-    First we prove~\gls{hvzk}.
+    First, we prove~\gls{hvzk}.
 
     After this, both knowledge-soundness and completeness are proven in the same proof.
 
     \paragraph*{\textbf{Proof of HVZK}}
-    CAAUrdleproofs is the Curdleproofs DL~\gls{ipa} on which the Springproofs protocol has been applied.
-    So to help show that it is~\gls{hvzk}, we refer to Theorem 5 of Springproofs~\cite{zhang2024springproofs}.
+    CAAUrdleproofs' modification is Curdleproofs'~\glspl{ipa} on which the Springproofs protocol has been applied.
+    So, to help show that it is~\gls{hvzk}, we refer to Theorem 5 of Springproofs~\cite{zhang2024springproofs}.
     \begin{theorem}[Springproofs Theorem 5]
         Suppose IPA$_k$ is a~\gls{hvzk} IPA which reduces a relation $R_{zk,k}$ into a relation $R_{zk,k/2}$, and the blinding factors in the two relations distribute independently.
         Given a scheme function $f$, if the SIPA$_{\text{IPA}}(f)$ is terminative for any lengths $n$ of the witness vector, and there exists a polynomial $\texttt{poly}(\lambda)$ such that the number of rounds $m<\texttt{poly}(\lambda)$, then SIPA$_{\text{IPA}}(f)$ is~\gls{hvzk} when $n\geq2$.
     \end{theorem}
-    Given this Theorem, we interpret $\text{IPA}_k$ as the Curdleproofs DL~\gls{ipa}.
+    Given this theorem, we interpret $\text{IPA}_k$ as Curdleproofs'~\gls{dlipa}.
 
-    In Theorem 5.3.1 of the Curdleproofs paper, they prove their~\gls{ipa} to be zero-knowledge~\cite{Curdleproofs}.
-    They do this by help of a simulator and show that the prover's and simulator's response are distributed identically.
-    This matches the definition of~\gls{hvzk} from Definition 2, hence the Curdleproofs~\gls{ipa} is~\gls{hvzk}.
+    In Theorem 5.3.1 of the Curdleproofs paper, they prove their~\gls{ipa} to be ~\gls{zk}~\cite{Curdleproofs}.
+    They do this with the help of a simulator and show that the prover's and simulator's responses are distributed identically.
+    This approach aligns with the definition of~\gls{hvzk} from Definition 2; therefore, the Curdleproofs~\gls{ipa} is~\gls{hvzk}.
 
     We also know that the~\gls{ipa} is a folding argument, which reduces the size of the argument by half after each iteration.
     In this reduction, Curdleproofs also proved in Theorem 5.3.1 that the values $B_C,B_D,L_{C,j},L_{D,j},R_{C,j},R_{D,j}$ are blinded and identically distributed.
 
     The scheme function used in CAAUrdleproofs, as seen in~\autoref{fig:fold}(b), is shown by Springproofs to be a variant of their pre-compression method~\cite{zhang2024springproofs}.
-    Springproofs show this function to be optimal in the number of folding steps, hence it must also terminate.
+    Springproofs shows this function to be optimal in the number of folding steps; hence, it must also terminate.
     Specifically, the pre-compression is shown to run in $\lceil \log n\rceil$ folding rounds, satisfying the existence of the polynomial mentioned in Theorem 5.
 
-    Curdleproofs show their argument to be zero-knowledge in the random oracle model provided $|\mathbf{G}|\geq8$~\cite{Curdleproofs}.
+    Curdleproofs show their argument to be~\gls{zk} in the random oracle model provided $|\mathbf{G}|\geq8$~\cite{Curdleproofs}.
     Therefore, following Theorem 1, CAAUrdleproofs must be~\gls{hvzk} when $n\geq8$
 
     \paragraph*{\textbf{Proof of knowledge-soundness and completeness}}
@@ -39,12 +39,12 @@
     \begin{align}
         \{(\mathbf{g},\mathbf{h}\in\mathbb{G}^n,u,P\in\mathbb{G};\mathbf{a},\mathbf{b}\in\mathbb{F}_p^n):P=\mathbf{g}^\mathbf{a}\mathbf{h}^\mathbf{b}u^{\langle \mathbf{a},\mathbf{b}\rangle}\}
     \end{align}
-    or analogously for an additive cryptographic group:
+    , or analogously for an additive cryptographic group:
     \begin{align}
         \{(&\mathbf{g},\mathbf{h}\in\mathbb{G}^n,u,P\in\mathbb{G};\mathbf{a},\mathbf{b}\in\mathbb{F}_p^n):\\
         &P=\mathbf{a}\times\mathbf{g}+\mathbf{b}\times\mathbf{h}+\langle \mathbf{a},\mathbf{b}\rangle u\}\label{al:P}
     \end{align}
-    Relating that to Curdleproofs, they mention that they discuss the~\gls{ipa} for the relation
+    Relating that to Curdleproofs, they mention that they discuss the~\gls{ipa} for the relation:
     \begin{align}
         \left\{
         \,(C,D,z;\,\mathbf{c},\mathbf{d})\;\middle|\;
@@ -55,7 +55,7 @@
         \end{aligned}
         \right\}
     \end{align}
-    Though, taking inspiration from Bulletproofs, which also happens to be the~\gls{ipa} used in Springproofs, they include a commitment to the inner product, $z$, in commitment $C$~\cite{bunz2018bulletproofs}.
+    However, taking inspiration from Bulletproofs, which also happens to be the~\gls{ipa} used in Springproofs, they include a commitment to the inner product, $z$, in commitment $C$~\cite{bunz2018bulletproofs}.
     So, before the addition of blinding values and challenges, the relation they want to prove is:
     \begin{align}
         \left\{
@@ -77,27 +77,27 @@
         \end{aligned}
         \right\}
     \end{align}
-    We can now take a look at Springproofs' $P$ commitment in relation to Curdleproofs' $C$ and $D$ commitments.
-    If we add together Curdleproofs' two commitment, we get:
+    We can now take a look at Springproofs' $P$ commitment in comparison to Curdleproofs' $C$ and $D$ commitments.
+    If we add together Curdleproofs' two commitments, we get:
     \begin{align}
         C+D=\mathbf{c} \times \mathbf{G}+\mathbf{d} \times \mathbf{G'}+zH
     \end{align}
-    This exactly the same commitment as in~\autoref{al:P}.
+    , which is the same commitment as in~\autoref{al:P}.
 
-    Therefore, using Curdleproofs' DL~\gls{ipa} and the pre-compression scheme function, we can instantiate SIPA$(f)$, equivalent to CAAUrdleproofs, as a terminative SIPA$(f)$, with $\mathcal{O}(\log n)$ compression steps.
+    Therefore, using Curdleproofs'~\gls{dlipa} and the pre-compression scheme function, we can instantiate SIPA$(f)$, equivalent to CAAUrdleproofs, as a terminative SIPA$(f)$, with $\mathcal{O}(\log n)$ compression steps.
     Hence, SIPA$(f)$ is a complete and computational knowledge sound argument of relation (1).
     We have just shown that Curdleproofs'~\gls{ipa} proves the same relation, so the properties hold for our SIPA$(f)$ as well.
     Furthermore, Curdleproofs uses the Fiat-Shamir transformation for its verifier challenges.
     So, the SIPA$(f)$, analogously CAAUrdleproofs, is a non-interactive random oracle argument having completeness and computational knowledge soundness as well.
 
-    Now we switch our focus to another argument, namely the~\gls{samemsm} argument.
+    Now, we switch our focus to another argument, namely the~\gls{samemsm} argument.
     As with the~\gls{dlipa},~\gls{samemsm} is also an~\gls{ipa}.
     Hence, to work in CAAUrdleproofs, it also needs the optimizations used in the~\gls{dlipa}.
 
-    This means that the~\gls{samemsm} argument uses the Springproofs scheme function.
+    Therefore, the~\gls{samemsm} argument also uses the Springproofs scheme function.
     Also, it uses the new computation of $\mathbf{s}$, see~\autoref{lst:ipa-verifier-optimized}, used for coupling the correct challenges to each element in the vector.
     Furthermore, Curdleproofs blinds the argument in the same way as the~\gls{dlipa}.
-    Hence, our argumentation of~\gls{hvzk}, knowledge-soundness and completeness follows from the above explaination of~\gls{dlipa}.
+    Hence, our argumentation of~\gls{hvzk}, knowledge-soundness, and completeness follows from the above explanation of~\gls{dlipa}.
 
     From this, we can conclude that CAAUrdleproofs is a zero-knowledge argument of knowledge when shuffle size $|\ell|\geq8$.
 \end{proof}

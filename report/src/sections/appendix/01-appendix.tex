@@ -1,5 +1,6 @@
 
 \section{Definitions of Zero-Knowledge Argument of Knowledge}\label{sec:appendix}
+The following definitions are the exact ones also used by Springproofs~\cite{zhang2024springproofs}.
 \begin{definition}[Honest-Verifier Zero-Knowledge]
     An interactive argument $(Setup, P, V)$ for a relation $R$ is honest-verifier zero-knowledge, if there exists a
     probabilistic polynomial time simulator, such that there exists a negligible function $\epsilon(\lambda)$, for all adversaries $A_1$ and $A_2$
@@ -36,12 +37,14 @@
         \Pr \left[ (\mathbb{x},\mathbb{w}') \in \mathcal{R} \;\middle|\;
         \begin{array}{@{}l@{}} % Using an array for the assignments to the right of the bar
             \sigma \leftarrow \text{Setup}(1^\lambda) \\
-            \mathbb{w}' \leftarrow \mathcal{E}^{P^*}(x)
+            \mathbb{w}' \leftarrow \mathcal{E}_{P^*}(\mathbb{x})
         \end{array}
         \right]
         \geq \frac{\epsilon(P^*, \mathbb{x}) - \kappa(|\mathbb{x}|, Q)}{z(|\mathbb{x}|)},
     \end{align*}
 \end{definition}
+where $\epsilon(P^*,\mathbb{x}):= \Pr[\langle P^*_{RO}(\sigma,\mathbb{x}),V_{RO}(\sigma,\mathbb{x}) \rangle=1]$, $\kappa(\lambda,Q)\in[0,1]$ is the \textit{knowledge error} and is negligible.
+$\varepsilon$~has a black-box oracle access to the prover $P^*$ and can manipulate the random oracle $RO$ for $A$ arbitrarily.
 
 \begin{definition}[Completeness]
     An argument $(Setup, P, V)$ is complete, if for any statement $\mathbb{x}\in L$ and witness $\mathbb{w}$ such that $(\mathbb{x,w})\in R$, there exists a negligible function $\mu(\lambda)$, such that
