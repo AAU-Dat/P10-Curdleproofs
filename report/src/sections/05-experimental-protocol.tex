@@ -4,8 +4,8 @@ In this section, we will describe how our experiments are run and what we want t
 We also discuss which parameters we can adjust in the various experiments we have.
 
 The experiments are run on a virtual machine hosted on Strato CLAAUDIA at Aalborg University.
-The machine uses an Intel Xeon Cascadelake processor, CPU family 6, model 85.
-It features 16 virtual CPUs (VCPUs) with 3.092 GHz and 64 GB of RAM\@.
+It features 16 virtual CPUs (VCPUs) and 64 GB of RAM\@.
+Those VCPUs are based on an Intel Xeon Gold 6254 CPU with a 3.10 GHz clock speed.
 One VCPU does not correspond to one physical CPU but rather to a hardware thread within the used CPU\@.
 Additionally, the VCPUs are over-provisioned, which means that the computation time may be shared with other virtual machines on the same server\footnote{\text{As explained in an earlier documentation of Strato: }\\ \href{https://github.com/aau-claaudia/Documentation/blob/0d40577ed757c5e9640109f5aac5a7f0a36b7f85/docs/guides/performance/performance.md}{https://github.com/aau-claaudia/Documentation/blob/\\0d40577ed757c5e9640109f5aac5a7f0a36b7f85/docs/guides/\\performance/performance.md}. Accessed: 10/06/2025}.
 The virtual machine is running Ubuntu Server 24.
