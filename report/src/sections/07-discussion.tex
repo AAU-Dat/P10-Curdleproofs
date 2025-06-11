@@ -40,7 +40,7 @@ Even when taking into account the worst-case scenario from our experiment, the s
 
 We do not recommend using an~$\ell$ lower than 80, as in this case, the worst-case scenario requires a little under half of the available shuffles to be honest, in order to be secure.
 As seen in~\autoref{fig:shufflesecurity}, the protocol would also only need a third of the 8192 shuffles to be honest to get within the standard deviation.
-Lowering the shuffle size to 80 would still lead to a reduction of the proving time of 62.69ms, which is 74.25\% of the current Curdleproofs time, and a reduction in the verifying time of 0.89ms, which is 96.11\% of the current Curdleproofs time.
+Lowering the shuffle size to 80 would still lead to a reduction of the proving time of 62.69 ms, which is 74.25\% of the current Curdleproofs time, and a reduction in the verifying time of 0.89 ms, which is 96.11\% of the current Curdleproofs time.
 It would also reduce the block overhead size from 16.656 KB to 12.048 KB\@.
 The reduced size is only 72.33\% of the current size for Curdleproofs, which would result in saving $\sim12.11$ GB of space on the blockchain each year.
 Some other factors to consider when determining the number of honest shuffles required to secure the shuffle are that there are additional elements that can impact the blockchain's security.
@@ -54,8 +54,8 @@ Likewise, it is also possible during the selection of the shufflers.
 
 From the results in~\autoref{fig:shufflesecurity}, we see that the mean starts higher and ends lower for the experiments with a higher $\alpha$.
 One reason for this could be the relationship between the number of adversarial tracked cups and the threshold required before the shuffle is secure.
-Since the threshold is $2/(n-\alpha)$, the higher $\alpha$ is, the higher the threshold for the amount of water allowed in any cup.
+Since the threshold is $2/(n-\alpha)$, the higher $\alpha$ is, the higher the threshold for the amount of water allowed in any cup, see~\autoref{subsec:approach-implementation}.
 Therefore, the higher $\alpha$ is, the harder it is to get the water divided into the honest cups.
 The reason is that the distribution only happens in honest cups.
 More adversarial cups means less honest cups to distribute the water into.
-Hence, there potentially is a higher amount of water in the chosen cups after a shuffle when $\alpha$ is higher. 
+Hence, there potentially is a higher amount of water in the chosen cups after a shuffle when~$\alpha$ is higher.
