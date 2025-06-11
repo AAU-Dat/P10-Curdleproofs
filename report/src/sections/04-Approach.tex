@@ -318,18 +318,18 @@ for $1\leq j\leq m$
     $n\gets n+|\mathbf{S}|$
 
 $\textbf{Step 3:}$ # Accumulated checking phase
-$\mathbf{CP}\text{: }\mathbf{\gamma}\gets(\gamma_m,...,\gamma_1)$ #Construction difference
-$\mathbf{CAAUP}\text{: }\mathbf{\gamma}\gets(\gamma_1,...,\gamma_m)$
+$\mathbf{CP}\text{: }\mathbf{\delta}\gets(\gamma_m,...,\gamma_1)$ #Construction difference
+$\mathbf{CAAUP}\text{: }\mathbf{\delta}\gets(\gamma_1,...,\gamma_m)$
 $\textit{Compute }\mathbf{s}\textit{: see below for difference}$
 
 AccumulateCheck$(\mathbf{\gamma}\times\mathbf{L}_C+(B_C+\alpha C+(\alpha^2z)H)$
     $+\mathbf{\gamma}^{-1}\times\mathbf{R}_C\stackrel{?}{=}(c\mathbf{s}\| cd\beta)\times(\mathbf{G}\| H))$
 AccumulateCheck$(\mathbf{\gamma}\times\mathbf{L}_D+(B_D+\alpha D)$
     $+\mathbf{\gamma}^{-1}\times\mathbf{R}_D\stackrel{?}{=}d(\mathbf{s'}\circ\mathbf{u})\times\mathbf{G})$
-$\text{return 1}$
+return 1 $\text{if checks pass, otherwise}$ return 0
 
 $\textbf{s-step Curdleproofs:}$
-for $1\leq j\leq n$: Simulate halving each round
+for $1\leq j\leq n$: #Simulate halving each round
     $s_i=\sum_{j=1}^m\delta_j^{b_{i,j}}\text{, }b_{i,j}\in\{0,1\}\text{ s.t. }i=\sum_{j=1}^mb_{i,j}2^j$
     $s'_i=\sum_{j=1}^m\delta_j^{-b_{i,j}}$
 $\textbf{s-step CAAUrdleproofs:}$
