@@ -35,11 +35,11 @@ For instance, pre-fetching, where the memory system can optimize access if it su
 As~$\ell$ increases, the memory system will have more data to predict and optimize memory access.
 
 \subsection{Shuffle Security}\label{subsec:Discution-Shuffle-security}
-When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8192 shuffles available.
-Even when taking into account the worst-case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8192 shuffles available with an $\alpha$ of 8192.
+When looking at the results of the shuffle security experiment in \autoref{fig:shufflesecurity} and \autoref{fig:shufflesecurityviolin}, we can see that when taking into account the standard deviation, the shuffle can still be secure with an~$\ell$ as low as 32 within the 8,192 shuffles available.
+Even when taking into account the worst-case scenario from our experiment, the shuffle will still be secure with an~$\ell$ as low as 42 within the 8,192 shuffles available with an $\alpha$ of 8,192.
 
 We do not recommend using an~$\ell$ lower than 80, as in this case, the worst-case scenario requires a little under half of the available shuffles to be honest, in order to be secure.
-As seen in~\autoref{fig:shufflesecurity}, the protocol would also only need a third of the 8192 shuffles to be honest to get within the standard deviation.
+As seen in~\autoref{fig:shufflesecurity}, the protocol would also only need a third of the 8,192 shuffles to be honest to get within the standard deviation.
 Lowering the shuffle size to 80 would still lead to a reduction of the proving time of 62.69 ms, which is 74.25\% of the current Curdleproofs time, and a reduction in the verifying time of 0.89 ms, which is 96.11\% of the current Curdleproofs time.
 It would also reduce the block overhead size from 16.656 KB to 12.048 KB\@.
 The reduced size is only 72.33\% of the current size for Curdleproofs, which would result in saving $\sim12.11$ GB of space on the blockchain each year.
