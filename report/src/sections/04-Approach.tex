@@ -14,12 +14,12 @@ This function is used to ensure that the~\gls{ipa} eventually will fold down to 
 In a general~\gls{ipa}, Curdleproofs included, if the size of the vectors were not a power of two, the argument would not recurse down to size 1, as they work by halving the vectors every recursive round.
 
 
-The core concept of the Springproofs scheme function is to split the vectors into sets, $T$ and $S$, before each recursive round of the protocol.
-Then, the fold for that round is only done on one of the two sets,~$T$, before the other set,~$S$, is appended again at the end of the recursive round.
+The core concept of the Springproofs scheme function is to split the vectors into sets, $\mathbf{\mathcal{T}}$ and $\mathbf{\mathcal{S}}$, before each recursive round of the protocol.
+Then, the fold for that round is only done on one of the two sets,~$\mathbf{\mathcal{T}}$, before the other set,~$\mathbf{\mathcal{S}}$, is appended again at the end of the recursive round.
 
 Springproofs present different scheme functions and prove some of them to be optimal.
 One of these optimal functions is an optimized version of their \textit{pre-compression method}, which splits the vectors as seen in~\autoref{lst:schemefunc}.
-The computation is for finding the set,~$T$.
+The computation is for finding the set,~$\mathbf{\mathcal{T}}$.
 
 \begin{figure}[!htb]
     \begin{lstlisting}[language=Python,mathescape=true,label={lst:schemefunc},numbers=right,caption={Scheme function \textbf{\textit{f}} used in CAAUrdleproofs},captionpos=b,frame=single]
@@ -30,10 +30,10 @@ The computation is for finding the set,~$T$.
     $i_h \gets \lfloor (2N-n)/2\rfloor+1$
     $i_t=\lfloor n/2\rfloor$
     if $n\neq N$: #Not power of 2
-        $\mathbf{T}\gets\{i_h:i_t\}\cup\{N+1:n\}$
+        $\mathbf{\mathcal{T}}\gets\{i_h:i_t\}\cup\{N+1:n\}$
     else if $n=N$: #Power of 2
-        $\mathbf{T}\gets\{1:n\}$ #Meaning S is empty
-    $\mathbf{S}\gets\mathbf{n}-\mathbf{T}$
+        $\mathbf{\mathcal{T}}\gets\{1:n\}$ #Meaning S is empty
+    $\mathbf{\mathcal{S}}\gets\mathbf{n}-\mathbf{\mathcal{T}}$
     \end{lstlisting}
 \label{fig:schemefunc}
 \end{figure}
@@ -80,12 +80,12 @@ $H\gets\beta H$
 $\textbf{Step 2:}$ #Recursive protocol
 $m\gets \lceil \log n\rceil$
 while $1\leq j\leq m:$
-    $\mathbf{T},\mathbf{S}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
-    $n\gets \frac{|\mathbf{T}|}{2}$
-    $\textbf{c}\gets\textbf{c}_\mathbf{T}$, $\textbf{cS}\gets\textbf{c}_\mathbf{S}$ #Vector splitting
-    $\textbf{d}\gets\textbf{d}_\mathbf{T}$, $\textbf{dS}\gets\textbf{d}_\mathbf{S}$
-    $\textbf{G}\gets\textbf{G}_\mathbf{T}$, $\textbf{GS}\gets\textbf{G}_\mathbf{S}$
-    $\textbf{G}'\gets\textbf{G}'_\mathbf{T}$, $\textbf{GS}'\gets\textbf{G}'_\mathbf{S}$
+    $\mathbf{\mathcal{T}},\mathbf{\mathcal{S}}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
+    $n\gets \frac{|\mathbf{\mathcal{T}}|}{2}$
+    $\textbf{c}\gets\textbf{c}_\mathbf{\mathcal{T}}$, $\textbf{cS}\gets\textbf{c}_\mathbf{\mathcal{S}}$ #Vector splitting
+    $\textbf{d}\gets\textbf{d}_\mathbf{\mathcal{T}}$, $\textbf{dS}\gets\textbf{d}_\mathbf{\mathcal{S}}$
+    $\textbf{G}\gets\textbf{G}_\mathbf{\mathcal{T}}$, $\textbf{GS}\gets\textbf{G}_\mathbf{\mathcal{S}}$
+    $\textbf{G}'\gets\textbf{G}'_\mathbf{\mathcal{T}}$, $\textbf{GS}'\gets\textbf{G}'_\mathbf{\mathcal{S}}$
     $L_{C,j}\gets\textbf{c}_{[:n]}\times\textbf{G}_{[n:]}+(\textbf{c}_{[:n]}\times\textbf{d}_{[n:]})H$ #Cross-comm
     $L_{D,j}\gets\textbf{d}_{[n:]}\times\textbf{G}'_{[:n]}$
     $R_{C,j}\gets\textbf{c}_{[n:]}\times\textbf{G}_{[:n]}+(\textbf{c}_{[n:]}\times\textbf{d}_{[:n]})H$
@@ -123,15 +123,15 @@ On lines 9--11, the two vectors are then blinded and multiplied by the $\alpha$ 
 
 Now, the recursive proof construction, and step 2, begins.
 As explained, at the start of the recursive round, line 14, we find the split of the vectors on line 15, with $f(n)$ being the scheme function from~\autoref{lst:schemefunc}.
-Then, on line 16, we find half the length of the $T$ set, as it is the set we are doing the recursive folding round on.
-Equally, on lines 17--20, we split our witness vectors and the group vectors using $T$ and $S$.
+Then, on line 16, we find half the length of the $\mathbf{\mathcal{T}}$ set, as it is the set we are doing the recursive folding round on.
+Equally, on lines 17--20, we split our witness vectors and the group vectors using $\mathbf{\mathcal{T}}$ and $\mathbf{\mathcal{S}}$.
 
-After this, the prover constructs cross-commitment elements on lines 21--24 that are computed on the $T$ set.
+After this, the prover constructs cross-commitment elements on lines 21--24 that are computed on the $\mathbf{\mathcal{T}}$ set.
 These are added to the proof on line 25, which eventually is available to the verifier.
 They are also used to construct a hash value,~$\gamma_j$, in the next step on line 26.
 
 This value is used on lines 27--30 for completing the folding of $\mathbf{c},\mathbf{d},\mathbf{G},\mathbf{G'}$.
-We do the fold as in the original Curdleproofs protocol while also appending the elements of $S$ back onto the vectors.
+We do the fold as in the original Curdleproofs protocol while also appending the elements of $\mathbf{\mathcal{S}}$ back onto the vectors.
 The figure shows a concatenation, but it is important to know that the vectors are appended together as shown in~\autoref{fig:fold}(b).
 
 At the end of the recursive round, on line 31,~$n$ is updated to the length of the concatenated vectors before starting a new round.
@@ -162,10 +162,10 @@ $D\gets B_D+\alpha D$
 $\textbf{Step 2:}$ #Recursive round
 $m\gets \lceil\log n\rceil$
 for $1\leq j\leq m$
-    $\mathbf{T},\mathbf{S}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
-    $n\gets \frac{|\mathbf{T}|}{2}$
-    $\textbf{G}=\textbf{G}_\mathbf{T}$, $\textbf{GS}=\textbf{G}_\mathbf{S}$ #Vector splitting
-    $\textbf{G}'=\textbf{G}'_\mathbf{T}$, $\textbf{GS}'=\textbf{G}'_\mathbf{S}$
+    $\mathbf{\mathcal{T}},\mathbf{\mathcal{S}}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
+    $n\gets \frac{|\mathbf{\mathcal{T}}|}{2}$
+    $\textbf{G}=\textbf{G}_\mathbf{\mathcal{T}}$, $\textbf{GS}=\textbf{G}_\mathbf{\mathcal{S}}$ #Vector splitting
+    $\textbf{G}'=\textbf{G}'_\mathbf{\mathcal{T}}$, $\textbf{GS}'=\textbf{G}'_\mathbf{\mathcal{S}}$
     $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$ #Proof elem
     $\gamma_j\gets$Hash$(\pi_j)$ #Folding challenges
     $C\gets\gamma_j L_{C,j}+C+\gamma_j^{-1}R_{C,j}$ #Update comms
@@ -196,8 +196,8 @@ The reason is that on lines 7--8 in~\autoref{lst:ipa-prover}, the witness vector
 Those modifications mean that the commitments~$C$ and~$D$ need to be commitments to the modified witnesses instead.
 
 The setup phase is now complete, and the verifier then executes the recursive protocol, as shown in step 2.
-First, the vectors are divided into two sets,~$T$ and $S$, on line 13, as in~\autoref{lst:ipa-prover}.
-After this, the group vectors are in lines 14--16 split according to those sets, along with updating~$n$ to be half the size of~$T$.
+First, the vectors are divided into two sets,~$\mathbf{\mathcal{T}}$ and $\mathbf{\mathcal{S}}$, on line 13, as in~\autoref{lst:ipa-prover}.
+After this, the group vectors are in lines 14--16 split according to those sets, along with updating~$n$ to be half the size of~$\mathbf{\mathcal{T}}$.
 
 The verifier then, on line 17, retrieves from the proof the cross-product commitment update values for the given round,~$L_{C,j},L_{D,j},R_{C,j},R_{D,j}$.
 These are used for constructing a new commitment, lines 19--20, according to the fold made at round $i$.
@@ -235,25 +235,25 @@ A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
     \rule{\linewidth}{0.4pt}
 
     \noindent
-    \textbf{For} $t \in [T]$ \textbf{:}
+    \textbf{For} $q \in [Q]$ \textbf{:}
     \begin{itemize}
-        \item[$S_t$] picks random $\{i_1, \ldots, i_\ell\} \subset [n]$
-        \item[$S_t$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_\ell})$
-        \item[$S_t$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell})$
+        \item[$S_q$] picks random $\{i_1, \ldots, i_\ell\} \subset [n]$
+        \item[$S_q$] computes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell}) \leftarrow \text{Shuffle}(c_{i_1}, \ldots, c_{i_\ell})$
+        \item[$S_q$] publishes $(\tilde{c}_{i_1}, \ldots, \tilde{c}_{i_\ell})$
     \end{itemize}
 \end{framed}
 \caption{Distributed shuffling protocol. Source:~\cite{cryptoeprint:2022/560}}
 \label{fig:shuffle}
 \end{figure}
 
-Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $T$ slots.
-In each slot $t$, a subset of the ciphertexts ${i_1, \ldots, i_\ell}$ is chosen randomly, shuffled and added back to the list of ciphertexts.
+Here the set $(c_1, \ldots, c_n)$ is a set of ciphertexts that are shuffled over $Q$ slots.
+In each slot $q$, a subset of the ciphertexts ${i_1, \ldots, i_\ell}$ is chosen randomly, shuffled and added back to the list of ciphertexts.
 The shuffler then re-encrypts the ciphertexts and publishes them.
-This process is repeated for $T$ slots, and the shuffle is complete.
-During the $T$ shuffles, some shuffles may be adversarial.
+This process is repeated for $Q$ slots, and the shuffle is complete.
+During the $Q$ shuffles, some shuffles may be adversarial.
 An adversary can choose to do anything with its shuffle, including not shuffling.
 Hence, an adversarial shuffle can be seen as no shuffling being done.
-Therefore, the number of honest shuffles that happen during the shuffle process is $T_H = T - \beta$, where $\beta$ is the number of adversarial shuffles.
+Therefore, the number of honest shuffles that happen during the shuffle process is $Q_H = Q - \beta$, where $\beta$ is the number of adversarial shuffles.
 
 The adversary can also track ciphertexts.
 For instance, if the adversary owns some of the ciphertexts.
@@ -267,12 +267,12 @@ The second event that can occur is related to the fact that every shuffle distri
 So, if a shuffle contains many ciphertexts with a larger-than-average chance of containing a specific ciphertext, then that would imply that there is a higher chance of that ciphertext being in that slot.
 
 It is theoretically possible to find a number of shuffles, given a shuffle size and a number of adversarial shufflers, which guarantees that the shuffle is secure.
-For any $0 < \delta < 1/3$, if $T \geq 20 n / \ell \ln(n/\delta) + \beta $ and $ \ell \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
-If $T$ and $\ell$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(T,n,\ell)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
+For any $0 < \delta < 1/3$, if $Q \geq 20 n / \ell \ln(n/\delta) + \beta $ and $ \ell \geq 256 \ln^2(n/\delta)(1 - \alpha/n)^{-2}$.
+If $Q$ and $\ell$ are chosen such that the above two conditions are met, then the protocol is an $(\epsilon , \delta)$-secure $(Q,n,\ell)$-shuffle in the presence of a $(\alpha, \beta)$-adversary where $\epsilon = 2/(n-\alpha)$.
 
-This formula is the lowest theoretically proven bound for $T$ and $\ell$.
+This formula is the lowest theoretically proven bound for $Q$ and $\ell$.
 Plotting numbers relevant to Whisk will show that this theoretical bound is too large to use for argumentation of security.
-It is, however, possible to find lower secure values for $T$ and $\ell$, but this has to be done experimentally.
+It is, however, possible to find lower secure values for $Q$ and $\ell$, but this has to be done experimentally.
 
 
 \subsection{Implementation}\label{subsec:approach-implementation}
@@ -311,11 +311,11 @@ $\alpha,\beta\gets$Hash$(C,D,z,B_C,B_D)$ #FS challenges
 $\textbf{Step 2:}$ #Recursive phase
 $m\gets \lceil\log n\rceil$
 for $1\leq j\leq m$
-    $\mathbf{T},\mathbf{S}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
-    $n\gets \frac{|\mathbf{T}|}{2}$
+    $\mathbf{\mathcal{T}},\mathbf{\mathcal{S}}\gets \textbf{\textit{f(}}n\textbf{\textit{)}}$ #Scheme function
+    $n\gets \frac{|\mathbf{\mathcal{T}}|}{2}$
     $(L_{C,j},L_{D,j},R_{C,j},R_{D,j})\gets$parse$(\pi_j)$ #Proof elem
     $\gamma_j\gets$Hash$(\pi_j)$ #Folding challenges
-    $n\gets n+|\mathbf{S}|$
+    $n\gets n+|\mathbf{\mathcal{S}}|$
 
 $\textbf{Step 3:}$ # Accumulated checking phase
 $\mathbf{CP}\text{: }\mathbf{\delta}\gets(\gamma_m,...,\gamma_1)$ #Construction difference
@@ -366,9 +366,9 @@ For a thorough explanation of these, we refer to Curdleproofs~\cite{Curdleproofs
 
 In Curdleproofs, both the~\gls{sameperm} and~\gls{samemsm} proof are recursive~\glspl{ipa}.
 So, the modifications and optimization used on the~\gls{sameperm} argument are also used on the~\gls{samemsm} argument.
-The modifications include the split into set $T$ and $S$ before recursion and the construction of the bit matrix,~$b_{i,j}$, to keep track of multiplications on individual elements.
+The modifications include the split into set $\mathbf{\mathcal{T}}$ and $\mathbf{\mathcal{S}}$ before recursion and the construction of the bit matrix,~$b_{i,j}$, to keep track of multiplications on individual elements.
 
-It is also worth noting that the concatenation of $T$ and $S$ in the recursive phase, lines 26--29 in~\autoref{lst:ipa-prover}, is handled effectively in the code.
+It is also worth noting that the concatenation of $\mathbf{\mathcal{T}}$ and $\mathbf{\mathcal{S}}$ in the recursive phase, lines 26--29 in~\autoref{lst:ipa-prover}, is handled effectively in the code.
 Instead of concatenating, the computation uses pointers to the original vector, so it never practically concatenates.
 
 The code also uses the fact that the used scheme function will always end up with vectors being a power of two after the first round.
