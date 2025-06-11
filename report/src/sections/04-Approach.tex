@@ -95,7 +95,7 @@ while $1\leq j\leq m:$
     $\textbf{d}\gets\textbf{dS}\|\textbf{d}_{[:n]}+\gamma_j\textbf{d}_{[n:]}$
     $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$
     $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
-    $n\gets \text{len}(\textbf{c})$
+    $n\gets |\textbf{c}|$
 $\textbf{Step 3:}$ #Final proof element
 $c\gets c_1$
 $d\gets d_1$
@@ -170,7 +170,7 @@ for $1\leq j\leq m$
     $D\gets\gamma_j L_{D,j}+D+\gamma_j^{-1}R_{D,j}$
     $\textbf{G}\gets\textbf{GS}\|\textbf{G}_{[:n]}+\gamma_j\textbf{G}_{[n:]}$ #Next round vectors
     $\textbf{G}'\gets\textbf{GS}'\|\textbf{G}'_{[:n]}+\gamma_j^{-1}\textbf{G}'_{[n:]}$
-    $n\gets\text{len}(\textbf{G})$
+    $n\gets|\textbf{G}|$
 
 $\textbf{Step 3:}$ #Final check
 Check $C=c\times G_1+cdH$ #Initial ?= Folded
