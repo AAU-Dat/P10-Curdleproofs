@@ -55,8 +55,8 @@ The results of the shuffle security experiment are shown in \autoref{fig:shuffle
 
 We can see that the bigger the shuffle size $\ell$ is, the less honest shuffles are necessary to make the shuffle secure.
 In Ethereum, each shuffling phase is limited to 8,192 shuffles, meaning that the maximum number of honest shuffles that can be used is 8,192.
-Therefore, the results of the experiment find $T_H=T-\beta$.
-$T_H$~is how many of the $T$ shuffles available during the shuffling phase are needed to be honest.
+Therefore, the results of the experiment find $Q_H=Q-\beta$.
+$Q_H$~is how many of the $Q$ shuffles available during the shuffling phase are needed to be honest.
 The rest is, therefore, the maximum number of dishonest shuffles allowed,~$\beta$.
 We also see that the bigger the shuffle size, the narrower the standard deviation gets.
 
@@ -67,7 +67,7 @@ Likewise, we see that, at~$\ell=108$, we need about 1/4 of the shuffles to be ho
 In general, all three of the experiments, despite the difference in $\alpha$, show the same trend.
 They all level out, but the higher~$\alpha$ is, the lower the leveling occurs, and the later it happens as well.
 There are two things, however, that are different between the experiments.
-At~$\alpha=4,096$, we see that with $\ell=32$, the mean number of honest shuffles necessary to make the shuffle secure is $\sim 500$ lower than the two other $\alpha$ values.
+At~$\alpha=4,096$, we see that with $\ell=32$, the mean number of honest shuffles necessary to make the shuffle secure is $\sim500$ lower than the two other $\alpha$ values.
 As~$\ell$ increases, the mean number of honest shuffles necessary to make the shuffle secure becomes similar to the other $\alpha$ values.
 Another thing that differs between the experiments is that they all have a sudden dip in higher $\ell$ values in the experiment.
 Here, we observe a trend that the lower the~$\alpha$ is, the earlier the dip occurs.
