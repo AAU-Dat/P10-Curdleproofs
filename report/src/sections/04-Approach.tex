@@ -29,9 +29,9 @@ The computation is for finding the set,~$\mathbf{\mathcal{T}}$.
     $N\gets 2^{\lceil\log n\rceil-1}$
     $i_h \gets \lfloor (2N-n)/2\rfloor+1$
     $i_t=\lfloor n/2\rfloor$
-    if $n\neq N$: #Not power of 2
+    if $n\neq N$: #Not power of two
         $\mathbf{\mathcal{T}}\gets\{i_h:i_t\}\cup\{N+1:n\}$
-    else if $n=N$: #Power of 2
+    else if $n=N$: #Power of two
         $\mathbf{\mathcal{T}}\gets\{1:n\}$ #Meaning S is empty
     $\mathbf{\mathcal{S}}\gets\mathbf{n}-\mathbf{\mathcal{T}}$
     \end{lstlisting}
@@ -136,7 +136,7 @@ The figure shows a concatenation, but it is important to know that the vectors a
 
 At the end of the recursive round, on line 31,~$n$ is updated to the length of the concatenated vectors before starting a new round.
 
-The result of this is a proof,~$\mathbf{\pi}$, constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of 2.
+The result of this is a proof,~$\mathbf{\pi}$, constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of two.
 
 In step 3, lines 32--36, the folded vectors of size 1 are added to the proof as values as well as the commitments to the blinding values,~$B_C$ and~$B_D$.
 The proof, folded vectors, and updated commitment are saved for the verifier to use for verification.
@@ -223,7 +223,7 @@ If so, the verifier accepts the proof.
 \end{theorem}
 
 
-\subsection{Shuffle security}\label{subsec:approach-shuffle-security}
+\subsection{Shuffle Security}\label{subsec:approach-shuffle-security}
 The shuffle method proposed by Larsen et al.~\cite{cryptoeprint:2022/560} that is used in Curdleproofs is based on the idea of shuffling a list of proposers over a set of slots.
 A formal definition of the shuffle is given in~\autoref{fig:shuffle}.
 
@@ -397,7 +397,7 @@ The experiment indicates the number of rounds before the shuffle was secure.
 
 By repeating this experiment for several runs, one can experimentally say when a shuffle with given parameters is secure.
 
-\subsubsection{Size reduction}
+\subsubsection{Size Reduction}
 If we reduce the shuffle size used in Whisk and still prove it secure, then we expect to see a reduction in the size overhead on the blockchain.
 
 We first set our focus on Curdleproofs, as this is the protocol we have modified directly.
@@ -413,7 +413,7 @@ CAAUrdleproofs, therefore, has the same proof size as Curdleproofs.
 
 The CAAUrdleproofs modification can still reduce the overall block size overhead.
 By using the overhead calculation described by Whisk on CAAUrdleproofs, it measures a block overhead of $16.656$ KB when the shuffle size is 128~\cite{Whisk2024}.
-Note that this is the same size as Curdleproofs, as the shuffle size is a power of 2.
+Note that this is the same size as Curdleproofs, as the shuffle size is a power of two.
 The provided calculation of the block overhead is provided as the following, where $\mathbb{G}=48$ bytes and $\mathbb{F}=32$ bytes\footnote{\text{As noted in the code on the Curdleproofs GitHub repository: }\\ \href{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}{https://github.com/asn-d6/curdleproofs/blob/main/src/whisk.rs}. Accessed: 26/05/2025}:
 \begin{itemize}
     \item List of shuffled trackers ($\ell\cdot96\Rightarrow\text{eg. }124\cdot96=11,904$ bytes).

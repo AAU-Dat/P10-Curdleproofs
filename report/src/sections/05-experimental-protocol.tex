@@ -11,7 +11,7 @@ Additionally, the VCPUs are over-provisioned, which means that the computation t
 The virtual machine is running Ubuntu Server 24.
 
 
-\subsection{CAAUrdleproof}\label{sec:CAAUrdleproof-experiment}
+\subsection{CAAUrdleproofs}\label{sec:CAAUrdleproof-experiment}
 In this experiment, we measure the time to run the CAAUrdleproofs protocol.
 The results will be compared to those of Curdleproofs, which we re-run on our hardware.
 As Curdleproofs already has a Rust benchmark implemented, we will be using that same benchmark for both protocols.
@@ -24,7 +24,7 @@ Since Curdleproofs is unable to run benchmarks, unless the shuffle size is a pow
 
 
 
-\subsection{Shuffle security}\label{subsec:experimental-protocol-shuffle-security}
+\subsection{Shuffle Security}\label{subsec:experimental-protocol-shuffle-security}
 In this experiment, we run the shuffle protocol with varying shuffle sizes and varying numbers of adversarial tracked ciphertexts.
 The purpose of this experiment is to find the lowest possible shuffle size that is still secure against adversarial tracking.
 We, therefore, run the experiment with shuffle sizes,~$\ell$, between 32 and 512.
