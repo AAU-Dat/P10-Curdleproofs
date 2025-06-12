@@ -60,7 +60,7 @@ With the idea from Springproofs in mind, we have modified the~\gls{ipa} of Curdl
 We refer to this modified protocol as CAAUrdleproof.
 For generality and readability, we show the split of vectors happening every round.
 
-\subsubsection*{Prover computation}
+\subsubsection*{Prover Computation}
 First of all, we have the prover computation, where the proof is constructed.
 The construction can be seen in~\autoref{lst:ipa-prover}.
 
@@ -144,7 +144,7 @@ The proof, folded vectors, and updated commitment are saved for the verifier to 
 
 The now constructed proof is then supposed to be added to the block in the chain at the given time slot~\cite{Whisk2024}.
 
-\subsubsection*{Verifier computation}
+\subsubsection*{Verifier Computation}
 Having the proof on the blockchain allows for each validator to verify whether it is a valid proof asynchronously.
 Again, the initially proposed verification protocol has been modified according to Springproofs, as shown in~\autoref{lst:ipa-verifier}.
 
