@@ -136,7 +136,7 @@ The figure shows a concatenation, but it is important to know that the vectors a
 
 At the end of the recursive round, on line 31,~$n$ is updated to the length of the concatenated vectors before starting a new round.
 
-The result of this is a proof,~$\mathbf{\pi}$, constructed in $\lceil \log n \rceil$ rounds, but with the proof size being smaller than if the shuffle size was a power of two.
+The result of this is a proof,~$\mathbf{\pi}$, constructed in $\lceil \log n \rceil$ rounds.
 
 In step 3, lines 32--36, the folded vectors of size 1 are added to the proof as values as well as the commitments to the blinding values,~$B_C$ and~$B_D$.
 The proof, folded vectors, and updated commitment are saved for the verifier to use for verification.
