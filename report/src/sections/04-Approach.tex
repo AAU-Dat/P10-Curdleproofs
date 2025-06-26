@@ -29,9 +29,9 @@ The computation is for finding the set,~$\mathbf{\mathcal{T}}$.
     $N\gets 2^{\lceil\log n\rceil-1}$
     $i_h \gets \lfloor (2N-n)/2\rfloor+1$
     $i_t=\lfloor n/2\rfloor$
-    if $n\neq N$: #Not power of two
+    if $n\neq 2N$: #Not power of two
         $\mathbf{\mathcal{T}}\gets\{i_h:i_t\}\cup\{N+1:n\}$
-    else if $n=N$: #Power of two
+    else if $n=2N$: #Power of two
         $\mathbf{\mathcal{T}}\gets\{1:n\}$ #Meaning S is empty
     $\mathbf{\mathcal{S}}\gets\mathbf{n}-\mathbf{\mathcal{T}}$
     \end{lstlisting}
